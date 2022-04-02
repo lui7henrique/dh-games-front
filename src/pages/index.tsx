@@ -1,13 +1,13 @@
 import React from 'react'
 import type { NextPage } from 'next'
 
-import { Heading } from '@chakra-ui/react'
 import { GameCard } from '../components/GameCard'
+import { Header } from '../components/Header'
 
 const Home: NextPage = () => {
   return (
     <>
-      <Heading textColor="purple.700">dh-games</Heading>
+      <Header />
       <GameCard
         game={{
           title: 'The Witcher 3: Wild Hunt',
