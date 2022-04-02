@@ -20,7 +20,7 @@ export const Header = () => {
   const Logo = useCallback(() => {
     return (
       <Flex alignItems="center">
-        <IoLogoGameControllerA size={40} color={colors.blue['500']} />
+        <IoLogoGameControllerA size={40} color={colors.primary['500']} />
         <Heading size="2rem" ml="2">
           digital games
         </Heading>
@@ -37,14 +37,34 @@ export const Header = () => {
       return (
         <Link key={href} href={href}>
           <a>
-            <Text size="sm" mr="4" color={isActive ? 'gray.50' : 'gray.100'}>
+            <Text
+              size="sm"
+              mr="4"
+              color={isActive ? 'gray.50' : 'gray.100'}
+              transition="color 0.2s"
+              _after={{
+                display: 'block',
+                content: '""',
+                width: isActive ? '100%' : '0',
+                height: '3px',
+                backgroundColor: colors.primary['500'],
+                transition: '0.2s ease-in-out',
+                borderRadius: '3px'
+              }}
+              _hover={{
+                color: 'gray.50',
+                _after: {
+                  width: '100%'
+                }
+              }}
+            >
               {label}
             </Text>
           </a>
         </Link>
       )
     },
-    [asPath]
+    [asPath, colors]
   )
 
   const menu = useMemo(
@@ -117,10 +137,10 @@ export const Header = () => {
           </Button>
 
           <Button
-            backgroundColor="blue.500"
+            backgroundColor="primary.500"
             color="gray.50"
             _hover={{
-              backgroundColor: 'blue.600'
+              backgroundColor: 'primary.600'
             }}
             leftIcon={<FaShoppingCart size={14} color="white" />}
             size="sm"
