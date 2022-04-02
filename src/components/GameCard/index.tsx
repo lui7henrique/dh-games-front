@@ -14,7 +14,7 @@ export const GameCard = (props: GameCardProps) => {
   const { game } = props
 
   return (
-    <Flex direction="column" w="72">
+    <Flex direction="column" w="72" bgColor="gray.800">
       <AspectRatio ratio={16 / 9} w="full">
         <Image src={game.thumbnail} alt={game.title} />
       </AspectRatio>
@@ -27,6 +27,7 @@ export const GameCard = (props: GameCardProps) => {
         d="flex"
         alignItems="center"
         justifyContent="center"
+        cursor="pointer"
       >
         R${game.price}
       </Badge>

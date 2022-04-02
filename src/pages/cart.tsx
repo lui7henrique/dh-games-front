@@ -1,12 +1,12 @@
 import React from 'react'
 import type { NextPage } from 'next'
 
-const Home: NextPage = () => {
+const Cart: NextPage = () => {
   return (
     <>
-      <h1>home</h1>
+      <h1>Cart</h1>
     </>
   )
 }
 
-export default Home
+export default Cart
