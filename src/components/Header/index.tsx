@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { useRouter } from 'next/router'
 
 import { Button, Flex, Heading, Stack, Text, useTheme } from '@chakra-ui/react'

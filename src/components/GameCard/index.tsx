@@ -1,4 +1,3 @@
-import React from 'react'
 import { AspectRatio, Badge, Flex, Heading, Image } from '@chakra-ui/react'
 
 type GameCardProps = {
