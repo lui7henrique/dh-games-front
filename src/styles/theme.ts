@@ -17,6 +17,9 @@ export const theme = extendTheme(
         800: '#002218'
       }
     },
+    font: {
+      footer: 'Poppins'
+    },
     styles: {
       global: {
         body: {

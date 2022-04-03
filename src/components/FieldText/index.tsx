@@ -1,16 +1,15 @@
-import React, { forwardRef, ReactElement } from 'react'
-import { FieldError } from 'react-hook-form'
-
 import {
-  Input,
-  FormLabel,
-  InputGroup,
-  InputProps,
   FormControl,
   FormErrorMessage,
+  FormLabel,
+  Input,
+  InputGroup,
   InputLeftElement,
+  InputProps,
   InputRightElement
 } from '@chakra-ui/react'
+import React, { forwardRef, ReactElement } from 'react'
+import { FieldError } from 'react-hook-form'
 
 // Types
 type FieldTextProps = {
@@ -50,7 +49,9 @@ const FieldTextBase: React.ForwardRefRenderFunction<
 
       <InputGroup>
         {inputLeftElement && (
-          <InputLeftElement h="auto" w="auto">
+          <InputLeftElement
+          h="auto"
+          w="auto">
             {inputLeftElement}
           </InputLeftElement>
         )}
