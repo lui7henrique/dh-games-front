@@ -1,12 +1,22 @@
 import { useCallback, useMemo } from 'react'
 import { useRouter } from 'next/router'
 
-import { Button, Flex, Heading, Stack, Text, useTheme } from '@chakra-ui/react'
+import {
+  Button,
+  Flex,
+  Heading,
+  Stack,
+  Text,
+  useDisclosure,
+  useTheme
+} from '@chakra-ui/react'
 
 import { IoLogoGameControllerA } from 'react-icons/io'
 import { FaLock, FaShoppingCart } from 'react-icons/fa'
 
 import Link from 'next/link'
+import { Limiter } from '../Limiter'
+import { DrawerAdmin } from '../DrawerAdmin'
 
 type ActiveLinkProps = {
   href: string
@@ -14,8 +24,33 @@ type ActiveLinkProps = {
 }
 
 export const Header = () => {
+  /*
+  |-----------------------------------------------------------------------------
+  | Constants
+  |-----------------------------------------------------------------------------
+  |
+  |
+  */
   const { colors } = useTheme()
   const { asPath, push } = useRouter()
+
+  const { isOpen, onOpen, onClose } = useDisclosure()
+
+  /*
+  |-----------------------------------------------------------------------------
+  | States
+  |-----------------------------------------------------------------------------
+  |
+  |
+  */
+
+  /*
+  |-----------------------------------------------------------------------------
+  | Functions / Components
+  |-----------------------------------------------------------------------------
+  |
+  |
+  */
 
   const Logo = useCallback(() => {
     return (
@@ -67,6 +102,14 @@ export const Header = () => {
     [asPath, colors]
   )
 
+  /*
+  |-----------------------------------------------------------------------------
+  | Memos
+  |-----------------------------------------------------------------------------
+  |
+  |
+  */
+
   const menu = useMemo(
     () => [
       {
@@ -85,15 +128,29 @@ export const Header = () => {
     []
   )
 
+  /*
+  |-----------------------------------------------------------------------------
+  | Effects
+  |-----------------------------------------------------------------------------
+  |
+  |
+  */
+
+  /*
+  |-----------------------------------------------------------------------------
+  | Render
+  |-----------------------------------------------------------------------------
+  |
+  |
+  */
+
   return (
     <>
-      <Flex
-        maxWidth="1280"
-        mx="auto"
+      <Limiter
+        d="flex"
         h="5rem"
         alignItems="center"
         justifyContent="space-between"
-        px="4"
       >
         <Stack
           direction="row"
@@ -132,6 +189,7 @@ export const Header = () => {
             leftIcon={<FaLock size={14} color="white" />}
             size="sm"
             borderRadius="sm"
+            onClick={onOpen}
           >
             Admin
           </Button>
@@ -150,7 +208,8 @@ export const Header = () => {
             Carrinho
           </Button>
         </Stack>
-      </Flex>
+      </Limiter>
+      <DrawerAdmin isOpen={isOpen} onClose={onClose} />
     </>
   )
 }
