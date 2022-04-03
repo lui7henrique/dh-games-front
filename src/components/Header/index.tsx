@@ -4,19 +4,20 @@ import { useRouter } from 'next/router'
 import {
   Button,
   Flex,
-  Heading,
+  IconButton,
   Stack,
   Text,
-  useDisclosure,
-  useTheme
+  useDisclosure
 } from '@chakra-ui/react'
 
-import { IoLogoGameControllerA } from 'react-icons/io'
+import { IoMdMenu } from 'react-icons/io'
 import { FaLock, FaShoppingCart } from 'react-icons/fa'
 
 import Link from 'next/link'
 import { Limiter } from '../Limiter'
 import { DrawerAdmin } from '../DrawerAdmin'
+import { DrawerMenu } from '../DrawerMenu'
+import { Logo } from '../Logo'
 
 type ActiveLinkProps = {
   href: string
@@ -31,10 +32,19 @@ export const Header = () => {
   |
   |
   */
-  const { colors } = useTheme()
   const { asPath, push } = useRouter()
 
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const {
+    isOpen: isOpenDrawerAdmin,
+    onOpen: onOpenDrawerAdmin,
+    onClose: onCloseDrawerAdmin
+  } = useDisclosure()
+
+  const {
+    isOpen: isOpenDrawerMenu,
+    onOpen: onOpenDrawerMenu,
+    onClose: onCloseDrawerMenu
+  } = useDisclosure()
 
   /*
   |-----------------------------------------------------------------------------
@@ -46,22 +56,11 @@ export const Header = () => {
 
   /*
   |-----------------------------------------------------------------------------
-  | Functions / Components
+  | Functions
   |-----------------------------------------------------------------------------
   |
   |
   */
-
-  const Logo = useCallback(() => {
-    return (
-      <Flex alignItems="center">
-        <IoLogoGameControllerA size={40} color={colors.primary['500']} />
-        <Heading size="2rem" ml="2">
-          digital games
-        </Heading>
-      </Flex>
-    )
-  }, [colors])
 
   const ActiveLink = useCallback(
     (props: ActiveLinkProps) => {
@@ -82,7 +81,7 @@ export const Header = () => {
                 content: '""',
                 width: isActive ? '100%' : '0',
                 height: '3px',
-                backgroundColor: colors.primary['500'],
+                backgroundColor: isActive ? 'primary.500' : 'primary.600',
                 transition: '0.2s ease-in-out',
                 borderRadius: '3px'
               }}
@@ -99,7 +98,7 @@ export const Header = () => {
         </Link>
       )
     },
-    [asPath, colors]
+    [asPath]
   )
 
   /*
@@ -179,6 +178,19 @@ export const Header = () => {
           </Flex>
         </Stack>
 
+        <IconButton
+          aria-label="Open menu"
+          display={{
+            base: 'flex',
+            md: 'none'
+          }}
+          borderRadius="sm"
+          size="md"
+          onClick={onOpenDrawerMenu}
+        >
+          <IoMdMenu size={24} />
+        </IconButton>
+
         <Stack direction="row" spacing="4">
           <Button
             backgroundColor="transparent"
@@ -189,7 +201,7 @@ export const Header = () => {
             leftIcon={<FaLock size={14} color="white" />}
             size="sm"
             borderRadius="sm"
-            onClick={onOpen}
+            onClick={onOpenDrawerAdmin}
           >
             Admin
           </Button>
@@ -209,7 +221,13 @@ export const Header = () => {
           </Button>
         </Stack>
       </Limiter>
-      <DrawerAdmin isOpen={isOpen} onClose={onClose} />
+
+      <DrawerAdmin isOpen={isOpenDrawerAdmin} onClose={onCloseDrawerAdmin} />
+      <DrawerMenu
+        isOpen={isOpenDrawerMenu}
+        onClose={onCloseDrawerMenu}
+        items={menu}
+      />
     </>
   )
 }
