@@ -45,7 +45,7 @@ export const Footer = () => {
   }, [colors])
 
   return (
-    <Box bgColor={'#FAFAFA'} h={'389px'} fontFamily={font.footer}>
+    <Box bgColor={'#FAFAFA'} h={'389px'}>
       <Limiter>
         <Flex
           flexDir="column"
