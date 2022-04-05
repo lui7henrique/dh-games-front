@@ -1,7 +1,14 @@
 // Vendors
 
 // Components
-import { AspectRatio, Box, Heading, Text, VStack } from '@chakra-ui/react'
+import {
+  AspectRatio,
+  Box,
+  Heading,
+  Skeleton,
+  Text,
+  VStack
+} from '@chakra-ui/react'
 import Image from 'next/image'
 import { Game } from '../../types/game'
 import { Button } from '../Button'
@@ -73,6 +80,13 @@ export const GameSlide = (props: GameSlideProps) => {
   return (
     <AspectRatio w="100%" ratio={16 / 9}>
       <Box w="100%" h="100%" position="relative">
+        <Skeleton
+          w="100%"
+          h="100%"
+          startColor="gray.800"
+          endColor="gray.900"
+          fadeDuration={0.6}
+        />
         <Image src={imagem[0]} layout="fill" alt={`${titulo} thumbnail`} />
 
         <VStack

@@ -6,7 +6,6 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import { Game } from '../../types/game'
 import { Limiter } from '../Limiter'
 import { GameSlide } from '../GameSlide'
-import { useSeed } from '../../hooks/useSeed'
 
 import 'swiper/css'
 import 'swiper/css/navigation'
