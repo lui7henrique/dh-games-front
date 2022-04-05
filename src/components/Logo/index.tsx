@@ -1,10 +1,11 @@
 // Vendors
 
 // Components
-import { Box } from '@chakra-ui/react'
+import { Flex, Heading, useTheme } from '@chakra-ui/react'
+import { IoLogoGameControllerA } from 'react-icons/io'
 
 // Types
-export type {{name}}Props = {}
+export type LogoProps = {}
 
 /*
 |-----------------------------------------------------------------------------
@@ -14,7 +15,7 @@ export type {{name}}Props = {}
 |
 */
 
-export const {{name}} = (props: {{name}}Props) => {
+export const Logo = (props: LogoProps) => {
   /*
   |-----------------------------------------------------------------------------
   | Constants
@@ -22,7 +23,7 @@ export const {{name}} = (props: {{name}}Props) => {
   |
   |
   */
-  const {} = props
+  const { colors } = useTheme()
 
   /*
   |-----------------------------------------------------------------------------
@@ -64,8 +65,11 @@ export const {{name}} = (props: {{name}}Props) => {
   |
   */
   return (
-    <Box>
-      <h1>{{name}}</h1>
-    </Box>
+    <Flex alignItems="center">
+      <IoLogoGameControllerA size={40} color={colors.primary['500']} />
+      <Heading size="2rem" ml="2">
+        digital games
+      </Heading>
+    </Flex>
   )
 }
