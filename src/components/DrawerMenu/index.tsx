@@ -84,7 +84,7 @@ export const DrawerMenu = (props: DrawerMenuProps) => {
               position: 'absolute',
               left: -2,
               backgroundColor: 'primary.500',
-              borderRadius: '3',
+              borderRadius: 'sm',
               transform: isActive ? 'scale(1)' : 'scale(0)',
               transformOrigin: 'left',
               transition: 'all 0.2s'
