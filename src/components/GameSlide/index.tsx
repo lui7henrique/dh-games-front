@@ -78,7 +78,7 @@ export const GameSlide = (props: GameSlideProps) => {
   |
   */
   return (
-    <AspectRatio w="100%" ratio={16 / 9}>
+    <AspectRatio w="100%" ratio={{ base: 9 / 16, lg: 16 / 9 }}>
       <Box w="100%" h="100%" position="relative">
         <Skeleton
           w="100%"
@@ -87,7 +87,18 @@ export const GameSlide = (props: GameSlideProps) => {
           endColor="gray.900"
           fadeDuration={0.6}
         />
-        <Image src={imagem[0]} layout="fill" alt={`${titulo} thumbnail`} />
+        <Box
+          as="figure"
+          sx={{
+            img: {
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover'
+            }
+          }}
+        >
+          <Image src={imagem[0]} layout="fill" alt={`${titulo} thumbnail`} />
+        </Box>
 
         <VStack
           backgroundColor="#000000B3"
@@ -95,13 +106,13 @@ export const GameSlide = (props: GameSlideProps) => {
           bottom={0}
           w="100%"
           h="30%"
-          p={8}
+          p={{ base: 2, lg: 8 }}
           alignItems="flex-start"
         >
-          <Heading as="h2" fontSize={28}>
+          <Heading as="h2" fontSize={{ base: 24, lg: 28 }}>
             {titulo}
           </Heading>
-          <Text fontSize={20}>{descricao}</Text>
+          <Text fontSize={{ base: 14, lg: 20 }}>{descricao}</Text>
 
           <Button label="Buy now" onClick={() => console.log('oi')}></Button>
         </VStack>
