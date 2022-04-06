@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react'
+import { useMemo } from 'react'
 import { useRouter } from 'next/router'
 
 import {
@@ -6,23 +6,17 @@ import {
   Flex,
   IconButton,
   Stack,
-  Text,
   useDisclosure
 } from '@chakra-ui/react'
 
 import { IoMdMenu } from 'react-icons/io'
 import { FaLock, FaShoppingCart } from 'react-icons/fa'
 
-import Link from 'next/link'
 import { Limiter } from '../Limiter'
 import { DrawerAdmin } from '../DrawerAdmin'
 import { DrawerMenu } from '../DrawerMenu'
 import { Logo } from '../Logo'
-
-type ActiveLinkProps = {
-  href: string
-  label: string
-}
+import { HeaderActiveLink } from '../HeaderActiveLink'
 
 export const Header = () => {
   /*
@@ -32,7 +26,7 @@ export const Header = () => {
   |
   |
   */
-  const { asPath, push } = useRouter()
+  const { push } = useRouter()
 
   const {
     isOpen: isOpenDrawerAdmin,
@@ -61,45 +55,6 @@ export const Header = () => {
   |
   |
   */
-
-  const ActiveLink = useCallback(
-    (props: ActiveLinkProps) => {
-      const { href, label } = props
-
-      const isActive = asPath === href
-
-      return (
-        <Link key={href} href={href}>
-          <a>
-            <Text
-              size="sm"
-              mr="4"
-              color={isActive ? 'gray.50' : 'gray.100'}
-              transition="color 0.2s"
-              _after={{
-                display: 'block',
-                content: '""',
-                width: isActive ? '100%' : '0',
-                height: '3px',
-                backgroundColor: isActive ? 'primary.500' : 'primary.600',
-                transition: '0.2s ease-in-out',
-                borderRadius: '3px'
-              }}
-              _hover={{
-                color: 'gray.50',
-                _after: {
-                  width: '100%'
-                }
-              }}
-            >
-              {label}
-            </Text>
-          </a>
-        </Link>
-      )
-    },
-    [asPath]
-  )
 
   /*
   |-----------------------------------------------------------------------------
@@ -168,7 +123,7 @@ export const Header = () => {
           >
             {menu.map((item) => {
               return (
-                <ActiveLink
+                <HeaderActiveLink
                   key={JSON.stringify(item)}
                   href={item.href}
                   label={item.label}

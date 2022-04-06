@@ -1,5 +1,5 @@
 import { Grid } from '@chakra-ui/react'
-import type { GetStaticProps, NextPage } from 'next'
+import type { GetStaticProps } from 'next'
 import { GameCard } from '../../components/GameCard'
 import { Limiter } from '../../components/Limiter'
 import { api } from '../../services/api'
@@ -11,8 +11,6 @@ type ProductsProps = {
 
 const Products = (props: ProductsProps) => {
   const { games } = props
-
-  console.log(games)
 
   return (
     <>
