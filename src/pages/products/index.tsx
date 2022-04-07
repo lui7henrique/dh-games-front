@@ -2,8 +2,10 @@ import { Grid } from '@chakra-ui/react'
 import type { GetStaticProps } from 'next'
 import { GameCard } from '../../components/GameCard'
 import { Limiter } from '../../components/Limiter'
+import { ProductBanner } from '../../components/ProductBanner'
 import { api } from '../../services/api'
 import { Game } from '../../types/game'
+
 
 type ProductsProps = {
   games: Game[]
