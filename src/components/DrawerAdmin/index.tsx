@@ -4,7 +4,6 @@ import { yupResolver } from '@hookform/resolvers/yup'
 
 // Components
 import {
-  Button,
   Drawer,
   DrawerBody,
   DrawerCloseButton,
@@ -12,13 +11,14 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
-  Stack,
-  useToast
+  Stack
 } from '@chakra-ui/react'
 import { FieldText } from '../FieldText'
 
-import { sleep } from '../../utils/sleep'
 import { schema } from './schema'
+import { useAuth } from '../../context/AuthContext'
+import { useRouter } from 'next/router'
+import { Button } from '../Button'
 
 // Types
 type DrawerAdminProps = {
@@ -41,6 +41,9 @@ export const DrawerAdmin = (props: DrawerAdminProps) => {
   */
   const { isOpen, onClose } = props
 
+  const { login } = useAuth()
+  const { push } = useRouter()
+
   const {
     handleSubmit,
     register,
@@ -49,8 +52,6 @@ export const DrawerAdmin = (props: DrawerAdminProps) => {
   } = useForm<DrawerAdminForm>({
     resolver: yupResolver(schema())
   })
-
-  const toast = useToast()
 
   /*
   |-----------------------------------------------------------------------------
@@ -70,24 +71,20 @@ export const DrawerAdmin = (props: DrawerAdminProps) => {
 
   const onSubmit = useCallback(
     async (data: DrawerAdminForm) => {
-      await sleep(5000)
+      const session = await login(data.email, data.password)
 
-      reset({
-        email: '',
-        password: ''
-      })
+      if (session) {
+        onClose()
 
-      onClose()
+        reset({
+          email: '',
+          password: ''
+        })
 
-      toast({
-        title: 'Login feito com sucesso!',
-        description: `Bem vindo ${data.email}`,
-        status: 'success',
-        duration: 3000,
-        isClosable: true
-      })
+        push('/admin')
+      }
     },
-    [onClose, reset, toast]
+    [login, onClose, push, reset]
   )
 
   /*
@@ -141,13 +138,13 @@ export const DrawerAdmin = (props: DrawerAdminProps) => {
         </DrawerBody>
 
         <DrawerFooter borderTopWidth="1px">
-          <Button variant="outline" mr={3} onClick={onClose}>
-            Cancelar
-          </Button>
+          <Button label="Cancelar" variant="outline" mr={3} onClick={onClose} />
 
-          <Button onClick={handleSubmit(onSubmit)} isLoading={isSubmitting}>
-            Login
-          </Button>
+          <Button
+            label="Login"
+            onClick={handleSubmit(onSubmit)}
+            isLoading={isSubmitting}
+          />
         </DrawerFooter>
       </DrawerContent>
     </Drawer>
