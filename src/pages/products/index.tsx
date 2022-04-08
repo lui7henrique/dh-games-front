@@ -1,32 +1,20 @@
-import { Grid } from '@chakra-ui/react'
 import type { GetStaticProps } from 'next'
-import { GameCard } from '../../components/GameCard'
 import { Limiter } from '../../components/Limiter'
 import { api } from '../../services/api'
 import { Game } from '../../types/game'
+import { ProductsList } from '../../components/ProductsList'
 
 type ProductsProps = {
-  games: Game[]
+  products: Game[]
 }
 
 const Products = (props: ProductsProps) => {
-  const { games } = props
+  const { products } = props
 
   return (
     <>
       <Limiter>
-        <Grid
-          templateColumns={{
-            base: 'repeat(1, 1fr)',
-            md: 'repeat(2, 1fr)',
-            lg: 'repeat(3, 1fr)'
-          }}
-          gap="1.5rem"
-        >
-          {games.map((game, index) => {
-            return <GameCard game={game} key={index} />
-          })}
-        </Grid>
+        <ProductsList products={products} />
       </Limiter>
     </>
   )
@@ -39,7 +27,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
   return {
     props: {
-      games: data
+      products: data
     } // will be passed to the page component as props
   }
 }
