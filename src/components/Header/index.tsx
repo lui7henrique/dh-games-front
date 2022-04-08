@@ -1,28 +1,23 @@
-import { useCallback, useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useRouter } from 'next/router'
+import { useAuth } from '../../context/AuthContext'
 
 import {
   Button,
   Flex,
   IconButton,
   Stack,
-  Text,
   useDisclosure
 } from '@chakra-ui/react'
-
-import { IoMdMenu } from 'react-icons/io'
-import { FaLock, FaShoppingCart } from 'react-icons/fa'
-
-import Link from 'next/link'
 import { Limiter } from '../Limiter'
 import { DrawerAdmin } from '../DrawerAdmin'
 import { DrawerMenu } from '../DrawerMenu'
 import { Logo } from '../Logo'
+import { HeaderActiveLink } from '../HeaderActiveLink'
 
-type ActiveLinkProps = {
-  href: string
-  label: string
-}
+import { IoMdMenu } from 'react-icons/io'
+import { FaLock, FaShoppingCart } from 'react-icons/fa'
+import { CgLogOut } from 'react-icons/cg'
 
 export const Header = () => {
   /*
@@ -32,7 +27,7 @@ export const Header = () => {
   |
   |
   */
-  const { asPath, push } = useRouter()
+  const { push } = useRouter()
 
   const {
     isOpen: isOpenDrawerAdmin,
@@ -45,6 +40,8 @@ export const Header = () => {
     onOpen: onOpenDrawerMenu,
     onClose: onCloseDrawerMenu
   } = useDisclosure()
+
+  const { token, logout } = useAuth()
 
   /*
   |-----------------------------------------------------------------------------
@@ -61,45 +58,6 @@ export const Header = () => {
   |
   |
   */
-
-  const ActiveLink = useCallback(
-    (props: ActiveLinkProps) => {
-      const { href, label } = props
-
-      const isActive = asPath === href
-
-      return (
-        <Link key={href} href={href}>
-          <a>
-            <Text
-              size="sm"
-              mr="4"
-              color={isActive ? 'gray.50' : 'gray.100'}
-              transition="color 0.2s"
-              _after={{
-                display: 'block',
-                content: '""',
-                width: isActive ? '100%' : '0',
-                height: '3px',
-                backgroundColor: isActive ? 'primary.500' : 'primary.600',
-                transition: '0.2s ease-in-out',
-                borderRadius: '3px'
-              }}
-              _hover={{
-                color: 'gray.50',
-                _after: {
-                  width: '100%'
-                }
-              }}
-            >
-              {label}
-            </Text>
-          </a>
-        </Link>
-      )
-    },
-    [asPath]
-  )
 
   /*
   |-----------------------------------------------------------------------------
@@ -134,6 +92,25 @@ export const Header = () => {
   |
   |
   */
+  useEffect(() => {
+    if (token) {
+      !menu.some((item) => item.label === 'Gerenciar produtos') &&
+        menu.push({
+          label: 'Gerenciar produtos',
+          href: '/admin'
+        })
+    }
+
+    if (!token) {
+      const adminTabIndex = menu.findIndex(
+        (item) => item.label === 'Gerenciar produtos'
+      )
+
+      if (adminTabIndex !== -1) {
+        menu.splice(adminTabIndex, 1)
+      }
+    }
+  }, [token, menu])
 
   /*
   |-----------------------------------------------------------------------------
@@ -168,7 +145,7 @@ export const Header = () => {
           >
             {menu.map((item) => {
               return (
-                <ActiveLink
+                <HeaderActiveLink
                   key={JSON.stringify(item)}
                   href={item.href}
                   label={item.label}
@@ -192,19 +169,35 @@ export const Header = () => {
         </IconButton>
 
         <Stack direction="row" spacing="4">
-          <Button
-            backgroundColor="transparent"
-            color="gray.50"
-            _hover={{
-              backgroundColor: 'transparent'
-            }}
-            leftIcon={<FaLock size={14} color="white" />}
-            size="sm"
-            borderRadius="sm"
-            onClick={onOpenDrawerAdmin}
-          >
-            Admin
-          </Button>
+          {token ? (
+            <Button
+              backgroundColor="transparent"
+              color="gray.50"
+              _hover={{
+                backgroundColor: 'transparent'
+              }}
+              leftIcon={<CgLogOut size={18} color="white" />}
+              size="sm"
+              borderRadius="sm"
+              onClick={logout}
+            >
+              Sair
+            </Button>
+          ) : (
+            <Button
+              backgroundColor="transparent"
+              color="gray.50"
+              _hover={{
+                backgroundColor: 'transparent'
+              }}
+              leftIcon={<FaLock size={14} color="white" />}
+              size="sm"
+              borderRadius="sm"
+              onClick={token ? () => push('/admin') : onOpenDrawerAdmin}
+            >
+              Admin
+            </Button>
+          )}
 
           <Button
             backgroundColor="primary.500"

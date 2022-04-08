@@ -5,7 +5,7 @@ import { CardFooter } from '../CardFooter'
 import { Limiter } from '../Limiter'
 
 export const Footer = () => {
-  const { colors, font } = useTheme()
+  const { colors } = useTheme()
 
   const menu = useMemo(
     () => [
@@ -45,7 +45,7 @@ export const Footer = () => {
   }, [colors])
 
   return (
-    <Box bgColor={'#FAFAFA'} h={'389px'}>
+    <Box bgColor={'#FAFAFA'} h={'389px'} mt="100px">
       <Limiter>
         <Flex
           flexDir="column"

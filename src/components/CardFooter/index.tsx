@@ -20,21 +20,19 @@ export const CardFooter = ({ label, href, isLink }: CardFooterProps) => {
             borderRadius={'0.5rem'}
           ></Box>
         </Flex>
-        {isLink
-          ? (
+        {isLink ? (
           <a href="" color="#666666">
             {href.map((item, index) => (
               <Text key={index}>{item}</Text>
             ))}
           </a>
-            )
-          : (
+        ) : (
           <Text>
             {href.map((item, index) => (
               <Text key={index}>{item}</Text>
             ))}
           </Text>
-            )}
+        )}
       </Flex>
     </>
   )

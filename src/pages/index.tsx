@@ -20,11 +20,11 @@ const Home = (props: HomeProps) => {
 export default Home
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  const { data } = await api.get<Game>('/products')
+  const { data } = await api.get<Game[]>('/products')
 
   return {
     props: {
-      games: data
+      games: data.slice(0, 10)
     } // will be passed to the page component as props
   }
 }

@@ -2,27 +2,29 @@ import {
   FormControl,
   FormErrorMessage,
   FormLabel,
-  Input,
   InputGroup,
-  InputLeftElement,
-  InputProps,
-  InputRightElement
+  Select,
+  SelectProps
 } from '@chakra-ui/react'
-import React, { forwardRef, ReactElement } from 'react'
+import React, { forwardRef } from 'react'
 import { FieldError } from 'react-hook-form'
 
+type Option = {
+  label: string
+  value: string
+}
+
 // Types
-type FieldTextProps = {
+type FieldSelectProps = {
   name: string
   label?: string
   error?: FieldError
-  inputLeftElement?: ReactElement
-  inputRightElement?: ReactElement
-} & InputProps
+  options: Option[]
+} & SelectProps
 
-const FieldTextBase: React.ForwardRefRenderFunction<
-  HTMLInputElement,
-  FieldTextProps
+const FieldSelectBase: React.ForwardRefRenderFunction<
+  HTMLSelectElement,
+  FieldSelectProps
 > = (props, ref) => {
   /*
   |-----------------------------------------------------------------------------
@@ -32,8 +34,7 @@ const FieldTextBase: React.ForwardRefRenderFunction<
   |
   */
 
-  const { name, label, error, inputLeftElement, inputRightElement, ...rest } =
-    props
+  const { name, label, error, options, ...rest } = props
 
   /*
   |-----------------------------------------------------------------------------
@@ -48,26 +49,23 @@ const FieldTextBase: React.ForwardRefRenderFunction<
       {!!label && <FormLabel htmlFor={name}>{label}</FormLabel>}
 
       <InputGroup>
-        {inputLeftElement && (
-          <InputLeftElement>{inputLeftElement}</InputLeftElement>
-        )}
-
-        <Input
+        <Select
           id={name}
           name={name}
           ref={ref}
-          pl={inputLeftElement ? 'auto' : '4'}
           borderRadius="3px"
           _disabled={{
             opacity: 0.7,
             cursor: 'not-allowed'
           }}
           {...rest}
-        />
-
-        {inputRightElement && (
-          <InputRightElement>{inputRightElement}</InputRightElement>
-        )}
+        >
+          {options.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </Select>
       </InputGroup>
 
       {!!error && <FormErrorMessage>{error.message}</FormErrorMessage>}
@@ -75,4 +73,4 @@ const FieldTextBase: React.ForwardRefRenderFunction<
   )
 }
 
-export const FieldText = forwardRef(FieldTextBase)
+export const FieldSelect = forwardRef(FieldSelectBase)

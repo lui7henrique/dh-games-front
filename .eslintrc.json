@@ -18,6 +18,7 @@
     // note you must disable the base rule as it can report incorrect errors
     "no-use-before-define": "off",
     "no-unused-vars": ["warn"],
+    "multiline-ternary": "off",
     "@typescript-eslint/no-use-before-define": ["error"],
     "react/prop-types": "off",
     "react-hooks/rules-of-hooks": "error",
