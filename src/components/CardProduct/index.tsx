@@ -1,5 +1,5 @@
-import { Box, Text, Badge, Spacer, Flex, Button } from '@chakra-ui/react'
-// import { Button } from '../Button'
+import { Box, Text, Badge, Spacer, Flex } from '@chakra-ui/react'
+import { Button } from '../Button/index'
 
 type CardProductProps = {
   titulo: string
@@ -10,7 +10,7 @@ type CardProductProps = {
 export const CardProduct = ({ titulo, descricao, preco }: CardProductProps) => {
   return (
     <>
-      <Flex bg="white" w="100%" h="16 rem" columns={{ sm: 2, md: 4 }} top="500">
+      <Flex bg="white" w="100%" h="16 rem" columns={{ sm: 2, md: 4 }}>
         <Flex border="red 2px" w="100%">
           <Box p={46}>
             <Text fontSize="xl" color="gray.900">
@@ -33,6 +33,7 @@ export const CardProduct = ({ titulo, descricao, preco }: CardProductProps) => {
         </Flex>
         <Flex bottom={0}>
           <Button
+            label="Carrinho"
             backgroundColor="primary.500"
             color="gray.50"
             _hover={{

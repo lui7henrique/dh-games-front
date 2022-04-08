@@ -1,19 +1,19 @@
 export type Game = {
   id: number
-  titulo: string
-  descricao: string
-  preco: number
-  imagem: string[]
-  categoria: string
-  sistema: string
+  titles: string
+  descriptions: string
+  prices: number
+  images: string[]
+  categories: string
+  operationSystem: string
 }
 
 export type Product = {
   id: number
-  titulo: string
-  descricao: string
-  preco: number
-  imagem: string[]
-  categoria: string
-  sistema: string
+  titles: string
+  descriptions: string
+  prices: number
+  images: string[]
+  categories: string
+  operationSystem: string
 }
