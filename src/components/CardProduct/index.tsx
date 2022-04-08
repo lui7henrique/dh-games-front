@@ -2,29 +2,33 @@ import { Box, Text, Badge, Spacer, Flex } from '@chakra-ui/react'
 import { Button } from '../Button/index'
 
 type CardProductProps = {
-  titulo: string
-  descricao: string
-  preco: number
+  title: string
+  description: string
+  price: number
 }
 
-export const CardProduct = ({ titulo, descricao, preco }: CardProductProps) => {
+export const CardProduct = ({
+  title,
+  description,
+  price
+}: CardProductProps) => {
   return (
     <>
       <Flex bg="white" w="100%" h="16 rem" columns={{ sm: 2, md: 4 }}>
         <Flex border="red 2px" w="100%">
           <Box p={46}>
             <Text fontSize="xl" color="gray.900">
-              {titulo}
+              {title}
             </Text>
             <Text fontSize="xs" color="gray.800">
-              {descricao}
+              {description}
             </Text>
           </Box>
           <Spacer />
           <Box p={46}>
             {' '}
             <Badge color="gray.50" bgColor="primary.500" px="12px">
-              {preco?.toLocaleString('pt-br', {
+              {price?.toLocaleString('pt-br', {
                 style: 'currency',
                 currency: 'BRL'
               })}

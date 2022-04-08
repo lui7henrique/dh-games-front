@@ -19,9 +19,9 @@ export const ProductTemplate = (props: ProductTemplateProps) => {
       <Limiter h="100vh">
         {product && (
           <CardProduct
-            titulo={titles}
-            descricao={descriptions}
-            preco={prices}
+            title={titles}
+            description={descriptions}
+            price={prices}
           />
         )}
       </Limiter>
