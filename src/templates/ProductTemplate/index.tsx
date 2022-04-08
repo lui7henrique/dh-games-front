@@ -1,6 +1,7 @@
 import { Limiter } from '../../components/Limiter'
 import { ProductBanner } from '../../components/ProductBanner'
 import { Game } from '../../types/game'
+import { CardProduct } from '../../components/CardProduct'
 
 type ProductTemplateProps = {
   product: Game
@@ -9,7 +10,7 @@ type ProductTemplateProps = {
 export const ProductTemplate = (props: ProductTemplateProps) => {
   const { product } = props
 
-  const { titulo, categoria, imagem, preco } = product
+  const { titulo, descricao, imagem, preco } = product
 
   return (
     <>
@@ -17,11 +18,7 @@ export const ProductTemplate = (props: ProductTemplateProps) => {
 
       <Limiter h="100vh">
         {product && (
-          <>
-            <h1>{titulo}</h1>
-            <p>{categoria}</p>
-            <p>{preco}</p>
-          </>
+          <CardProduct titulo={titulo} descricao={descricao} preco={preco} />
         )}
       </Limiter>
     </>

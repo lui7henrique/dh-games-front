@@ -2,6 +2,7 @@ import type { GetStaticProps, NextPage } from 'next'
 import { GamesSlider } from '../components/GamesSlider'
 import { api } from '../services/api'
 import { Game } from '../types/game'
+import { useSeed } from '../hooks/useSeed'
 
 type HomeProps = {
   games: Game[]
@@ -9,7 +10,8 @@ type HomeProps = {
 
 const Home = (props: HomeProps) => {
   const { games } = props
-
+  const { handleCreateGames } = useSeed()
+  handleCreateGames(10)
   return (
     <>
       <GamesSlider games={games} />
