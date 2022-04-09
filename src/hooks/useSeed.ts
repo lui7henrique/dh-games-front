@@ -14,8 +14,8 @@ export const useSeed = () => {
           `https://picsum.photos/19${fixedIndex}/10${fixedIndex}?random`
         ],
         preco: +faker.commerce.price(20, 500),
-        categoria: faker.commerce.department(),
-        sistema: faker.lorem.words(1)
+        categoria: faker.random.arrayElement(['RPG', 'Ação', 'Aventura']),
+        sistema: faker.random.arrayElement(['PC', 'PS4', 'XBOX ONE', 'Mobile'])
       }
 
       api.post('/products', {

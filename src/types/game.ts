@@ -9,10 +9,10 @@ export type Game = {
 }
 
 export type Product = {
-  id: number
+  id: string
   titulo: string
-  descricao: string
   preco: number
+  descricao: string
   imagem: string[]
   categoria: string
   sistema: string

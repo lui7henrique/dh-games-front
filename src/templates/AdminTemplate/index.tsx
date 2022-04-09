@@ -1,6 +1,12 @@
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
-import { Grid, InputGroup, Stack, VStack } from '@chakra-ui/react'
+import {
+  Grid,
+  InputGroup,
+  Stack,
+  useDisclosure,
+  VStack
+} from '@chakra-ui/react'
 import { Button } from '../../components/Button'
 import { Limiter } from '../../components/Limiter'
 import { useProducts } from '../../context/ProductsContext'
@@ -11,6 +17,9 @@ import { useForm } from 'react-hook-form'
 import { FieldSelect } from '../../components/FieldSelect'
 import { capitalizeFirstLetter } from '../../utils/capitalize'
 import { ProductsList } from '../../components/ProductsList'
+import { useSeed } from '../../hooks/useSeed'
+import { ModalEditProduct } from '../../components/ModalEditProduct'
+import { Product } from '../../types/game'
 
 type ValuesForm = {
   category: string
@@ -20,6 +29,9 @@ type ValuesForm = {
 export const AdminTemplate = () => {
   const { record, categories, handleFilterProductsByCategory } = useProducts()
   const { register, watch, handleSubmit } = useForm<ValuesForm>()
+  const { isOpen, onClose, onOpen } = useDisclosure()
+
+  const [editProduct, setEditProduct] = useState<Product>()
 
   const watchCategory = watch('category')
 
@@ -30,6 +42,12 @@ export const AdminTemplate = () => {
       handleFilterProductsByCategory(watchCategory)
     }
   }, [watchCategory])
+
+  useEffect(() => {
+    if (editProduct) {
+      onOpen()
+    }
+  }, [editProduct])
 
   return (
     <>
@@ -72,11 +90,22 @@ export const AdminTemplate = () => {
 
           <VStack gap={8} alignItems="flex-end" w="100%">
             {record.current && (
-              <ProductsList products={record.current} w="100%" isEditMode />
+              <ProductsList
+                products={record.current}
+                w="100%"
+                isEditMode
+                setEdit={setEditProduct}
+              />
             )}
           </VStack>
         </Grid>
       </Limiter>
+
+      <ModalEditProduct
+        product={editProduct}
+        isOpen={isOpen}
+        onClose={onClose}
+      />
     </>
   )
 }

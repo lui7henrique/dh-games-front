@@ -7,6 +7,7 @@ import {
   AspectRatio,
   Badge,
   Box,
+  BoxProps,
   chakra,
   Heading,
   IconButton,
@@ -22,7 +23,7 @@ import { useCallback } from 'react'
 export type ProductCardProps = {
   product: Product
   isEditMode?: boolean
-}
+} & BoxProps
 
 /*
 |-----------------------------------------------------------------------------
@@ -42,7 +43,7 @@ export const ProductCard = (props: ProductCardProps) => {
   |
   |
   */
-  const { product, isEditMode } = props
+  const { product, isEditMode, ...boxProps } = props
 
   const { titulo, categoria, imagem, preco, id } = product
 
@@ -77,6 +78,7 @@ export const ProductCard = (props: ProductCardProps) => {
           }
         }}
         overflow="hidden"
+        {...boxProps}
       >
         {isEditMode && (
           <IconButton

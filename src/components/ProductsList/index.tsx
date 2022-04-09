@@ -2,6 +2,7 @@
 
 // Components
 import { Grid, GridProps } from '@chakra-ui/react'
+import { Dispatch, SetStateAction } from 'react'
 import { Product } from '../../types/game'
 import { ProductCard } from '../ProductCard'
 
@@ -9,6 +10,7 @@ import { ProductCard } from '../ProductCard'
 export type ProductsListProps = {
   products: Product[]
   isEditMode?: boolean
+  setEdit?: Dispatch<SetStateAction<Product | undefined>>
 } & GridProps
 
 /*
@@ -27,7 +29,7 @@ export const ProductsList = (props: ProductsListProps) => {
   |
   |
   */
-  const { products, isEditMode = false, ...rest } = props
+  const { products, isEditMode = false, setEdit, ...rest } = props
 
   /*
   |-----------------------------------------------------------------------------
@@ -79,9 +81,16 @@ export const ProductsList = (props: ProductsListProps) => {
       {...rest}
     >
       {!!products.length &&
-        products.map((game, index) => {
+        products.map((product, index) => {
           return (
-            <ProductCard product={game} key={index} isEditMode={isEditMode} />
+            <ProductCard
+              product={product}
+              key={index}
+              isEditMode={isEditMode}
+              onClick={
+                isEditMode && setEdit ? () => setEdit(product) : undefined
+              }
+            />
           )
         })}
     </Grid>
