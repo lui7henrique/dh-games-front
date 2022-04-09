@@ -1,10 +1,10 @@
 import type { GetStaticPaths, GetStaticProps } from 'next'
 import { api } from '../../services/api'
 import { ProductTemplate } from '../../templates/ProductTemplate'
-import { Game } from '../../types/game'
+import { Product as ProductType } from '../../types/game'
 
 type ProductProps = {
-  product: Game
+  product: ProductType
 }
 
 const Product = (props: ProductProps) => {
@@ -16,7 +16,7 @@ const Product = (props: ProductProps) => {
 export default Product
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const { data } = await api.get<Game[]>('/products')
+  const { data } = await api.get<ProductType[]>('/products')
 
   const paths = data.map(({ id }) => ({
     params: { id: String(id) }
@@ -31,7 +31,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async (context) => {
   const id = context.params?.id
 
-  const { data } = await api.get<Game>(`/products/${id}`)
+  const { data } = await api.get<ProductType>(`/products/${id}`)
 
   return {
     props: {

@@ -69,7 +69,7 @@ export const ProductBanner = (props: ProductBannerProps) => {
   |
   */
   return (
-    <Box position="absolute" w="100vw" h="50vh" top={0} zIndex={-1}>
+    <Box position="absolute" w="100vw" h="60vh" top={0} zIndex={-1}>
       <Box
         w="100%"
         h="100%"
@@ -84,6 +84,7 @@ export const ProductBanner = (props: ProductBannerProps) => {
           w="100%"
           h="100%"
           objectFit="cover"
+          objectPosition="center center"
         />
       </Box>
     </Box>

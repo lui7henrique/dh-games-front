@@ -17,9 +17,7 @@ import { useForm } from 'react-hook-form'
 import { FieldSelect } from '../../components/FieldSelect'
 import { capitalizeFirstLetter } from '../../utils/capitalize'
 import { ProductsList } from '../../components/ProductsList'
-import { useSeed } from '../../hooks/useSeed'
-import { ModalEditProduct } from '../../components/ModalEditProduct'
-import { Product } from '../../types/game'
+import { ModalProduct } from '../../components/ModalProduct'
 
 type ValuesForm = {
   category: string
@@ -27,11 +25,10 @@ type ValuesForm = {
 }
 
 export const AdminTemplate = () => {
-  const { record, categories, handleFilterProductsByCategory } = useProducts()
+  const { record, categories, editProduct, handleFilterProductsByCategory } =
+    useProducts()
   const { register, watch, handleSubmit } = useForm<ValuesForm>()
   const { isOpen, onClose, onOpen } = useDisclosure()
-
-  const [editProduct, setEditProduct] = useState<Product>()
 
   const watchCategory = watch('category')
 
@@ -42,12 +39,6 @@ export const AdminTemplate = () => {
       handleFilterProductsByCategory(watchCategory)
     }
   }, [watchCategory])
-
-  useEffect(() => {
-    if (editProduct) {
-      onOpen()
-    }
-  }, [editProduct])
 
   return (
     <>
@@ -64,6 +55,7 @@ export const AdminTemplate = () => {
                 label="Adicionar novo produto"
                 variant="ghost"
                 leftIcon={<FiPlusCircle size={20} />}
+                onClick={onOpen}
               />
 
               <FieldSelect
@@ -90,22 +82,13 @@ export const AdminTemplate = () => {
 
           <VStack gap={8} alignItems="flex-end" w="100%">
             {record.current && (
-              <ProductsList
-                products={record.current}
-                w="100%"
-                isEditMode
-                setEdit={setEditProduct}
-              />
+              <ProductsList products={record.current} w="100%" isEditMode />
             )}
           </VStack>
         </Grid>
       </Limiter>
 
-      <ModalEditProduct
-        product={editProduct}
-        isOpen={isOpen}
-        onClose={onClose}
-      />
+      <ModalProduct isOpen={isOpen} onClose={onClose} />
     </>
   )
 }

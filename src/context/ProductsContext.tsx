@@ -2,7 +2,9 @@ import {} from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import {
   createContext,
+  Dispatch,
   ReactNode,
+  SetStateAction,
   useCallback,
   useContext,
   useEffect,
@@ -18,8 +20,11 @@ type Record = {
 
 type ProductsContextType = {
   record: Record
+  setRecord: Dispatch<SetStateAction<Record>>
   categories: string[]
   handleFilterProductsByCategory: (category: string) => void
+  editProduct: Product
+  setEditProduct: Dispatch<SetStateAction<Product>>
 }
 
 export const ProductsContext = createContext({} as ProductsContextType)
@@ -33,6 +38,7 @@ export const ProductsContextProvider = (
 ) => {
   const [record, setRecord] = useState<Record>({} as Record)
   const [categories, setCategories] = useState<string[]>([])
+  const [editProduct, setEditProduct] = useState<Product>({} as Product)
 
   const { asPath } = useRouter()
 
@@ -45,8 +51,9 @@ export const ProductsContextProvider = (
     })
 
     const categories = Array.from(
-      new Set(data.map((product) => product.categoria))
+      new Set(data.map((product) => product.category))
     )
+
     setCategories(['Tudo', ...categories])
   }, [])
 
@@ -63,7 +70,7 @@ export const ProductsContextProvider = (
       }
 
       const newProducts = record.all.filter(
-        (item) => item.categoria === category
+        (item) => item.category === category
       )
 
       setRecord((prevRecord) => {
@@ -86,8 +93,11 @@ export const ProductsContextProvider = (
     <ProductsContext.Provider
       value={{
         record,
+        setRecord,
         categories,
-        handleFilterProductsByCategory
+        handleFilterProductsByCategory,
+        editProduct,
+        setEditProduct
       }}
     >
       {props.children}

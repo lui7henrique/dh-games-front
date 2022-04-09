@@ -1,11 +1,11 @@
 import type { GetStaticProps } from 'next'
 import { Limiter } from '../../components/Limiter'
 import { api } from '../../services/api'
-import { Game } from '../../types/game'
+import { Product } from '../../types/game'
 import { ProductsList } from '../../components/ProductsList'
 
 type ProductsProps = {
-  products: Game[]
+  products: Product[]
 }
 
 const Products = (props: ProductsProps) => {
@@ -23,7 +23,9 @@ const Products = (props: ProductsProps) => {
 export default Products
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  const { data } = await api.get<Game[]>('/products')
+  const { data } = await api.get<Product[]>('/products')
+
+  console.log(data)
 
   return {
     props: {

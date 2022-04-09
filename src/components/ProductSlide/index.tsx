@@ -11,12 +11,12 @@ import {
 } from '@chakra-ui/react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Game } from '../../types/game'
+import { Product } from '../../types/game'
 import { Button } from '../Button'
 
 // Types
 export type GameSlideProps = {
-  game: Game
+  product: Product
 }
 
 /*
@@ -27,7 +27,7 @@ export type GameSlideProps = {
 |
 */
 
-export const GameSlide = (props: GameSlideProps) => {
+export const ProductSlide = (props: GameSlideProps) => {
   /*
   |-----------------------------------------------------------------------------
   | Constants
@@ -35,9 +35,9 @@ export const GameSlide = (props: GameSlideProps) => {
   |
   |
   */
-  const { game } = props
+  const { product } = props
 
-  const { titles, images, descriptions, id } = game
+  const { title, images, description, id } = product
 
   /*
   |-----------------------------------------------------------------------------
@@ -103,7 +103,7 @@ export const GameSlide = (props: GameSlideProps) => {
               }
             }}
           >
-            <Image src={images[0]} layout="fill" alt={`${titles} thumbnail`} />
+            <Image src={images[0]} layout="fill" alt={`${title} thumbnail`} />
           </Box>
 
           <VStack
@@ -116,9 +116,9 @@ export const GameSlide = (props: GameSlideProps) => {
             alignItems="flex-start"
           >
             <Heading as="h2" fontSize={{ base: 24, lg: 28 }}>
-              {titles}
+              {title}
             </Heading>
-            <Text fontSize={{ base: 14, lg: 20 }}>{descriptions}</Text>
+            <Text fontSize={{ base: 14, lg: 20 }}>{description}</Text>
 
             <Button label="Buy now" onClick={() => console.log('oi')}></Button>
           </VStack>

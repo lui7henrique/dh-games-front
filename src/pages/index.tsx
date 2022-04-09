@@ -1,20 +1,19 @@
 import type { GetStaticProps, NextPage } from 'next'
-import { GamesSlider } from '../components/GamesSlider'
+import { ProductsSlider } from '../components/ProductsSlider'
 import { api } from '../services/api'
-import { Game } from '../types/game'
+import { Game, Product } from '../types/game'
 // import { useSeed } from '../hooks/useSeed'
 
 type HomeProps = {
-  games: Game[]
+  products: Product[]
 } & NextPage
 
 const Home = (props: HomeProps) => {
-  const { games } = props
-  // const { handleCreateGames } = useSeed()
-  // handleCreateGames(10)
+  const { products } = props
+
   return (
     <>
-      <GamesSlider games={games} />
+      <ProductsSlider products={products} />
     </>
   )
 }
@@ -22,11 +21,11 @@ const Home = (props: HomeProps) => {
 export default Home
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  const { data } = await api.get<Game>('/products')
+  const { data } = await api.get<Product>('/products')
 
   return {
     props: {
-      games: data
+      products: data
     } // will be passed to the page component as props
   }
 }
