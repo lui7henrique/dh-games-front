@@ -45,7 +45,7 @@ export const ProductCard = (props: ProductCardProps) => {
   */
   const { product, isEditMode, ...boxProps } = props
 
-  const { titulo, categoria, imagem, preco, id } = product
+  const { titles, categories, images, prices, id } = product
 
   /*
   |-----------------------------------------------------------------------------
@@ -104,7 +104,7 @@ export const ProductCard = (props: ProductCardProps) => {
               fadeDuration={0.6}
             />
             <ChakraNextImage
-              src={imagem[0]}
+              src={images[0]}
               alt="oi"
               layout="fill"
               transition="all 0.2s"
@@ -114,11 +114,11 @@ export const ProductCard = (props: ProductCardProps) => {
         </AspectRatio>
 
         <Box p={4}>
-          <Heading fontSize={16}>{titulo}</Heading>
-          <Text>{categoria}</Text>
+          <Heading fontSize={16}>{titles}</Heading>
+          <Text>{categories}</Text>
 
           <Badge color="gray.50" bgColor="primary.500" px="12px">
-            {preco.toLocaleString('pt-br', {
+            {prices.toLocaleString('pt-br', {
               style: 'currency',
               currency: 'BRL'
             })}
@@ -126,7 +126,7 @@ export const ProductCard = (props: ProductCardProps) => {
         </Box>
       </Box>
     )
-  }, [categoria, imagem, isEditMode, preco, titulo])
+  }, [categories, images, isEditMode, prices, titles])
 
   /*
   |-----------------------------------------------------------------------------

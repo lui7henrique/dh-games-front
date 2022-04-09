@@ -37,7 +37,7 @@ export const GameSlide = (props: GameSlideProps) => {
   */
   const { game } = props
 
-  const { titulo, imagem, descricao, id } = game
+  const { titles, images, descriptions, id } = game
 
   /*
   |-----------------------------------------------------------------------------
@@ -103,7 +103,7 @@ export const GameSlide = (props: GameSlideProps) => {
               }
             }}
           >
-            <Image src={imagem[0]} layout="fill" alt={`${titulo} thumbnail`} />
+            <Image src={images[0]} layout="fill" alt={`${titles} thumbnail`} />
           </Box>
 
           <VStack
@@ -116,9 +116,9 @@ export const GameSlide = (props: GameSlideProps) => {
             alignItems="flex-start"
           >
             <Heading as="h2" fontSize={{ base: 24, lg: 28 }}>
-              {titulo}
+              {titles}
             </Heading>
-            <Text fontSize={{ base: 14, lg: 20 }}>{descricao}</Text>
+            <Text fontSize={{ base: 14, lg: 20 }}>{descriptions}</Text>
 
             <Button label="Buy now" onClick={() => console.log('oi')}></Button>
           </VStack>

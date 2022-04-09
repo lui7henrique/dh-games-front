@@ -8,9 +8,9 @@ export const useSeed = () => {
       const fixedIndex = String(index).padStart(2, '0')
 
       const newGame = {
-        titulo: faker.lorem.words(3),
-        descricao: faker.lorem.words(10),
-        imagem: [
+        titles: faker.lorem.words(3),
+        descriptions: faker.lorem.words(10),
+        images: [
           `https://picsum.photos/19${fixedIndex}/10${fixedIndex}?random`
         ],
         preco: +faker.commerce.price(20, 500),
