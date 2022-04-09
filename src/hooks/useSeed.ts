@@ -8,14 +8,19 @@ export const useSeed = () => {
       const fixedIndex = String(index).padStart(2, '0')
 
       const newGame = {
-        titulo: faker.lorem.words(3),
-        descricao: faker.lorem.words(10),
-        imagem: [
+        title: faker.lorem.words(3),
+        description: faker.lorem.words(10),
+        images: [
           `https://picsum.photos/19${fixedIndex}/10${fixedIndex}?random`
         ],
-        preco: +faker.commerce.price(20, 500),
-        categoria: faker.commerce.department(),
-        sistema: faker.lorem.words(1)
+        price: +faker.commerce.price(20, 500),
+        category: faker.random.arrayElement(['RPG', 'Ação', 'Aventura']),
+        operationSystem: faker.random.arrayElement([
+          'PC',
+          'PS4',
+          'XBOX ONE',
+          'Mobile'
+        ])
       }
 
       api.post('/products', {

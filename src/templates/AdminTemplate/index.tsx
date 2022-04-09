@@ -1,6 +1,12 @@
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
-import { Grid, InputGroup, Stack, VStack } from '@chakra-ui/react'
+import {
+  Grid,
+  InputGroup,
+  Stack,
+  useDisclosure,
+  VStack
+} from '@chakra-ui/react'
 import { Button } from '../../components/Button'
 import { Limiter } from '../../components/Limiter'
 import { useProducts } from '../../context/ProductsContext'
@@ -11,6 +17,7 @@ import { useForm } from 'react-hook-form'
 import { FieldSelect } from '../../components/FieldSelect'
 import { capitalizeFirstLetter } from '../../utils/capitalize'
 import { ProductsList } from '../../components/ProductsList'
+import { ModalProduct } from '../../components/ModalProduct'
 
 type ValuesForm = {
   category: string
@@ -18,8 +25,10 @@ type ValuesForm = {
 }
 
 export const AdminTemplate = () => {
-  const { record, categories, handleFilterProductsByCategory } = useProducts()
+  const { record, categories, editProduct, handleFilterProductsByCategory } =
+    useProducts()
   const { register, watch, handleSubmit } = useForm<ValuesForm>()
+  const { isOpen, onClose, onOpen } = useDisclosure()
 
   const watchCategory = watch('category')
 
@@ -46,6 +55,7 @@ export const AdminTemplate = () => {
                 label="Adicionar novo produto"
                 variant="ghost"
                 leftIcon={<FiPlusCircle size={20} />}
+                onClick={onOpen}
               />
 
               <FieldSelect
@@ -77,6 +87,8 @@ export const AdminTemplate = () => {
           </VStack>
         </Grid>
       </Limiter>
+
+      <ModalProduct isOpen={isOpen} onClose={onClose} />
     </>
   )
 }

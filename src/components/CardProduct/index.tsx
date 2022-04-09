@@ -1,50 +1,52 @@
-import { Box, Text, Badge, Spacer, Flex, Button } from '@chakra-ui/react'
-// import { Button } from '../Button'
+import { Box, Text, Badge, Spacer, Flex, VStack } from '@chakra-ui/react'
+import { Button } from '../Button/index'
 
 type CardProductProps = {
-  titulo: string
-  descricao: string
-  preco: number
+  title: string
+  description: string
+  price: number
 }
 
-export const CardProduct = ({ titulo, descricao, preco }: CardProductProps) => {
+export const CardProduct = ({
+  title,
+  description,
+  price
+}: CardProductProps) => {
   return (
     <>
-      <Flex bg="white" w="100%" h="16 rem" columns={{ sm: 2, md: 4 }} top="500">
-        <Flex border="red 2px" w="100%">
-          <Box p={46}>
+      <Flex bg="white" w="100%" h="32" p={8}>
+        <Flex w="100%" alignItems="center" justifyContent="space-between">
+          <Box>
             <Text fontSize="xl" color="gray.900">
-              {titulo}
+              {title}
             </Text>
             <Text fontSize="xs" color="gray.800">
-              {descricao}
+              {description}
             </Text>
           </Box>
-          <Spacer />
-          <Box p={46}>
-            {' '}
+
+          <VStack>
             <Badge color="gray.50" bgColor="primary.500" px="12px">
-              {preco?.toLocaleString('pt-br', {
+              {price?.toLocaleString('pt-br', {
                 style: 'currency',
                 currency: 'BRL'
               })}
             </Badge>
-          </Box>
-        </Flex>
-        <Flex bottom={0}>
-          <Button
-            backgroundColor="primary.500"
-            color="gray.50"
-            _hover={{
-              backgroundColor: 'primary.600'
-            }}
-            // leftIcon={<FaShoppingCart size={14} color="white" />}
-            size="sm"
-            borderRadius="sm"
-            // onClick={() => push('/cart')}
-          >
-            Carrinho
-          </Button>
+            <Button
+              label="Carrinho"
+              backgroundColor="primary.500"
+              color="gray.50"
+              _hover={{
+                backgroundColor: 'primary.600'
+              }}
+              // leftIcon={<FaShoppingCart size={14} color="white" />}
+              size="sm"
+              borderRadius="sm"
+              // onClick={() => push('/cart')}
+            >
+              Carrinho
+            </Button>
+          </VStack>
         </Flex>
       </Flex>
     </>

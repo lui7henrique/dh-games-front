@@ -7,22 +7,28 @@ import {
   AspectRatio,
   Badge,
   Box,
+  BoxProps,
   chakra,
   Heading,
   IconButton,
   Skeleton,
-  Text
+  Text,
+  useDisclosure
 } from '@chakra-ui/react'
 import { HiPencil } from 'react-icons/hi'
 
 import { Product } from '../../types/game'
 import { useCallback } from 'react'
+import { ModalProduct } from '../ModalProduct'
+import { useProducts } from '../../context/ProductsContext'
 
 // Types
 export type ProductCardProps = {
   product: Product
   isEditMode?: boolean
-}
+} & BoxProps
+
+type ContentProps = {} & BoxProps
 
 /*
 |-----------------------------------------------------------------------------
@@ -42,9 +48,11 @@ export const ProductCard = (props: ProductCardProps) => {
   |
   |
   */
-  const { product, isEditMode } = props
+  const { product, isEditMode, ...boxProps } = props
 
-  const { titulo, categoria, imagem, preco, id } = product
+  const { title, category, images, price, id } = product
+  const { isOpen, onClose, onOpen } = useDisclosure()
+  const { editProduct, setEditProduct } = useProducts()
 
   /*
   |-----------------------------------------------------------------------------
@@ -61,70 +69,75 @@ export const ProductCard = (props: ProductCardProps) => {
   |
   |
   */
-  const Content = useCallback(() => {
-    return (
-      <Box
-        w="100%"
-        h="auto"
-        position="relative"
-        className="game-card"
-        _hover={{
-          img: {
-            filter: 'brightness(1)'
-          },
-          '.edit-button': {
-            opacity: 1
-          }
-        }}
-        overflow="hidden"
-      >
-        {isEditMode && (
-          <IconButton
-            aria-label="Edit"
-            icon={<HiPencil size={20} />}
-            size="xs"
-            position="absolute"
-            top={2}
-            right={2}
-            zIndex={999}
-            className="edit-button"
-            opacity={0}
-          />
-        )}
+  const Content = useCallback(
+    (contentProps: ContentProps) => {
+      return (
+        <Box
+          w="100%"
+          h="auto"
+          position="relative"
+          className="game-card"
+          _hover={{
+            img: {
+              filter: 'brightness(1)'
+            },
+            '.edit-button': {
+              opacity: 1
+            }
+          }}
+          overflow="hidden"
+          {...contentProps}
+          {...boxProps}
+        >
+          {isEditMode && (
+            <IconButton
+              aria-label="Edit"
+              icon={<HiPencil size={20} />}
+              size="xs"
+              position="absolute"
+              top={2}
+              right={2}
+              zIndex={999}
+              className="edit-button"
+              opacity={0}
+            />
+          )}
 
-        <AspectRatio W="100%" ratio={16 / 9} position="relative">
-          <Box w="100%">
-            <Skeleton
-              w="100%"
-              h="100%"
-              startColor="gray.800"
-              endColor="gray.900"
-              fadeDuration={0.6}
-            />
-            <ChakraNextImage
-              src={imagem[0]}
-              alt="oi"
-              layout="fill"
-              transition="all 0.2s"
-              filter="brightness(0.7)"
-            />
+          <AspectRatio W="100%" ratio={16 / 9} position="relative">
+            <Box w="100%">
+              <Skeleton
+                w="100%"
+                h="100%"
+                startColor="gray.800"
+                endColor="gray.900"
+                fadeDuration={0.6}
+              />
+              <ChakraNextImage
+                src={images[0]}
+                alt="oi"
+                layout="fill"
+                transition="all 0.2s"
+                filter="brightness(0.7)"
+              />
+            </Box>
+          </AspectRatio>
+
+          <Box p={4}>
+            <Heading fontSize={16}>{title}</Heading>
+            <Text>{category}</Text>
+
+            <Badge color="gray.50" bgColor="primary.500" px="12px">
+              {price.toLocaleString('pt-br', {
+                style: 'currency',
+                currency: 'BRL'
+              })}
+            </Badge>
           </Box>
-        </AspectRatio>
-
-        <Box p={4}>
-          <Heading fontSize={16}>{titulo}</Heading>
-          <Text>{categoria}</Text>
-
-          <Badge color="gray.50" bgColor="primary.500" px="12px">
-            {preco.toLocaleString('pt-br', {
-              style: 'currency',
-              currency: 'BRL'
-            })}
-          </Badge>
         </Box>
-      </Box>
-    )
-  }, [categoria, imagem, isEditMode, preco, titulo])
+      )
+    },
+    [boxProps, category, images, isEditMode, price, title]
+  )
 
   /*
   |-----------------------------------------------------------------------------
@@ -149,15 +162,29 @@ export const ProductCard = (props: ProductCardProps) => {
   |
   |
   */
-  return isEditMode ? (
+  return (
     <>
-      <Content />
+      {isEditMode ? (
+        <>
+          <Content
+            onClick={() => {
+              setEditProduct(product)
+              onOpen()
+            }}
+          />
+          <ModalProduct
+            product={editProduct}
+            isOpen={isOpen}
+            onClose={onClose}
+          />
+        </>
+      ) : (
+        <Link href={`/products/${id}`} passHref>
+          <a href="">
+            <Content />
+          </a>
+        </Link>
+      )}
     </>
-  ) : (
-    <Link href={`/products/${id}`} passHref>
-      <a href="">
-        <Content />
-      </a>
-    </Link>
   )
 }

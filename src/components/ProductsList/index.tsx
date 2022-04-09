@@ -1,7 +1,7 @@
 // Vendors
 
 // Components
-import { Grid, GridProps } from '@chakra-ui/react'
+import { Grid, GridProps, Heading } from '@chakra-ui/react'
 import { Product } from '../../types/game'
 import { ProductCard } from '../ProductCard'
 
@@ -78,12 +78,19 @@ export const ProductsList = (props: ProductsListProps) => {
       gap={2}
       {...rest}
     >
-      {!!products.length &&
-        products.map((game, index) => {
+      {products && products.length ? (
+        products.map((product, index) => {
           return (
-            <ProductCard product={game} key={index} isEditMode={isEditMode} />
+            <ProductCard
+              product={product}
+              key={index}
+              isEditMode={isEditMode}
+            />
           )
-        })}
+        })
+      ) : (
+        <Heading>No products</Heading>
+      )}
     </Grid>
   )
 }

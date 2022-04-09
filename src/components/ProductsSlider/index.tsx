@@ -3,9 +3,9 @@ import SwiperCore, { Autoplay } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
 
 // Components
-import { Game } from '../../types/game'
+import { Product } from '../../types/game'
 import { Limiter } from '../Limiter'
-import { GameSlide } from '../GameSlide'
+import { ProductSlide } from '../ProductSlide'
 
 import 'swiper/css'
 import 'swiper/css/navigation'
@@ -14,8 +14,8 @@ import { Circle, Flex, Stack, chakra } from '@chakra-ui/react'
 import { useCallback, useState } from 'react'
 
 // Types
-export type GamesSliderProps = {
-  games: Game[]
+export type ProductsSliderProps = {
+  products: Product[]
 }
 
 type SwiperManager = {
@@ -33,7 +33,7 @@ const ChakraSwiper = chakra(Swiper)
 |
 */
 
-export const GamesSlider = (props: GamesSliderProps) => {
+export const ProductsSlider = (props: ProductsSliderProps) => {
   /*
   |-----------------------------------------------------------------------------
   | Constants
@@ -41,7 +41,7 @@ export const GamesSlider = (props: GamesSliderProps) => {
   |
   |
   */
-  const { games } = props
+  const { products } = props
 
   /*
   |-----------------------------------------------------------------------------
@@ -117,10 +117,10 @@ export const GamesSlider = (props: GamesSliderProps) => {
           }}
           width="100%"
         >
-          {games.map((game) => {
+          {products.map((product) => {
             return (
-              <SwiperSlide key={game.id}>
-                <GameSlide game={game} />
+              <SwiperSlide key={product.id}>
+                <ProductSlide product={product} />
               </SwiperSlide>
             )
           })}
@@ -135,7 +135,7 @@ export const GamesSlider = (props: GamesSliderProps) => {
           pl={{ base: 0, md: 4 }}
           py={{ base: 4, md: 0 }}
         >
-          {games.map((game, index) => {
+          {products.map((game, index) => {
             const isActive = manager.activeIndex === index
 
             return (
