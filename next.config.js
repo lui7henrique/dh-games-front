@@ -7,7 +7,8 @@ module.exports = {
       'loremflickr.com',
       'm.media-amazon.com',
       'github.com',
-      'images.igdb.com'
+      'images.igdb.com',
+      'i.ibb.co'
     ]
   }
 }

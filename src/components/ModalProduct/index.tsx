@@ -1,8 +1,14 @@
 // Vendors
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import { Controller, useForm } from 'react-hook-form'
+import {
+  ChangeEvent,
+  DragEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState
+} from 'react'
+import { useForm } from 'react-hook-form'
 import { v4 } from 'uuid'
-import _ from 'lodash'
 
 // Components
 import {
@@ -17,9 +23,13 @@ import {
   ModalOverlay,
   ModalProps,
   Stack,
-  Image,
-  Skeleton,
-  useToast
+  useToast,
+  Flex,
+  Input,
+  IconButton,
+  chakra,
+  Box,
+  BoxProps
 } from '@chakra-ui/react'
 import { api } from '../../services/api'
 import { Product } from '../../types/game'
@@ -27,6 +37,14 @@ import { Button } from '../Button'
 import { FieldSelect } from '../FieldSelect'
 import { FieldText } from '../FieldText'
 import { useProducts } from '../../context/ProductsContext'
+
+import { MdFileUpload } from 'react-icons/md'
+import { imgbb } from '../../services/imgbb'
+import { ImageType, ResponseImage } from './types'
+import Image from 'next/image'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { schema } from './schema'
+import { motion } from 'framer-motion'
 
 // Types
 export type ModalEditProductProps = {
@@ -44,6 +62,8 @@ type ProductForm = {
   category: string
   operationSystem: string
 }
+
+const ChakraNextImage = chakra(Image)
 
 /*
 |-----------------------------------------------------------------------------
@@ -63,11 +83,28 @@ export const ModalProduct = (props: ModalEditProductProps) => {
   */
   const { product, ...modalProps } = props
 
-  const { handleSubmit, register, setValue, watch, control } =
-    useForm<ProductForm>()
+  const {
+    handleSubmit,
+    register,
+    setValue,
+    reset,
+    formState: { isSubmitting, errors }
+  } = useForm<ProductForm>({
+    resolver: yupResolver(schema())
+  })
 
   const { setRecord, setEditProduct } = useProducts()
   const toast = useToast()
+
+  const [updatedImage, setUpdatedImage] = useState<{
+    image: ImageType
+    isLoading: boolean
+  }>({
+    image: {} as ImageType,
+    isLoading: false
+  })
+
+  const [isDragOver, setIsDragOver] = useState(false)
 
   /*
   |-----------------------------------------------------------------------------
@@ -86,6 +123,7 @@ export const ModalProduct = (props: ModalEditProductProps) => {
   */
   const onSubmit = useCallback(
     async (values: ProductForm) => {
+      console.log('oi')
       try {
         const image =
           typeof values.images === 'string' ? [values.images] : values.images
@@ -128,12 +166,10 @@ export const ModalProduct = (props: ModalEditProductProps) => {
 
           setRecord((prevRecord) => {
             const record = [...prevRecord.all, data]
-
             const newRecord = {
               current: record,
               all: record
             }
-
             return newRecord
           })
 
@@ -144,12 +180,135 @@ export const ModalProduct = (props: ModalEditProductProps) => {
             duration: 3000,
             isClosable: true
           })
+
+          reset()
+          setUpdatedImage(null)
         }
       } catch (err: unknown) {
         console.log(err)
       }
     },
-    [product, setEditProduct, setRecord]
+    [modalProps, product, reset, setEditProduct, setRecord, toast]
+  )
+
+  const handleUpdateFile = useCallback(
+    async (image: File) => {
+      setUpdatedImage((prevState) => {
+        return {
+          ...prevState,
+          isLoading: true
+        }
+      })
+
+      const formData = new FormData()
+      formData.append('image', image)
+
+      try {
+        const { data } = await imgbb.post<ResponseImage>('/upload', formData)
+
+        const imageResponse = data.data
+
+        setUpdatedImage({
+          image: imageResponse,
+          isLoading: true
+        })
+
+        setValue('images', [imageResponse.url])
+      } catch (err: unknown) {
+      } finally {
+        setUpdatedImage((prevState) => {
+          return {
+            ...prevState,
+            isLoading: false
+          }
+        })
+      }
+    },
+    [setValue]
+  )
+
+  const handleOnDrop = useCallback(
+    (e: DragEvent<HTMLDivElement>) => {
+      e.stopPropagation()
+      e.preventDefault()
+
+      const files = [...e.dataTransfer.files]
+      const image = files[0]
+
+      handleUpdateFile(image)
+    },
+    [handleUpdateFile]
+  )
+
+  const handleOnDragOver = useCallback((e: DragEvent<HTMLDivElement>) => {
+    e.stopPropagation()
+    e.preventDefault()
+
+    setIsDragOver(true)
+  }, [])
+
+  const handleUpdateFileByInput = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      const files = [...e.target.files!]
+      const image = files[0]
+
+      handleUpdateFile(image)
+    },
+    [handleUpdateFile]
+  )
+
+  const UploadInput = useCallback(
+    (props: BoxProps) => {
+      return (
+        <Box {...props}>
+          <IconButton
+            size="md"
+            aria-label="upload new image"
+            icon={<MdFileUpload size={40} />}
+            variant="link"
+            onClick={() => document.getElementById('file-input')?.click()}
+          />
+          <Input
+            type="file"
+            d="none"
+            id="file-input"
+            onChange={handleUpdateFileByInput}
+          />
+        </Box>
+      )
+    },
+    [handleUpdateFileByInput]
+  )
+
+  const ImageUploadComponent = useCallback(
+    ({ url }: { url: string }) => {
+      return (
+        <Box
+          w="100%"
+          h="100%"
+          _hover={{
+            'div.file-upload': {
+              opacity: 1
+            },
+            img: {
+              opacity: 0.2
+            }
+          }}
+        >
+          <ChakraNextImage
+            src={(updatedImage && updatedImage.url) ?? url}
+            layout="fill"
+            transition="all 0.2s"
+          />
+          <UploadInput
+            className="file-upload"
+            opacity={0}
+            transition="all 0.2s"
+          />
+        </Box>
+      )
+    },
+    [UploadInput, updatedImage]
   )
 
   /*
@@ -224,36 +383,65 @@ export const ModalProduct = (props: ModalEditProductProps) => {
         <ModalCloseButton />
         <ModalBody>
           <Stack spacing={4}>
-            <FieldText label="Título" {...register('title')} />
-            <FieldText label="Preço" {...register('price')} />
-            <FieldText label="Descrição" {...register('description')} />
+            <FieldText
+              label="Título"
+              {...register('title')}
+              error={errors.title}
+            />
+            <FieldText
+              label="Preço"
+              type="number"
+              {...register('price')}
+              error={errors.price}
+            />
+            <FieldText
+              label="Descrição"
+              {...register('description')}
+              error={errors.description}
+            />
 
             {product?.images && product.images[0] && (
-              <HStack key={v4()}>
+              <HStack key={v4()} spacing={4}>
                 <AspectRatio w="200px" h="100%" ratio={16 / 9}>
-                  <Image
-                    src={product.images![0]}
-                    layout="fill"
-                    alt="Imagem do produto"
+                  <ImageUploadComponent
+                    url={
+                      (updatedImage && updatedImage.image.url) ??
+                      product.images![0]
+                    }
                   />
                 </AspectRatio>
 
-                <FieldText {...register('images')} label={'Thumbnail (URL)'} />
+                <FieldText
+                  {...register('images')}
+                  label={'Thumbnail (URL)'}
+                  isDisabled
+                />
               </HStack>
             )}
 
             {!product && (
-              <HStack key={v4()}>
+              <HStack key={v4()} spacing={4}>
                 <AspectRatio w="200px" h="100%" ratio={16 / 9}>
-                  <Skeleton
-                    w="100%"
-                    h="100%"
-                    startColor="gray.800"
-                    endColor="gray.900"
-                    fadeDuration={0.6}
-                  />
+                  {updatedImage && updatedImage.image.url ? (
+                    <ImageUploadComponent url={updatedImage.image.url} />
+                  ) : (
+                    <Flex
+                      bgColor="gray.800"
+                      alignItems="center"
+                      justifyContent="center"
+                      onDrop={handleOnDrop}
+                      onDragOver={handleOnDragOver}
+                    >
+                      <UploadInput />
+                    </Flex>
+                  )}
                 </AspectRatio>
-                <FieldText label={'Thumbnail (URL)'} {...register('images')} />
+
+                <FieldText
+                  label={'Thumbnail'}
+                  {...register('images')}
+                  isDisabled={!product}
+                />
               </HStack>
             )}
 
@@ -269,8 +457,12 @@ export const ModalProduct = (props: ModalEditProductProps) => {
 
         <ModalFooter>
           <Stack direction="row">
-            <Button label="Cancelar" onClick={modalProps.onClose} />
-            <Button label="Salvar" type="submit">
+            <Button
+              label="Cancelar"
+              type="reset"
+              onClick={modalProps.onClose}
+            />
+            <Button label="Salvar" type="submit" isLoading={isSubmitting}>
               Salvar
             </Button>
           </Stack>
