@@ -1,31 +1,16 @@
-import {} from '@chakra-ui/react'
+import { useToast } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import {
   createContext,
-  Dispatch,
   ReactNode,
-  SetStateAction,
   useCallback,
   useContext,
   useEffect,
   useState
 } from 'react'
-import { api } from '../services/api'
-import { Product } from '../types/game'
-
-type Record = {
-  all: Product[]
-  current: Product[]
-}
-
-type ProductsContextType = {
-  record: Record
-  setRecord: Dispatch<SetStateAction<Record>>
-  categories: string[]
-  handleFilterProductsByCategory: (category: string) => void
-  editProduct: Product
-  setEditProduct: Dispatch<SetStateAction<Product>>
-}
+import { api } from '../../services/api'
+import { Product } from '../../types/game'
+import { ProductsContextType, Record } from './types'
 
 export const ProductsContext = createContext({} as ProductsContextType)
 
@@ -37,10 +22,13 @@ export const ProductsContextProvider = (
   props: ProductsContextProviderProps
 ) => {
   const [record, setRecord] = useState<Record>({} as Record)
-  const [categories, setCategories] = useState<string[]>([])
   const [editProduct, setEditProduct] = useState<Product>({} as Product)
 
+  const [activeQuery, setActiveQuery] = useState('')
+  const [activeCategory, setActiveCategory] = useState('')
+
   const { asPath } = useRouter()
+  const toast = useToast()
 
   const getProducts = useCallback(async () => {
     const { data } = await api.get<Product[]>('/products')
@@ -49,12 +37,6 @@ export const ProductsContextProvider = (
       all: data,
       current: data
     })
-
-    const categories = Array.from(
-      new Set(data.map((product) => product.category))
-    )
-
-    setCategories(['Tudo', ...categories])
   }, [])
 
   const handleFilterProductsByCategory = useCallback(
@@ -83,6 +65,41 @@ export const ProductsContextProvider = (
     [record]
   )
 
+  const handleFilterProductsByQuery = useCallback((query: string) => {
+    console.log(query)
+  }, [])
+
+  const resetRecord = () => {
+    setRecord((prevRecord) => {
+      return {
+        ...prevRecord,
+        current: prevRecord.all
+      }
+    })
+  }
+
+  const handleDeleteProduct = useCallback(
+    async (id: string) => {
+      await api.delete(`/products/${id}`)
+
+      setRecord((prevRecord) => {
+        return {
+          current: prevRecord.current.filter((product) => product.id !== id),
+          all: prevRecord.all.filter((item) => item.id !== id)
+        }
+      })
+
+      toast({
+        title: 'Produto excluído com sucesso!',
+        description: '',
+        status: 'success',
+        duration: 5000,
+        isClosable: true
+      })
+    },
+    [toast]
+  )
+
   useEffect(() => {
     if (asPath === '/admin') {
       getProducts()
@@ -94,8 +111,10 @@ export const ProductsContextProvider = (
       value={{
         record,
         setRecord,
-        categories,
+        resetRecord,
         handleFilterProductsByCategory,
+        handleFilterProductsByQuery,
+        handleDeleteProduct,
         editProduct,
         setEditProduct
       }}
