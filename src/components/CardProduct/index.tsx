@@ -1,4 +1,4 @@
-import { Box, Text, Badge, Spacer, Flex, VStack } from '@chakra-ui/react'
+import { Box, Text, Badge, Flex, VStack } from '@chakra-ui/react'
 import { Button } from '../Button/index'
 
 type CardProductProps = {

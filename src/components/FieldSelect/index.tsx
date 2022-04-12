@@ -34,7 +34,7 @@ const FieldSelectBase: React.ForwardRefRenderFunction<
   |
   */
 
-  const { name, label, error, options, ...rest } = props
+  const { name, label, error, options, defaultValue, ...rest } = props
 
   /*
   |-----------------------------------------------------------------------------
@@ -58,6 +58,7 @@ const FieldSelectBase: React.ForwardRefRenderFunction<
             opacity: 0.7,
             cursor: 'not-allowed'
           }}
+          defaultValue={defaultValue}
           {...rest}
         >
           {options.map((option) => (
