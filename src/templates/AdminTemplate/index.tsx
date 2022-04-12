@@ -53,7 +53,6 @@ export const AdminTemplate = () => {
             <Stack spacing={4} direction="column" w="100%">
               <Button
                 label="Adicionar novo produto"
-                variant="ghost"
                 leftIcon={<FiPlusCircle size={20} />}
                 onClick={onOpen}
               />

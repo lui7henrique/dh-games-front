@@ -1,8 +1,9 @@
 // Vendors
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import { Controller, useForm } from 'react-hook-form'
+import { useCallback, useEffect } from 'react'
+import { FieldError, useForm } from 'react-hook-form'
 import { v4 } from 'uuid'
-import _ from 'lodash'
+import Image from 'next/image'
+import { yupResolver } from '@hookform/resolvers/yup'
 
 // Components
 import {
@@ -17,9 +18,16 @@ import {
   ModalOverlay,
   ModalProps,
   Stack,
-  Image,
-  Skeleton,
-  useToast
+  useToast,
+  Flex,
+  Input,
+  IconButton,
+  chakra,
+  Box,
+  BoxProps,
+  Progress,
+  VStack,
+  Text
 } from '@chakra-ui/react'
 import { api } from '../../services/api'
 import { Product } from '../../types/game'
@@ -28,22 +36,33 @@ import { FieldSelect } from '../FieldSelect'
 import { FieldText } from '../FieldText'
 import { useProducts } from '../../context/ProductsContext'
 
+import { MdFileUpload } from 'react-icons/md'
+import { schema } from './schema'
+import { useUpload } from '../../context/UploadContext'
+import { categories } from '../../utils/categories'
+import { systems } from '../../utils/systems'
+
 // Types
 export type ModalEditProductProps = {
   product?: Product
 } & Omit<ModalProps, 'children'>
 
-type ProductKeys = keyof ProductForm
+type Option = {
+  value: string
+  label: string
+}
 
 type ProductForm = {
   id: string
   title: string
   price: number
   description: string
-  images: string[]
-  category: string
-  operationSystem: string
+  image: string
+  category: Option
+  operationSystem: Option
 }
+
+const ChakraNextImage = chakra(Image)
 
 /*
 |-----------------------------------------------------------------------------
@@ -63,8 +82,24 @@ export const ModalProduct = (props: ModalEditProductProps) => {
   */
   const { product, ...modalProps } = props
 
-  const { handleSubmit, register, setValue, watch, control } =
-    useForm<ProductForm>()
+  const {
+    handleSubmit,
+    register,
+    setValue,
+    reset,
+    clearErrors,
+    formState: { isSubmitting, errors }
+  } = useForm<ProductForm>({
+    resolver: yupResolver(schema())
+  })
+
+  const {
+    handleUploadFileByInput,
+    uploadedImage,
+    onDrop,
+    onDragOver,
+    isLoading
+  } = useUpload()
 
   const { setRecord, setEditProduct } = useProducts()
   const toast = useToast()
@@ -87,13 +122,11 @@ export const ModalProduct = (props: ModalEditProductProps) => {
   const onSubmit = useCallback(
     async (values: ProductForm) => {
       try {
-        const image =
-          typeof values.images === 'string' ? [values.images] : values.images
-
         if (product) {
-          const { data } = await api.put<Product>(`/products/${values.id}`, {
+          const { data } = await api.put<Product>(`/products/${product.id}`, {
             ...values,
-            images: image
+            id: product.id,
+            images: [values.image]
           })
 
           setEditProduct(data)
@@ -123,17 +156,15 @@ export const ModalProduct = (props: ModalEditProductProps) => {
         if (!product) {
           const { data } = await api.post<Product>('/products', {
             ...values,
-            images: image
+            images: [values.image]
           })
 
           setRecord((prevRecord) => {
             const record = [...prevRecord.all, data]
-
             const newRecord = {
               current: record,
               all: record
             }
-
             return newRecord
           })
 
@@ -144,12 +175,79 @@ export const ModalProduct = (props: ModalEditProductProps) => {
             duration: 3000,
             isClosable: true
           })
+
+          reset()
         }
       } catch (err: unknown) {
         console.log(err)
       }
     },
-    [product, setEditProduct, setRecord]
+    [modalProps, product, reset, setEditProduct, setRecord, toast]
+  )
+
+  const UploadInput = useCallback(
+    (props: BoxProps) => {
+      return (
+        <Box {...props}>
+          {isLoading ? (
+            <Progress size="xs" isIndeterminate />
+          ) : (
+            <>
+              <IconButton
+                size="md"
+                aria-label="upload new image"
+                icon={<MdFileUpload size={40} />}
+                variant="link"
+                onClick={() => document.getElementById('file-input')?.click()}
+              />
+              <Input
+                type="file"
+                d="none"
+                id="file-input"
+                onChange={handleUploadFileByInput}
+              />
+            </>
+          )}
+        </Box>
+      )
+    },
+    [handleUploadFileByInput, isLoading]
+  )
+
+  const ImageUploadComponent = useCallback(
+    ({ url }: { url: string }) => {
+      return (
+        <Box
+          w="100%"
+          h="100%"
+          _hover={{
+            'div.file-upload': {
+              opacity: 1
+            },
+            img: {
+              opacity: 0.2
+            }
+          }}
+          onDragOver={onDragOver}
+          onDrop={onDrop}
+        >
+          <ChakraNextImage
+            src={(uploadedImage && uploadedImage.url) ?? url}
+            layout="fill"
+            transition="all 0.2s"
+            q={25}
+            objectFit="cover"
+          />
+
+          <UploadInput
+            className="file-upload"
+            opacity={0}
+            transition="all 0.2s"
+          />
+        </Box>
+      )
+    },
+    [UploadInput, onDragOver, onDrop, uploadedImage]
   )
 
   /*
@@ -160,15 +258,25 @@ export const ModalProduct = (props: ModalEditProductProps) => {
   |
   */
   useEffect(() => {
-    product &&
-      Object.keys(product).forEach((key) => {
-        if (key === 'images') {
-          setValue('images', product.images)
-        }
+    if (product) {
+      setValue('title', product.title)
 
-        setValue(key as ProductKeys, product[key as ProductKeys])
-      })
-  }, [product, setValue])
+      setValue('price', product.price)
+
+      setValue('description', product.description)
+
+      setValue('category', product.category as any)
+
+      setValue('operationSystem', product.operationSystem as any)
+
+      clearErrors('image')
+    }
+  }, [clearErrors, product, setValue])
+
+  useEffect(() => {
+    setValue('image', uploadedImage.url)
+    clearErrors('image')
+  }, [clearErrors, setValue, uploadedImage])
 
   /*
   |-----------------------------------------------------------------------------
@@ -176,32 +284,6 @@ export const ModalProduct = (props: ModalEditProductProps) => {
   |-----------------------------------------------------------------------------
   |
   |
-  */
-  const systemOptions = useMemo(
-    () => [
-      {
-        label: 'PC',
-        value: 'pc'
-      },
-      {
-        label: 'PS4',
-        value: 'ps4'
-      },
-      {
-        label: 'XBOX',
-        value: 'xbox'
-      },
-      {
-        label: 'SWITCH',
-        value: 'switch'
-      },
-      {
-        label: 'Mobile',
-        value: 'mobile'
-      }
-    ],
-    []
-  )
 
   /*
   |-----------------------------------------------------------------------------
@@ -224,53 +306,99 @@ export const ModalProduct = (props: ModalEditProductProps) => {
         <ModalCloseButton />
         <ModalBody>
           <Stack spacing={4}>
-            <FieldText label="Título" {...register('title')} />
-            <FieldText label="Preço" {...register('price')} />
-            <FieldText label="Descrição" {...register('description')} />
+            <FieldText
+              label="Título"
+              {...register('title')}
+              error={errors.title}
+            />
+            <FieldText
+              label="Preço"
+              type="number"
+              {...register('price')}
+              error={errors.price}
+            />
+            <FieldText
+              label="Descrição"
+              {...register('description')}
+              error={errors.description}
+            />
 
             {product?.images && product.images[0] && (
-              <HStack key={v4()}>
+              <HStack key={v4()} spacing={4}>
                 <AspectRatio w="200px" h="100%" ratio={16 / 9}>
-                  <Image
-                    src={product.images![0]}
-                    layout="fill"
-                    alt="Imagem do produto"
-                  />
+                  <ImageUploadComponent url={product.images![0]} />
                 </AspectRatio>
 
-                <FieldText {...register('images')} label={'Thumbnail (URL)'} />
+                <FieldText
+                  {...register('image')}
+                  label={'Thumbnail (URL)'}
+                  isDisabled
+                  error={errors.image}
+                  defaultValue={product.images![0]}
+                />
               </HStack>
             )}
 
             {!product && (
-              <HStack key={v4()}>
-                <AspectRatio w="200px" h="100%" ratio={16 / 9}>
-                  <Skeleton
-                    w="100%"
-                    h="100%"
-                    startColor="gray.800"
-                    endColor="gray.900"
-                    fadeDuration={0.6}
+              <VStack spacing={2} w="100%" align="flex-start">
+                <HStack key={v4()} spacing={4} w="100%">
+                  <AspectRatio w="200px" h="100%" ratio={16 / 9}>
+                    {uploadedImage && uploadedImage.url ? (
+                      <ImageUploadComponent url={uploadedImage.url} />
+                    ) : (
+                      <Flex
+                        bgColor="gray.800"
+                        alignItems="center"
+                        justifyContent="center"
+                        onDrop={onDrop}
+                        onDragOver={onDragOver}
+                      >
+                        <UploadInput />
+                      </Flex>
+                    )}
+                  </AspectRatio>
+
+                  <FieldText
+                    label={'Thumbnail (URL)'}
+                    {...register('image')}
+                    isDisabled={!product}
+                    error={errors.image}
                   />
-                </AspectRatio>
-                <FieldText label={'Thumbnail (URL)'} {...register('images')} />
-              </HStack>
+                </HStack>
+
+                <Text fontSize="sm" opacity={0.4}>
+                  Envia a imagem clicando no botão de upload passando o mouse
+                  por cima da imagem/retângulo cinza, ou arraste a imagem. 😉
+                </Text>
+              </VStack>
             )}
 
-            <FieldText label="Categoria" {...register('category')} />
+            <FieldSelect
+              label="Categoria"
+              {...register('category')}
+              options={categories}
+              placeholder="Selecione uma categoria"
+              defaultValue={product?.category}
+              error={errors.category as FieldError}
+            />
             <FieldSelect
               label="Sistema"
               {...register('operationSystem')}
-              options={systemOptions}
+              options={systems}
               placeholder="Selecione o sistema"
+              error={errors.operationSystem as FieldError}
             />
           </Stack>
         </ModalBody>
 
         <ModalFooter>
           <Stack direction="row">
-            <Button label="Cancelar" onClick={modalProps.onClose} />
-            <Button label="Salvar" type="submit">
+            <Button
+              label="Cancelar"
+              type="reset"
+              onClick={modalProps.onClose}
+            />
+            <Button label="Salvar" type="submit" isLoading={isSubmitting}>
               Salvar
             </Button>
           </Stack>

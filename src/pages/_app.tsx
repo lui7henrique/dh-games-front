@@ -7,16 +7,19 @@ import { Header } from '../components/Header'
 import { Footer } from '../components/Footer'
 import { AuthContextProvider } from '../context/AuthContext'
 import { ProductsContextProvider } from '../context/ProductsContext'
+import { UploadContextProvider } from '../context/UploadContext'
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
     <ChakraProvider theme={theme}>
       <AuthContextProvider>
         <ProductsContextProvider>
-          <CSSReset />
-          <Header />
-          <Component {...pageProps} />
-          <Footer />
+          <UploadContextProvider>
+            <CSSReset />
+            <Header />
+            <Component {...pageProps} />
+            <Footer />
+          </UploadContextProvider>
         </ProductsContextProvider>
       </AuthContextProvider>
     </ChakraProvider>

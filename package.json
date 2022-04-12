@@ -15,6 +15,7 @@
     "@faker-js/faker": "^6.1.2",
     "@hookform/resolvers": "^2.8.8",
     "axios": "^0.26.1",
+    "faunadb": "^4.5.4",
     "framer-motion": "^4",
     "lodash": "^4.17.21",
     "miragejs": "^0.1.43",
