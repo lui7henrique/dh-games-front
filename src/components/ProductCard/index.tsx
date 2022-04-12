@@ -21,6 +21,7 @@ import { Product } from '../../types/game'
 import { useCallback } from 'react'
 import { ModalProduct } from '../ModalProduct'
 import { useProducts } from '../../context/ProductsContext'
+import { getCategoryLabelByValue } from '../../utils/categories'
 
 // Types
 export type ProductCardProps = {
@@ -124,7 +125,7 @@ export const ProductCard = (props: ProductCardProps) => {
 
           <Box p={4}>
             <Heading fontSize={16}>{title}</Heading>
-            <Text>{category}</Text>
+            <Text>{getCategoryLabelByValue(category)}</Text>
 
             <Badge color="gray.50" bgColor="primary.500" px="12px">
               {price.toLocaleString('pt-br', {
