@@ -1,8 +1,10 @@
 import {
   ChangeEvent,
   createContext,
+  Dispatch,
   DragEvent,
   ReactNode,
+  SetStateAction,
   useCallback,
   useContext,
   useState
@@ -12,6 +14,7 @@ import { ImageType, ResponseImage } from './types'
 
 type UploadContextType = {
   uploadedImage: ImageType
+  setUploadedImage: Dispatch<SetStateAction<ImageType>>
   isLoading: boolean
   handleUploadImage: (image: File) => Promise<void>
   handleUploadFileByInput: (e: ChangeEvent<HTMLInputElement>) => void
@@ -113,6 +116,7 @@ export const UploadContextProvider = (props: UploadContextProviderProps) => {
     <UploadContext.Provider
       value={{
         uploadedImage,
+        setUploadedImage,
         isLoading,
         handleUploadImage,
         handleUploadFileByInput,

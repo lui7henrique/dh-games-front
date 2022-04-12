@@ -1,7 +1,9 @@
 // Vendors
 import { useCallback, useEffect, useMemo } from 'react'
-import { useForm } from 'react-hook-form'
+import { FieldError, useForm } from 'react-hook-form'
 import { v4 } from 'uuid'
+import Image from 'next/image'
+import { yupResolver } from '@hookform/resolvers/yup'
 
 // Components
 import {
@@ -24,7 +26,6 @@ import {
   Box,
   BoxProps,
   Progress,
-  Skeleton,
   VStack,
   Text
 } from '@chakra-ui/react'
@@ -36,26 +37,29 @@ import { FieldText } from '../FieldText'
 import { useProducts } from '../../context/ProductsContext'
 
 import { MdFileUpload } from 'react-icons/md'
-import Image from 'next/image'
-import { yupResolver } from '@hookform/resolvers/yup'
 import { schema } from './schema'
 import { useUpload } from '../../context/UploadContext'
+import { getCategoryByValue, categories } from '../../utils/categories'
+import { getSystemByValue, systems } from '../../utils/systems'
 
 // Types
 export type ModalEditProductProps = {
   product?: Product
 } & Omit<ModalProps, 'children'>
 
-type ProductKeys = keyof ProductForm
+type Option = {
+  value: string
+  label: string
+}
 
 type ProductForm = {
   id: string
   title: string
   price: number
   description: string
-  images: string[]
-  category: string
-  operationSystem: string
+  image: string
+  category: Option
+  operationSystem: Option
 }
 
 const ChakraNextImage = chakra(Image)
@@ -83,6 +87,7 @@ export const ModalProduct = (props: ModalEditProductProps) => {
     register,
     setValue,
     reset,
+    clearErrors,
     formState: { isSubmitting, errors }
   } = useForm<ProductForm>({
     resolver: yupResolver(schema())
@@ -91,6 +96,7 @@ export const ModalProduct = (props: ModalEditProductProps) => {
   const {
     handleUploadFileByInput,
     uploadedImage,
+    setUploadedImage,
     onDrop,
     onDragOver,
     isLoading
@@ -116,15 +122,12 @@ export const ModalProduct = (props: ModalEditProductProps) => {
   */
   const onSubmit = useCallback(
     async (values: ProductForm) => {
-      console.log('oi')
       try {
-        const image =
-          typeof values.images === 'string' ? [values.images] : values.images
-
         if (product) {
-          const { data } = await api.put<Product>(`/products/${values.id}`, {
+          const { data } = await api.put<Product>(`/products/${product.id}`, {
             ...values,
-            images: image
+            id: product.id,
+            images: [values.image]
           })
 
           setEditProduct(data)
@@ -154,7 +157,7 @@ export const ModalProduct = (props: ModalEditProductProps) => {
         if (!product) {
           const { data } = await api.post<Product>('/products', {
             ...values,
-            images: image
+            images: [values.image]
           })
 
           setRecord((prevRecord) => {
@@ -256,19 +259,25 @@ export const ModalProduct = (props: ModalEditProductProps) => {
   |
   */
   useEffect(() => {
-    product &&
-      Object.keys(product).forEach((key) => {
-        if (key === 'images') {
-          setValue('images', product.images)
-        }
+    if (product) {
+      setValue('title', product.title)
 
-        setValue(key as ProductKeys, product[key as ProductKeys])
-      })
-  }, [product, setValue])
+      setValue('price', product.price)
+
+      setValue('description', product.description)
+
+      setValue('category', product.category as any)
+
+      setValue('operationSystem', product.operationSystem as any)
+
+      clearErrors('image')
+    }
+  }, [clearErrors, product, setValue])
 
   useEffect(() => {
-    setValue('images', [uploadedImage.url])
-  }, [setValue, uploadedImage])
+    setValue('image', uploadedImage.url)
+    clearErrors('image')
+  }, [clearErrors, setValue, uploadedImage])
 
   /*
   |-----------------------------------------------------------------------------
@@ -276,32 +285,6 @@ export const ModalProduct = (props: ModalEditProductProps) => {
   |-----------------------------------------------------------------------------
   |
   |
-  */
-  const systemOptions = useMemo(
-    () => [
-      {
-        label: 'PC',
-        value: 'pc'
-      },
-      {
-        label: 'PS4',
-        value: 'ps4'
-      },
-      {
-        label: 'XBOX',
-        value: 'xbox'
-      },
-      {
-        label: 'SWITCH',
-        value: 'switch'
-      },
-      {
-        label: 'Mobile',
-        value: 'mobile'
-      }
-    ],
-    []
-  )
 
   /*
   |-----------------------------------------------------------------------------
@@ -344,17 +327,15 @@ export const ModalProduct = (props: ModalEditProductProps) => {
             {product?.images && product.images[0] && (
               <HStack key={v4()} spacing={4}>
                 <AspectRatio w="200px" h="100%" ratio={16 / 9}>
-                  <ImageUploadComponent
-                    url={
-                      (uploadedImage && uploadedImage.url) ?? product.images![0]
-                    }
-                  />
+                  <ImageUploadComponent url={product.images![0]} />
                 </AspectRatio>
 
                 <FieldText
-                  {...register('images')}
+                  {...register('image')}
                   label={'Thumbnail (URL)'}
                   isDisabled
+                  error={errors.image}
+                  defaultValue={product.images![0]}
                 />
               </HStack>
             )}
@@ -379,24 +360,34 @@ export const ModalProduct = (props: ModalEditProductProps) => {
                   </AspectRatio>
 
                   <FieldText
-                    label={'Thumbnail'}
-                    {...register('images')}
+                    label={'Thumbnail (URL)'}
+                    {...register('image')}
                     isDisabled={!product}
+                    error={errors.image}
                   />
                 </HStack>
+
                 <Text fontSize="sm" opacity={0.4}>
-                  Upe a imagem enviando/arrastando um arquivo ou clicando no
-                  botão de upload.
+                  Envia a imagem clicando no botão de upload passando o mouse
+                  por cima da imagem/retângulo cinza, ou arraste a imagem. 😉
                 </Text>
               </VStack>
             )}
 
-            <FieldText label="Categoria" {...register('category')} />
+            <FieldSelect
+              label="Categoria"
+              {...register('category')}
+              options={categories}
+              placeholder="Selecione uma categoria"
+              defaultValue={product?.category}
+              error={errors.category as FieldError}
+            />
             <FieldSelect
               label="Sistema"
               {...register('operationSystem')}
-              options={systemOptions}
+              options={systems}
               placeholder="Selecione o sistema"
+              error={errors.operationSystem as FieldError}
             />
           </Stack>
         </ModalBody>
