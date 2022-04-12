@@ -15,9 +15,10 @@ import { FiPlusCircle, FiSearch } from 'react-icons/fi'
 import { FieldText } from '../../components/FieldText'
 import { useForm } from 'react-hook-form'
 import { FieldSelect } from '../../components/FieldSelect'
-import { capitalizeFirstLetter } from '../../utils/capitalize'
 import { ProductsList } from '../../components/ProductsList'
 import { ModalProduct } from '../../components/ModalProduct'
+import { categories } from '../../utils/categories'
+import { debounce } from 'lodash'
 
 type ValuesForm = {
   category: string
@@ -25,14 +26,30 @@ type ValuesForm = {
 }
 
 export const AdminTemplate = () => {
-  const { record, categories, editProduct, handleFilterProductsByCategory } =
-    useProducts()
+  const {
+    record,
+    handleFilterProductsByCategory,
+    handleFilterProductsByQuery
+  } = useProducts()
+
   const { register, watch, handleSubmit } = useForm<ValuesForm>()
   const { isOpen, onClose, onOpen } = useDisclosure()
 
   const watchCategory = watch('category')
 
-  const onSubmit = useCallback((values: ValuesForm) => {}, [])
+  const debounceSearch = useCallback(
+    debounce((value) => {
+      handleFilterProductsByQuery(value)
+    }, 1200),
+    []
+  )
+
+  const onSubmit = useCallback(
+    (values: ValuesForm) => {
+      debounceSearch(values.query)
+    },
+    [debounceSearch]
+  )
 
   useEffect(() => {
     if (watchCategory) {
@@ -59,14 +76,16 @@ export const AdminTemplate = () => {
 
               <FieldSelect
                 {...register('category')}
-                options={categories.map((category) => {
-                  return {
-                    label: capitalizeFirstLetter(category),
-                    value: category
-                  }
-                })}
-                defaultValue={categories[0]}
+                options={[
+                  {
+                    label: 'Tudo',
+                    value: 'Tudo'
+                  },
+                  ...categories
+                ]}
+                defaultValue={'Tudo'}
               />
+
               <InputGroup>
                 <FieldText
                   placeholder="Busque por um produto"
