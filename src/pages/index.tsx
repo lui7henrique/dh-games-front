@@ -1,7 +1,7 @@
 import type { GetStaticProps, NextPage } from 'next'
 import { ProductsSlider } from '../components/ProductsSlider'
 import { api } from '../services/api'
-import { Game, Product } from '../types/game'
+import { Product } from '../types/game'
 // import { useSeed } from '../hooks/useSeed'
 
 type HomeProps = {

@@ -1,5 +1,5 @@
 // Vendors
-import { useCallback, useEffect, useMemo } from 'react'
+import { useCallback, useEffect } from 'react'
 import { FieldError, useForm } from 'react-hook-form'
 import { v4 } from 'uuid'
 import Image from 'next/image'
@@ -39,8 +39,8 @@ import { useProducts } from '../../context/ProductsContext'
 import { MdFileUpload } from 'react-icons/md'
 import { schema } from './schema'
 import { useUpload } from '../../context/UploadContext'
-import { getCategoryByValue, categories } from '../../utils/categories'
-import { getSystemByValue, systems } from '../../utils/systems'
+import { categories } from '../../utils/categories'
+import { systems } from '../../utils/systems'
 
 // Types
 export type ModalEditProductProps = {
@@ -96,7 +96,6 @@ export const ModalProduct = (props: ModalEditProductProps) => {
   const {
     handleUploadFileByInput,
     uploadedImage,
-    setUploadedImage,
     onDrop,
     onDragOver,
     isLoading
