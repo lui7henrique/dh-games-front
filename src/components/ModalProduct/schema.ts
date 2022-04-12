@@ -8,6 +8,6 @@ export const schema = () => {
     description: yup
       .string()
       .required('Por favor, informe a descrição do produto.')
-      .max(100, 'A descrição não pode ter mais de 100 caracteres.')
+      .max(255, 'A descrição não pode ter mais de 255 caracteres.')
   })
 }
