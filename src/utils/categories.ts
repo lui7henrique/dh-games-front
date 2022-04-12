@@ -64,3 +64,9 @@ export const categories = [
 export const getCategoryByValue = (value: string) => {
   return categories.find((category) => category.value === value)
 }
+
+export const getCategoryLabelByValue = (value: string) => {
+  const category = categories.find((category) => category.value === value)
+
+  return category?.label
+}
