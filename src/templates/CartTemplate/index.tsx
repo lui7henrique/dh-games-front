@@ -15,7 +15,11 @@ export const CartTemplate = () => {
             base: '1fr',
             lg: '3fr 1fr'
           }}
-          gap={8}
+          px={{
+            base: '0',
+            md: '4'
+          }}
+          gap="4"
         >
           <CartList products={cart} />
           <CartPayment />
