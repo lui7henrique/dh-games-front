@@ -8,8 +8,9 @@ import {
   InputProps,
   InputRightElement
 } from '@chakra-ui/react'
-import React, { forwardRef, ReactElement } from 'react'
+import React, { forwardRef, ReactElement, ReactNode } from 'react'
 import { FieldError } from 'react-hook-form'
+import ReactInputMask from 'react-input-mask'
 
 // Types
 type FieldTextProps = {
@@ -18,6 +19,7 @@ type FieldTextProps = {
   error?: FieldError
   inputLeftElement?: ReactElement
   inputRightElement?: ReactElement
+  mask?: string
 } & InputProps
 
 const FieldTextBase: React.ForwardRefRenderFunction<
@@ -32,8 +34,15 @@ const FieldTextBase: React.ForwardRefRenderFunction<
   |
   */
 
-  const { name, label, error, inputLeftElement, inputRightElement, ...rest } =
-    props
+  const {
+    name,
+    label,
+    error,
+    inputLeftElement,
+    inputRightElement,
+    mask,
+    ...rest
+  } = props
 
   /*
   |-----------------------------------------------------------------------------
@@ -53,6 +62,8 @@ const FieldTextBase: React.ForwardRefRenderFunction<
         )}
 
         <Input
+          as={mask ? (ReactInputMask as unknown as any) : 'input'}
+          mask={mask}
           id={name}
           name={name}
           ref={ref}
