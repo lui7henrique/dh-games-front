@@ -20,8 +20,7 @@ import {
   Td,
   Tfoot,
   IconButton,
-  Tooltip,
-  HStack
+  Tooltip
 } from '@chakra-ui/react'
 
 import { Product } from '../../types/game'
@@ -29,7 +28,6 @@ import { Product } from '../../types/game'
 import { MdRemoveShoppingCart } from 'react-icons/md'
 import { useCart } from '../../context/CartContext'
 import { FiX } from 'react-icons/fi'
-import { HiInformationCircle } from 'react-icons/hi'
 
 // Types
 export type CartListProps = {

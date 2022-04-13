@@ -18,7 +18,7 @@ export default Product
 export const getStaticPaths: GetStaticPaths = async () => {
   const { data } = await api.get<ProductType[]>('/products')
 
-  const paths = data.map(({ id }) => ({
+  const paths = data.map(({ id }: ProductType) => ({
     params: { id: String(id) }
   }))
 

@@ -8,6 +8,7 @@ import { useCallback } from 'react'
 import { useForm } from 'react-hook-form'
 import { sleep } from '../../utils/sleep'
 import { Button } from '../Button'
+import { FieldMask } from '../FieldMask'
 import { FieldText } from '../FieldText'
 import { schema } from './schema'
 import { CartPaymentForm } from './types'
@@ -106,21 +107,21 @@ export const CartPayment = (props: CartPaymentProps) => {
           crédito.
         </Text>
 
-        <FieldText
+        <FieldMask
           label="Número do cartão:"
           size="sm"
           mask="9999 9999 9999 9999"
           error={errors.cardNumber}
           {...register('cardNumber')}
         />
-        <FieldText
+        <FieldMask
           label="Data de validade:"
           mask="99/99"
           size="sm"
           error={errors.cardExpiration}
           {...register('cardExpiration')}
         />
-        <FieldText
+        <FieldMask
           label="Código de segurança:"
           mask="999"
           size="sm"
@@ -133,7 +134,7 @@ export const CartPayment = (props: CartPaymentProps) => {
           error={errors.cardHolderName}
           {...register('cardHolderName')}
         />
-        <FieldText
+        <FieldMask
           label="CPF do titular"
           mask="999.999.999-99"
           size="sm"
