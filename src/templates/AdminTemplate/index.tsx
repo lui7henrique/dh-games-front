@@ -1,4 +1,10 @@
-import { useCallback, useEffect, useState } from 'react'
+import {
+  ChangeEvent,
+  ChangeEventHandler,
+  useCallback,
+  useEffect,
+  useState
+} from 'react'
 
 import {
   Grid,
@@ -32,41 +38,37 @@ export const AdminTemplate = () => {
     handleFilterProductsByQuery
   } = useProducts()
 
-  const { register, watch, handleSubmit } = useForm<ValuesForm>()
   const { isOpen, onClose, onOpen } = useDisclosure()
+  const [isLoading, setIsLoading] = useState(false)
 
-  const watchCategory = watch('category')
+  const debounceSearchByQuery = useCallback(
+    debounce((e: ChangeEvent<HTMLInputElement>) => {
+      const query = e.target.value
 
-  const debounceSearch = useCallback(
-    debounce((value) => {
-      handleFilterProductsByQuery(value)
+      handleFilterProductsByQuery(query)
+      setIsLoading(false)
     }, 1200),
     []
   )
 
-  const onSubmit = useCallback(
-    (values: ValuesForm) => {
-      debounceSearch(values.query)
-    },
-    [debounceSearch]
-  )
+  const debounceSearchByCategory = useCallback(
+    debounce((e: ChangeEvent<HTMLSelectElement>) => {
+      const category = e.target.value
 
-  useEffect(() => {
-    if (watchCategory) {
-      handleFilterProductsByCategory(watchCategory)
-    }
-  }, [watchCategory])
+      handleFilterProductsByCategory(category)
+      setIsLoading(false)
+    }, 1200),
+    []
+  )
 
   return (
     <>
       <Limiter minH="100vh">
-        <Grid templateColumns={{ base: '1fr', lg: '1fr 3fr' }} gap={8}>
-          <VStack
-            justifyContent="space-between"
-            as="form"
-            onSubmit={handleSubmit(onSubmit)}
-            w="100%"
-          >
+        <Grid
+          templateColumns={{ base: '1fr', md: '1fr 2fr', lg: '1fr 3fr' }}
+          gap={8}
+        >
+          <VStack justifyContent="space-between" as="form" w="100%">
             <Stack spacing={4} direction="column" w="100%">
               <Button
                 label="Adicionar novo produto"
@@ -75,7 +77,6 @@ export const AdminTemplate = () => {
               />
 
               <FieldSelect
-                {...register('category')}
                 options={[
                   {
                     label: 'Tudo',
@@ -84,6 +85,11 @@ export const AdminTemplate = () => {
                   ...categories
                 ]}
                 defaultValue={'Tudo'}
+                name="category"
+                onChange={(e) => {
+                  setIsLoading(true)
+                  debounceSearchByCategory(e)
+                }}
               />
 
               <InputGroup>
@@ -92,7 +98,11 @@ export const AdminTemplate = () => {
                   multiple
                   inputLeftElement={<FiSearch size={20} />}
                   w="100%"
-                  {...register('query')}
+                  name="query"
+                  onChange={(e) => {
+                    setIsLoading(true)
+                    debounceSearchByQuery(e)
+                  }}
                 />
               </InputGroup>
             </Stack>
@@ -100,7 +110,12 @@ export const AdminTemplate = () => {
 
           <VStack gap={8} alignItems="flex-end" w="100%">
             {record.current && (
-              <ProductsList products={record.current} w="100%" isEditMode />
+              <ProductsList
+                products={record.current}
+                w="100%"
+                isEditMode
+                isLoading={isLoading}
+              />
             )}
           </VStack>
         </Grid>
