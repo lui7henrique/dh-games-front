@@ -10,7 +10,7 @@ type ProductTemplateProps = {
 export const ProductTemplate = (props: ProductTemplateProps) => {
   const { product } = props
 
-  const { title, description, images, price } = product
+  const { id, title, description, images, price } = product
 
   return (
     <>
@@ -18,7 +18,12 @@ export const ProductTemplate = (props: ProductTemplateProps) => {
 
       <Limiter h="100vh">
         {product && (
-          <CardProduct title={title} description={description} price={price} />
+          <CardProduct
+            id={id}
+            title={title}
+            description={description}
+            price={price}
+          />
         )}
       </Limiter>
     </>

@@ -10,6 +10,7 @@ import { Footer } from '../components/Footer'
 import { AuthContextProvider } from '../context/AuthContext'
 import { ProductsContextProvider } from '../context/ProductsContext'
 import { UploadContextProvider } from '../context/UploadContext'
+import { CartContextProvider } from '../context/CartContext'
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
@@ -17,10 +18,12 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
       <AuthContextProvider>
         <ProductsContextProvider>
           <UploadContextProvider>
-            <CSSReset />
-            <Header />
-            <Component {...pageProps} />
-            <Footer />
+            <CartContextProvider>
+              <CSSReset />
+              <Header />
+              <Component {...pageProps} />
+              <Footer />
+            </CartContextProvider>
           </UploadContextProvider>
         </ProductsContextProvider>
       </AuthContextProvider>

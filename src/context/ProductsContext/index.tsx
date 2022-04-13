@@ -87,9 +87,12 @@ export const ProductsContextProvider = (
     }
 
     if (hasQuery && !hasCategory) {
-      const newProducts = record.all.filter((item) =>
-        item.title.toLowerCase().includes(activeQuery.toLowerCase())
-      )
+      const newProducts = record.all.filter((item) => {
+        return (
+          item.title.toLowerCase().includes(activeQuery.toLowerCase()) ||
+          item.description.toLowerCase().includes(activeQuery.toLowerCase())
+        )
+      })
 
       setRecord((prevRecord) => {
         return {
@@ -102,7 +105,10 @@ export const ProductsContextProvider = (
     if (hasQuery && hasCategory) {
       const newProducts = record.all.filter((item) => {
         return (
-          item.title.toLowerCase().includes(activeQuery.toLowerCase()) &&
+          (item.title.toLowerCase().includes(activeQuery.toLowerCase()) ||
+            item.description
+              .toLowerCase()
+              .includes(activeQuery.toLowerCase())) &&
           item.category === activeCategory
         )
       })
