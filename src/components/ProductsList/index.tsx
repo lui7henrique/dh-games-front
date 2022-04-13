@@ -140,7 +140,7 @@ export const ProductsList = (props: ProductsListProps) => {
         </List>
       )}
 
-      {!isLoading && products && products.length && (
+      {!isLoading && products && products.length ? (
         <List>
           {products.map((product, index) => {
             return (
@@ -152,6 +152,8 @@ export const ProductsList = (props: ProductsListProps) => {
             )
           })}
         </List>
+      ) : (
+        <></>
       )}
 
       {!isLoading && !products.length && <NotFound />}

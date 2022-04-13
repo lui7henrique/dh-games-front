@@ -27,8 +27,8 @@ export const ProductsContextProvider = (
   const [activeQuery, setActiveQuery] = useState('')
   const [activeCategory, setActiveCategory] = useState('')
 
-  const { asPath } = useRouter()
   const toast = useToast()
+  const { asPath } = useRouter()
 
   const getProducts = useCallback(async () => {
     const { data } = await api.get<Product[]>('/products')
@@ -39,56 +39,13 @@ export const ProductsContextProvider = (
     })
   }, [])
 
-  const handleFilterProductsByCategory = useCallback(
-    (category: string) => {
-      if (category === 'Tudo') {
-        setRecord((prevRecord) => {
-          return {
-            ...prevRecord,
-            current: prevRecord.all
-          }
-        })
-        return
-      }
+  const handleFilterProductsByCategory = useCallback((category: string) => {
+    setActiveCategory(category)
+  }, [])
 
-      const newProducts = record.all.filter(
-        (item) => item.category === category
-      )
-
-      setRecord((prevRecord) => {
-        return {
-          ...prevRecord,
-          current: newProducts
-        }
-      })
-    },
-    [record]
-  )
-
-  const handleFilterProductsByQuery = useCallback(
-    (query: string) => {
-      const newProducts = record.current.filter((item) =>
-        item.title.toLowerCase().includes(query.toLowerCase())
-      )
-
-      setRecord((prevRecord) => {
-        return {
-          ...prevRecord,
-          current: newProducts
-        }
-      })
-    },
-    [record]
-  )
-
-  const resetRecord = () => {
-    setRecord((prevRecord) => {
-      return {
-        ...prevRecord,
-        current: prevRecord.all
-      }
-    })
-  }
+  const handleFilterProductsByQuery = useCallback((query: string) => {
+    setActiveQuery(query)
+  }, [])
 
   const handleDeleteProduct = useCallback(
     async (id: string) => {
@@ -112,11 +69,73 @@ export const ProductsContextProvider = (
     [toast]
   )
 
+  const resetRecord = useCallback(() => {
+    setRecord((prevRecord) => {
+      return {
+        ...prevRecord,
+        current: prevRecord.all
+      }
+    })
+  }, [])
+
   useEffect(() => {
-    if (asPath === '/admin') {
-      getProducts()
+    const hasQuery = activeQuery !== ''
+    const hasCategory = activeCategory !== ''
+
+    if (!hasQuery && !hasCategory) {
+      resetRecord()
     }
-  }, [asPath, getProducts])
+
+    if (hasQuery && !hasCategory) {
+      const newProducts = record.all.filter((item) =>
+        item.title.toLowerCase().includes(activeQuery.toLowerCase())
+      )
+
+      setRecord((prevRecord) => {
+        return {
+          ...prevRecord,
+          current: newProducts
+        }
+      })
+    }
+
+    if (hasQuery && hasCategory) {
+      const newProducts = record.all.filter((item) => {
+        return (
+          item.title.toLowerCase().includes(activeQuery.toLowerCase()) &&
+          item.category === activeCategory
+        )
+      })
+
+      setRecord((prevRecord) => {
+        return {
+          ...prevRecord,
+          current: newProducts
+        }
+      })
+    }
+
+    if (!hasQuery && hasCategory) {
+      const newProducts = record.all.filter(
+        (item) => item.category === activeCategory
+      )
+
+      setRecord((prevRecord) => {
+        return {
+          ...prevRecord,
+          current: newProducts
+        }
+      })
+    }
+  }, [activeQuery, activeCategory])
+
+  useEffect(() => {
+    getProducts()
+  }, [getProducts])
+
+  useEffect(() => {
+    resetRecord()
+  }, [asPath, resetRecord])
 
   return (
     <ProductsContext.Provider

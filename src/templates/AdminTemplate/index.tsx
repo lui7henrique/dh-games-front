@@ -1,12 +1,8 @@
-import {
-  ChangeEvent,
-  ChangeEventHandler,
-  useCallback,
-  useEffect,
-  useState
-} from 'react'
+import { ChangeEvent, useCallback, useEffect, useState } from 'react'
+import { debounce } from 'lodash'
 
 import {
+  Divider,
   Grid,
   InputGroup,
   Stack,
@@ -19,17 +15,10 @@ import { useProducts } from '../../context/ProductsContext'
 
 import { FiPlusCircle, FiSearch } from 'react-icons/fi'
 import { FieldText } from '../../components/FieldText'
-import { useForm } from 'react-hook-form'
 import { FieldSelect } from '../../components/FieldSelect'
 import { ProductsList } from '../../components/ProductsList'
 import { ModalProduct } from '../../components/ModalProduct'
 import { categories } from '../../utils/categories'
-import { debounce } from 'lodash'
-
-type ValuesForm = {
-  category: string
-  query: string
-}
 
 export const AdminTemplate = () => {
   const {
@@ -74,33 +63,17 @@ export const AdminTemplate = () => {
           templateColumns={{ base: '1fr', md: '1fr 2fr', lg: '1fr 3fr' }}
           gap={8}
         >
-          <VStack justifyContent="space-between" as="form" w="100%">
-            <Stack spacing={4} direction="column" w="100%">
-              <Button
-                label="Adicionar novo produto"
-                leftIcon={<FiPlusCircle size={20} />}
-                onClick={onOpen}
-              />
-
-              <FieldSelect
-                options={[
-                  {
-                    label: 'Tudo',
-                    value: 'Tudo'
-                  },
-                  ...categories
-                ]}
-                defaultValue={'Tudo'}
-                name="category"
-                onChange={(e) => {
-                  setIsLoading(true)
-                  debounceSearchByCategory(e)
-                }}
-              />
-
+          <VStack as="form" w="100%" spacing={4}>
+            <Stack
+              spacing={4}
+              direction="column"
+              w="100%"
+              divider={<Divider />}
+            >
               <InputGroup>
                 <FieldText
-                  placeholder="Busque por um produto"
+                  label="Busque por um produto"
+                  placeholder="Digite o nome do produto"
                   multiple
                   inputLeftElement={<FiSearch size={20} />}
                   w="100%"
@@ -111,7 +84,30 @@ export const AdminTemplate = () => {
                   }}
                 />
               </InputGroup>
+
+              <FieldSelect
+                options={[
+                  {
+                    label: 'Tudo',
+                    value: ''
+                  },
+                  ...categories
+                ]}
+                defaultValue={'Tudo'}
+                name="category"
+                onChange={(e) => {
+                  setIsLoading(true)
+                  debounceSearchByCategory(e)
+                }}
+                label="Busque por uma categoria:"
+              />
             </Stack>
+            <Button
+              label="Adicionar novo produto"
+              leftIcon={<FiPlusCircle size={20} />}
+              onClick={onOpen}
+              w="100%"
+            />
           </VStack>
 
           <VStack gap={8} alignItems="flex-end" w="100%">
