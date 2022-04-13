@@ -111,7 +111,7 @@ export const ProductSlide = (props: GameSlideProps) => {
             position="absolute"
             bottom={0}
             w="100%"
-            h="30%"
+            minH="30%"
             p={{ base: 2, lg: 8 }}
             alignItems="flex-start"
           >

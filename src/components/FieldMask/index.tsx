@@ -1,4 +1,5 @@
 import {
+  chakra,
   FormControl,
   FormErrorMessage,
   FormLabel,
@@ -10,9 +11,10 @@ import {
 } from '@chakra-ui/react'
 import React, { forwardRef, ReactElement } from 'react'
 import { FieldError } from 'react-hook-form'
+import InputMask from 'react-input-mask'
 
 // Types
-type FieldTextProps = {
+type FieldMaskProps = {
   name: string
   label?: string
   error?: FieldError
@@ -21,10 +23,12 @@ type FieldTextProps = {
   mask?: string
 } & InputProps
 
-const FieldTextBase: React.ForwardRefRenderFunction<
+const ChakraInputMask = chakra(InputMask as any)
+
+const FieldMaskBase: React.ForwardRefRenderFunction<
   HTMLInputElement,
-  FieldTextProps
-> = (props, ref) => {
+  FieldMaskProps
+> = (props, ref): any => {
   /*
   |-----------------------------------------------------------------------------
   | Constants
@@ -61,6 +65,8 @@ const FieldTextBase: React.ForwardRefRenderFunction<
         )}
 
         <Input
+          as={ChakraInputMask}
+          mask={mask}
           id={name}
           name={name}
           ref={ref}
@@ -83,4 +89,4 @@ const FieldTextBase: React.ForwardRefRenderFunction<
   )
 }
 
-export const FieldText = forwardRef(FieldTextBase)
+export const FieldMask = forwardRef(FieldMaskBase)

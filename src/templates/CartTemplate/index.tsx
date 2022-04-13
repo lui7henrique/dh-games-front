@@ -1,8 +1,8 @@
-import { Box, Flex, Grid } from '@chakra-ui/react'
-import { useCallback } from 'react'
+import { Grid } from '@chakra-ui/react'
 import { CartList } from '../../components/CartList'
 import { Limiter } from '../../components/Limiter'
 import { useCart } from '../../context/CartContext'
+import { CartPayment } from '../../components/CartPayment'
 
 export const CartTemplate = () => {
   const { cart } = useCart()
@@ -18,9 +18,7 @@ export const CartTemplate = () => {
           gap={8}
         >
           <CartList products={cart} />
-          <Box h="500px" w="100%" bgColor="gray.800" p={4}>
-            cartoes
-          </Box>
+          <CartPayment />
         </Grid>
       </Limiter>
     </>
