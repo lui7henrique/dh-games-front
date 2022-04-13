@@ -1,15 +1,16 @@
 // Vendors
 
 // Components
-import { Box, chakra } from '@chakra-ui/react'
-import Image from 'next/image'
+import {
+  AspectRatio,
+  Box,
+  Skeleton,
+  SkeletonText,
+  Stack
+} from '@chakra-ui/react'
 
 // Types
-export type ProductBannerProps = {
-  image: string
-}
-
-const ChakraNextImage = chakra(Image)
+export type ProductCardSkeletonProps = {}
 
 /*
 |-----------------------------------------------------------------------------
@@ -19,7 +20,7 @@ const ChakraNextImage = chakra(Image)
 |
 */
 
-export const ProductBanner = (props: ProductBannerProps) => {
+export const ProductCardSkeleton = () => {
   /*
   |-----------------------------------------------------------------------------
   | Constants
@@ -27,7 +28,11 @@ export const ProductBanner = (props: ProductBannerProps) => {
   |
   |
   */
-  const { image } = props
+  const skeletonDefault = {
+    startColor: 'gray.800',
+    endColor: 'gray.900',
+    fadeDuration: 0.6
+  }
 
   /*
   |-----------------------------------------------------------------------------
@@ -69,25 +74,19 @@ export const ProductBanner = (props: ProductBannerProps) => {
   |
   */
   return (
-    <Box position="absolute" w="100vw" h="80vh" top={0} zIndex={-1}>
-      <Box
-        w="100%"
-        h="100%"
-        position="relative"
-        opacity={0.2}
-        overflow="hidden"
-      >
-        <ChakraNextImage
-          src={image}
-          layout="fill"
-          alt="banner image"
-          w="100%"
-          h="100%"
-          objectFit="cover"
-          objectPosition="60% center"
-          filter="brightness(0.5)"
-        />
-      </Box>
+    <Box w="100%" h="auto" position="relative" className="game-card">
+      <AspectRatio W="100%" ratio={16 / 9} position="relative">
+        <Box w="100%">
+          <Skeleton w="100%" h="100%" {...skeletonDefault} />
+        </Box>
+      </AspectRatio>
+
+      <Stack spacing={4} p={4}>
+        <SkeletonText noOfLines={1} {...skeletonDefault} />
+        <SkeletonText noOfLines={1} {...skeletonDefault} />
+
+        <Skeleton w="60px" h="20px" {...skeletonDefault} />
+      </Stack>
     </Box>
   )
 }

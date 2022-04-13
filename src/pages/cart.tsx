@@ -1,9 +1,10 @@
 import type { NextPage } from 'next'
+import { CartTemplate } from '../templates/CartTemplate'
 
 const Cart: NextPage = () => {
   return (
     <>
-      <h1>teste</h1>
+      <CartTemplate />
     </>
   )
 }

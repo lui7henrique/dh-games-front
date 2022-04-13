@@ -1,15 +1,30 @@
 // Vendors
 
 // Components
-import { Box, chakra } from '@chakra-ui/react'
+import {
+  AspectRatio,
+  Box,
+  chakra,
+  Divider,
+  Flex,
+  Heading,
+  HStack,
+  Stack,
+  Text,
+  VStack
+} from '@chakra-ui/react'
 import Image from 'next/image'
+import { useCallback } from 'react'
+import { Product } from '../../types/game'
 
 // Types
-export type ProductBannerProps = {
-  image: string
+export type CartListProps = {
+  products: Product[]
 }
 
-const ChakraNextImage = chakra(Image)
+type ProductProps = {
+  product: Product
+}
 
 /*
 |-----------------------------------------------------------------------------
@@ -18,8 +33,9 @@ const ChakraNextImage = chakra(Image)
 |
 |
 */
+const ChakraNextImage = chakra(Image)
 
-export const ProductBanner = (props: ProductBannerProps) => {
+export const CartList = (props: CartListProps) => {
   /*
   |-----------------------------------------------------------------------------
   | Constants
@@ -27,7 +43,7 @@ export const ProductBanner = (props: ProductBannerProps) => {
   |
   |
   */
-  const { image } = props
+  const { products } = props
 
   /*
   |-----------------------------------------------------------------------------
@@ -44,6 +60,37 @@ export const ProductBanner = (props: ProductBannerProps) => {
   |
   |
   */
+  const Product = useCallback((props: ProductProps) => {
+    const { product } = props
+    const { images, title, description } = product
+
+    return (
+      <Stack
+        direction={{ base: 'column', md: 'row' }}
+        w="100%"
+        pr={4}
+        py={4}
+        spacing={4}
+      >
+        <AspectRatio w={{ base: '100%', md: '50%' }} ratio={16 / 9}>
+          <ChakraNextImage
+            src={images[0]}
+            layout="fill"
+            w="100%"
+            h="100%"
+            objectFit="cover"
+          />
+        </AspectRatio>
+
+        <VStack w={{ base: '100%', md: '100%' }} alignItems="flex-start">
+          <Heading as="h2" fontSize={20}>
+            {title}
+          </Heading>
+          <Text>{description}</Text>
+        </VStack>
+      </Stack>
+    )
+  }, [])
 
   /*
   |-----------------------------------------------------------------------------
@@ -69,25 +116,10 @@ export const ProductBanner = (props: ProductBannerProps) => {
   |
   */
   return (
-    <Box position="absolute" w="100vw" h="80vh" top={0} zIndex={-1}>
-      <Box
-        w="100%"
-        h="100%"
-        position="relative"
-        opacity={0.2}
-        overflow="hidden"
-      >
-        <ChakraNextImage
-          src={image}
-          layout="fill"
-          alt="banner image"
-          w="100%"
-          h="100%"
-          objectFit="cover"
-          objectPosition="60% center"
-          filter="brightness(0.5)"
-        />
-      </Box>
-    </Box>
+    <VStack alignItems="flex-start" divider={<Divider />}>
+      {products.map((product) => (
+        <Product key={product.id} product={product} />
+      ))}
+    </VStack>
   )
 }

@@ -119,6 +119,7 @@ export const ProductCard = (props: ProductCardProps) => {
                 layout="fill"
                 transition="all 0.2s"
                 filter="brightness(0.7)"
+                objectFit="cover"
               />
             </Box>
           </AspectRatio>

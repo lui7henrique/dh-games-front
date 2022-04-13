@@ -1,5 +1,5 @@
 // Vendors
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import { FieldError, useForm } from 'react-hook-form'
 import { v4 } from 'uuid'
 import Image from 'next/image'
@@ -8,7 +8,6 @@ import { yupResolver } from '@hookform/resolvers/yup'
 // Components
 import {
   AspectRatio,
-  HStack,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -36,11 +35,14 @@ import { FieldSelect } from '../FieldSelect'
 import { FieldText } from '../FieldText'
 import { useProducts } from '../../context/ProductsContext'
 
-import { MdFileUpload } from 'react-icons/md'
 import { schema } from './schema'
 import { useUpload } from '../../context/UploadContext'
 import { categories } from '../../utils/categories'
 import { systems } from '../../utils/systems'
+
+import { MdFileUpload } from 'react-icons/md'
+import { FaTrashAlt } from 'react-icons/fa'
+import { ImageType } from '../../context/UploadContext/types'
 
 // Types
 export type ModalEditProductProps = {
@@ -96,12 +98,13 @@ export const ModalProduct = (props: ModalEditProductProps) => {
   const {
     handleUploadFileByInput,
     uploadedImage,
+    setUploadedImage,
     onDrop,
     onDragOver,
     isLoading
   } = useUpload()
 
-  const { setRecord, setEditProduct } = useProducts()
+  const { setRecord, setEditProduct, handleDeleteProduct } = useProducts()
   const toast = useToast()
 
   /*
@@ -177,12 +180,21 @@ export const ModalProduct = (props: ModalEditProductProps) => {
           })
 
           reset()
+          setUploadedImage({} as ImageType)
         }
       } catch (err: unknown) {
         console.log(err)
       }
     },
-    [modalProps, product, reset, setEditProduct, setRecord, toast]
+    [
+      modalProps,
+      product,
+      reset,
+      setEditProduct,
+      setRecord,
+      setUploadedImage,
+      toast
+    ]
   )
 
   const UploadInput = useCallback(
@@ -274,8 +286,10 @@ export const ModalProduct = (props: ModalEditProductProps) => {
   }, [clearErrors, product, setValue])
 
   useEffect(() => {
-    setValue('image', uploadedImage.url)
-    clearErrors('image')
+    if (uploadedImage) {
+      setValue('image', uploadedImage.url)
+      clearErrors('image')
+    }
   }, [clearErrors, setValue, uploadedImage])
 
   /*
@@ -293,7 +307,7 @@ export const ModalProduct = (props: ModalEditProductProps) => {
   |
   */
   return (
-    <Modal {...modalProps} size="2xl">
+    <Modal size="2xl" motionPreset="scale" {...modalProps}>
       <ModalOverlay />
       <ModalContent
         borderRadius="sm"
@@ -324,25 +338,50 @@ export const ModalProduct = (props: ModalEditProductProps) => {
             />
 
             {product?.images && product.images[0] && (
-              <HStack key={v4()} spacing={4}>
-                <AspectRatio w="200px" h="100%" ratio={16 / 9}>
-                  <ImageUploadComponent url={product.images![0]} />
-                </AspectRatio>
+              <VStack spacing={2} w="100%" align="flex-start">
+                <Stack
+                  direction={{ base: 'column', lg: 'row' }}
+                  key={v4()}
+                  spacing={4}
+                  w="100%"
+                >
+                  <AspectRatio
+                    w={{ base: '100%', lg: '200px' }}
+                    h="100%"
+                    ratio={16 / 9}
+                  >
+                    <ImageUploadComponent url={product.images![0]} />
+                  </AspectRatio>
 
-                <FieldText
-                  {...register('image')}
-                  label={'Thumbnail (URL)'}
-                  isDisabled
-                  error={errors.image}
-                  defaultValue={product.images![0]}
-                />
-              </HStack>
+                  <FieldText
+                    {...register('image')}
+                    label={'Thumbnail (URL)'}
+                    isDisabled
+                    error={errors.image}
+                    defaultValue={product.images![0]}
+                  />
+                </Stack>
+
+                <Text fontSize="sm" opacity={0.4}>
+                  Envia a imagem clicando no botão de upload passando o mouse
+                  por cima da imagem/retângulo cinza, ou arraste a imagem. 😉
+                </Text>
+              </VStack>
             )}
 
             {!product && (
               <VStack spacing={2} w="100%" align="flex-start">
-                <HStack key={v4()} spacing={4} w="100%">
-                  <AspectRatio w="200px" h="100%" ratio={16 / 9}>
+                <Stack
+                  direction={{ base: 'column', lg: 'row' }}
+                  key={v4()}
+                  spacing={4}
+                  w="100%"
+                >
+                  <AspectRatio
+                    w={{ base: '100%', lg: '200px' }}
+                    h="100%"
+                    ratio={16 / 9}
+                  >
                     {uploadedImage && uploadedImage.url ? (
                       <ImageUploadComponent url={uploadedImage.url} />
                     ) : (
@@ -364,7 +403,7 @@ export const ModalProduct = (props: ModalEditProductProps) => {
                     isDisabled={!product}
                     error={errors.image}
                   />
-                </HStack>
+                </Stack>
 
                 <Text fontSize="sm" opacity={0.4}>
                   Envia a imagem clicando no botão de upload passando o mouse
@@ -392,16 +431,34 @@ export const ModalProduct = (props: ModalEditProductProps) => {
         </ModalBody>
 
         <ModalFooter>
-          <Stack direction="row">
-            <Button
-              label="Cancelar"
-              type="reset"
-              onClick={modalProps.onClose}
-            />
-            <Button label="Salvar" type="submit" isLoading={isSubmitting}>
-              Salvar
-            </Button>
-          </Stack>
+          <Flex
+            w="100%"
+            justifyContent={product ? 'space-between' : 'flex-end'}
+          >
+            {product && (
+              <Button
+                label="Excluir"
+                leftIcon={<FaTrashAlt size={16} />}
+                onClick={() => {
+                  handleDeleteProduct(product.id)
+                  modalProps.onClose()
+                }}
+                colorScheme="red"
+              />
+            )}
+
+            <Stack direction="row">
+              <Button
+                label="Cancelar"
+                type="reset"
+                onClick={modalProps.onClose}
+                variant="outline"
+              />
+              <Button label="Salvar" type="submit" isLoading={isSubmitting}>
+                Salvar
+              </Button>
+            </Stack>
+          </Flex>
         </ModalFooter>
       </ModalContent>
     </Modal>

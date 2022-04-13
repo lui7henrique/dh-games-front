@@ -1,14 +1,9 @@
 import { useEffect, useMemo } from 'react'
 import { useRouter } from 'next/router'
 import { useAuth } from '../../context/AuthContext'
+import { useCart } from '../../context/CartContext'
 
-import {
-  Button,
-  Flex,
-  IconButton,
-  Stack,
-  useDisclosure
-} from '@chakra-ui/react'
+import { Flex, IconButton, Stack, useDisclosure } from '@chakra-ui/react'
 import { Limiter } from '../Limiter'
 import { DrawerAdmin } from '../DrawerAdmin'
 import { DrawerMenu } from '../DrawerMenu'
@@ -18,6 +13,9 @@ import { HeaderActiveLink } from '../HeaderActiveLink'
 import { IoMdMenu } from 'react-icons/io'
 import { FaLock, FaShoppingCart } from 'react-icons/fa'
 import { CgLogOut } from 'react-icons/cg'
+import { MdRemoveShoppingCart, MdShoppingCart } from 'react-icons/md'
+
+import { Button } from '../Button'
 
 export const Header = () => {
   /*
@@ -42,6 +40,7 @@ export const Header = () => {
   } = useDisclosure()
 
   const { token, logout } = useAuth()
+  const { cart } = useCart()
 
   /*
   |-----------------------------------------------------------------------------
@@ -168,9 +167,43 @@ export const Header = () => {
           <IoMdMenu size={24} />
         </IconButton>
 
-        <Stack direction="row" spacing="4">
+        <Stack direction="row" spacing="4" alignItems="center">
+          <Flex size="sm" position="relative">
+            <IconButton
+              aria-label="Open cart"
+              label="Carrinho"
+              color="gray.50"
+              _hover={{
+                backgroundColor: 'primary.600'
+              }}
+              icon={<MdShoppingCart color="white" size={16} />}
+              borderRadius="full"
+              onClick={() => push('/cart')}
+            />
+            {!!cart.length && (
+              <Flex
+                w="3.5"
+                h="3.5"
+                position="absolute"
+                top={0}
+                right={0}
+                bgColor="white"
+                borderRadius="full"
+                alignItems="center"
+                justifyContent="center"
+                color="white"
+                backgroundColor="gray.800"
+                fontSize="8px"
+                fontWeight="bold"
+              >
+                {cart.length}
+              </Flex>
+            )}
+          </Flex>
+
           {token ? (
             <Button
+              label="Sair"
               backgroundColor="transparent"
               color="gray.50"
               _hover={{
@@ -180,9 +213,7 @@ export const Header = () => {
               size="sm"
               borderRadius="sm"
               onClick={logout}
-            >
-              Sair
-            </Button>
+            />
           ) : (
             <Button
               backgroundColor="transparent"
@@ -194,24 +225,9 @@ export const Header = () => {
               size="sm"
               borderRadius="sm"
               onClick={token ? () => push('/admin') : onOpenDrawerAdmin}
-            >
-              Admin
-            </Button>
+              label="Admin"
+            />
           )}
-
-          <Button
-            backgroundColor="primary.500"
-            color="gray.50"
-            _hover={{
-              backgroundColor: 'primary.600'
-            }}
-            leftIcon={<FaShoppingCart size={14} color="white" />}
-            size="sm"
-            borderRadius="sm"
-            onClick={() => push('/cart')}
-          >
-            Carrinho
-          </Button>
         </Stack>
       </Limiter>
 
