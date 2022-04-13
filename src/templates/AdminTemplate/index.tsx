@@ -39,7 +39,7 @@ export const AdminTemplate = () => {
   } = useProducts()
 
   const { isOpen, onClose, onOpen } = useDisclosure()
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
 
   const debounceSearchByQuery = useCallback(
     debounce((e: ChangeEvent<HTMLInputElement>) => {
@@ -60,6 +60,12 @@ export const AdminTemplate = () => {
     }, 1200),
     []
   )
+
+  useEffect(() => {
+    if (record && record.all) {
+      !!record.all.length && setIsLoading(false)
+    }
+  }, [record])
 
   return (
     <>

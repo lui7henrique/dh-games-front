@@ -65,9 +65,21 @@ export const ProductsContextProvider = (
     [record]
   )
 
-  const handleFilterProductsByQuery = useCallback((query: string) => {
-    console.log(query)
-  }, [])
+  const handleFilterProductsByQuery = useCallback(
+    (query: string) => {
+      const newProducts = record.current.filter((item) =>
+        item.title.toLowerCase().includes(query.toLowerCase())
+      )
+
+      setRecord((prevRecord) => {
+        return {
+          ...prevRecord,
+          current: newProducts
+        }
+      })
+    },
+    [record]
+  )
 
   const resetRecord = () => {
     setRecord((prevRecord) => {
