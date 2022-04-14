@@ -142,9 +142,10 @@ export const ProductsList = (props: ProductsListProps) => {
       {title && (
         <HStack mb={4}>
           <Box h="32px" w="8px" bgColor="primary.500" />
-          <Heading fontSize={28}>{title}</Heading>
+          <Heading fontSize={{ base: 20, lg: 24 }}>{title}</Heading>
         </HStack>
       )}
+
       {isLoading && (
         <List {...listProps}>
           {Array.from({

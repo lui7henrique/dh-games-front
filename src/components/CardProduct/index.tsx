@@ -35,7 +35,24 @@ export const CardProduct = ({
         h="auto"
         minH="20vh"
         p={8}
+        position="relative"
+        borderRadius="sm"
       >
+        <Badge
+          color="gray.50"
+          bgColor="primary.500"
+          p={2}
+          position="absolute"
+          top={-4}
+          right={8}
+          fontSize="sm"
+        >
+          {price?.toLocaleString('pt-br', {
+            style: 'currency',
+            currency: 'BRL'
+          })}
+        </Badge>
+
         <Flex w="100%" alignItems="flex-start" justifyContent="space-between">
           <VStack spacing={4} alignItems="flex-start" w="100%">
             <Flex justifyContent="space-between" alignItems="center" w="100%">
@@ -45,12 +62,6 @@ export const CardProduct = ({
                 </Text>
                 <Box w="50px" h="5px" bgColor="primary.500"></Box>
               </VStack>
-              <Badge color="gray.50" bgColor="primary.500" p={2}>
-                {price?.toLocaleString('pt-br', {
-                  style: 'currency',
-                  currency: 'BRL'
-                })}
-              </Badge>
             </Flex>
 
             <Text fontSize="sm" color="gray.800">

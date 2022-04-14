@@ -115,7 +115,7 @@ export const ProductSlide = (props: GameSlideProps) => {
             bottom={0}
             w="100%"
             minH="30%"
-            p={{ base: 2, lg: 8 }}
+            p={{ base: 4, lg: 8 }}
             alignItems="flex-start"
           >
             <Heading as="h2" fontSize={{ base: 24, lg: 28 }}>
