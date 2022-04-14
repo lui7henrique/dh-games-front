@@ -100,6 +100,9 @@ export const ProductCard = (props: ProductCardProps) => {
               zIndex={999}
               className="edit-button"
               opacity={0}
+              onClick={() => {
+                onOpen()
+              }}
             />
           )}
 
@@ -167,11 +170,7 @@ export const ProductCard = (props: ProductCardProps) => {
     <>
       {isEditMode ? (
         <>
-          <Content
-            onClick={() => {
-              onOpen()
-            }}
-          />
+          <Content />
         </>
       ) : (
         <Link href={`/products/${id}`} passHref>

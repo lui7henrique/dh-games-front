@@ -25,8 +25,6 @@ export const CardProduct = ({
 
   const hasProduct = hasProductOnCart(id)
 
-  console.log(hasProduct)
-
   return (
     <>
       <Flex
@@ -39,7 +37,7 @@ export const CardProduct = ({
         p={8}
       >
         <Flex w="100%" alignItems="flex-start" justifyContent="space-between">
-          <VStack spacing={4} alignItems="flex-start">
+          <VStack spacing={4} alignItems="flex-start" w="100%">
             <Flex justifyContent="space-between" alignItems="center" w="100%">
               <VStack alignItems="flex-start" spacing={0}>
                 <Text fontSize="xl" color="gray.900" fontWeight="bold">

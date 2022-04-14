@@ -57,8 +57,6 @@ export const CartPayment = (props: CartPaymentProps) => {
   */
   const onSubmit = useCallback(async (values: CartPaymentForm) => {
     await sleep(1000)
-
-    console.log(values)
   }, [])
 
   /*

@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import { useEffect, useMemo } from 'react'
 import { useRouter } from 'next/router'
 import { useAuth } from '../../context/AuthContext'
@@ -84,6 +85,17 @@ export const Header = () => {
     []
   )
 
+  const adminMenu = useMemo(
+    () => [
+      ...menu,
+      {
+        label: 'Gerenciar produtos',
+        href: '/admin'
+      }
+    ],
+    [menu]
+  )
+
   /*
   |-----------------------------------------------------------------------------
   | Effects
@@ -91,25 +103,6 @@ export const Header = () => {
   |
   |
   */
-  useEffect(() => {
-    if (token) {
-      !menu.some((item) => item.label === 'Gerenciar produtos') &&
-        menu.push({
-          label: 'Gerenciar produtos',
-          href: '/admin'
-        })
-    }
-
-    if (!token) {
-      const adminTabIndex = menu.findIndex(
-        (item) => item.label === 'Gerenciar produtos'
-      )
-
-      if (adminTabIndex !== -1) {
-        menu.splice(adminTabIndex, 1)
-      }
-    }
-  }, [token, menu])
 
   /*
   |-----------------------------------------------------------------------------
@@ -142,15 +135,25 @@ export const Header = () => {
             borderLeftStyle="solid"
             borderLeftColor="gray.800"
           >
-            {menu.map((item) => {
-              return (
-                <HeaderActiveLink
-                  key={JSON.stringify(item)}
-                  href={item.href}
-                  label={item.label}
-                />
-              )
-            })}
+            {token
+              ? adminMenu.map((item) => {
+                  return (
+                    <HeaderActiveLink
+                      key={JSON.stringify(item)}
+                      href={item.href}
+                      label={item.label}
+                    />
+                  )
+                })
+              : menu.map((item) => {
+                  return (
+                    <HeaderActiveLink
+                      key={JSON.stringify(item)}
+                      href={item.href}
+                      label={item.label}
+                    />
+                  )
+                })}
           </Flex>
         </Stack>
 
@@ -235,7 +238,7 @@ export const Header = () => {
       <DrawerMenu
         isOpen={isOpenDrawerMenu}
         onClose={onCloseDrawerMenu}
-        items={menu}
+        items={token ? adminMenu : menu}
       />
     </>
   )
