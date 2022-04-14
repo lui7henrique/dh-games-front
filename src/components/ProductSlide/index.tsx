@@ -11,7 +11,9 @@ import {
 } from '@chakra-ui/react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Product } from '../../types/game'
+import { useRouter } from 'next/router'
+import { useCart } from '../../context/CartContext'
+import { Product } from '../../types/product'
 import { Button } from '../Button'
 
 // Types
@@ -38,6 +40,7 @@ export const ProductSlide = (props: GameSlideProps) => {
   const { product } = props
 
   const { title, images, description, id } = product
+  const { push } = useRouter()
 
   /*
   |-----------------------------------------------------------------------------
@@ -120,7 +123,10 @@ export const ProductSlide = (props: GameSlideProps) => {
             </Heading>
             <Text fontSize={{ base: 14, lg: 20 }}>{description}</Text>
 
-            <Button label="Buy now" onClick={() => console.log('oi')}></Button>
+            <Button
+              label="Compre agora"
+              onClick={() => push(`/products/${id}`)}
+            />
           </VStack>
         </Box>
       </AspectRatio>

@@ -9,7 +9,7 @@ import {
   useState
 } from 'react'
 import { api } from '../../services/api'
-import { Product } from '../../types/game'
+import { Product } from '../../types/product'
 import { ProductsContextType, Record } from './types'
 
 export const ProductsContext = createContext({} as ProductsContextType)
@@ -22,7 +22,6 @@ export const ProductsContextProvider = (
   props: ProductsContextProviderProps
 ) => {
   const [record, setRecord] = useState<Record>({} as Record)
-  const [editProduct, setEditProduct] = useState<Product>({} as Product)
 
   const [activeQuery, setActiveQuery] = useState('')
   const [activeCategory, setActiveCategory] = useState('')
@@ -151,9 +150,7 @@ export const ProductsContextProvider = (
         resetRecord,
         handleFilterProductsByCategory,
         handleFilterProductsByQuery,
-        handleDeleteProduct,
-        editProduct,
-        setEditProduct
+        handleDeleteProduct
       }}
     >
       {props.children}

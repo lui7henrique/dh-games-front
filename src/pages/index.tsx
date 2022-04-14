@@ -1,8 +1,9 @@
 import type { GetStaticProps, NextPage } from 'next'
+import { Limiter } from '../components/Limiter'
+import { ProductsList } from '../components/ProductsList'
 import { ProductsSlider } from '../components/ProductsSlider'
 import { api } from '../services/api'
-import { Product } from '../types/game'
-// import { useSeed } from '../hooks/useSeed'
+import { Product } from '../types/product'
 
 type HomeProps = {
   products: Product[]
@@ -13,7 +14,10 @@ const Home = (props: HomeProps) => {
 
   return (
     <>
-      <ProductsSlider products={products} />
+      <ProductsSlider products={products.slice(0, 3)} />
+      <Limiter mt={8}>
+        <ProductsList title="Recentes" products={products.slice(3, 6)} />
+      </Limiter>
     </>
   )
 }

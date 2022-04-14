@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from 'react'
-import { Product } from '../../types/game'
+import { Product } from '../../types/product'
 
 export type Record = {
   all: Product[]
@@ -13,6 +13,4 @@ export type ProductsContextType = {
   handleFilterProductsByCategory: (category: string) => void
   handleFilterProductsByQuery: (query: string) => void
   handleDeleteProduct: (id: string) => Promise<void>
-  editProduct: Product
-  setEditProduct: Dispatch<SetStateAction<Product>>
 }

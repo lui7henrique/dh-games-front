@@ -17,7 +17,7 @@ import {
 } from '@chakra-ui/react'
 import { HiPencil } from 'react-icons/hi'
 
-import { Product } from '../../types/game'
+import { Product } from '../../types/product'
 import { useCallback } from 'react'
 import { ModalProduct } from '../ModalProduct'
 import { useProducts } from '../../context/ProductsContext'
@@ -53,7 +53,6 @@ export const ProductCard = (props: ProductCardProps) => {
 
   const { title, category, images, price, id } = product
   const { isOpen, onClose, onOpen } = useDisclosure()
-  const { editProduct, setEditProduct } = useProducts()
 
   /*
   |-----------------------------------------------------------------------------
@@ -101,6 +100,9 @@ export const ProductCard = (props: ProductCardProps) => {
               zIndex={999}
               className="edit-button"
               opacity={0}
+              onClick={() => {
+                onOpen()
+              }}
             />
           )}
 
@@ -168,17 +170,7 @@ export const ProductCard = (props: ProductCardProps) => {
     <>
       {isEditMode ? (
         <>
-          <Content
-            onClick={() => {
-              setEditProduct(product)
-              onOpen()
-            }}
-          />
-          <ModalProduct
-            product={editProduct}
-            isOpen={isOpen}
-            onClose={onClose}
-          />
+          <Content />
         </>
       ) : (
         <Link href={`/products/${id}`} passHref>
@@ -187,6 +179,8 @@ export const ProductCard = (props: ProductCardProps) => {
           </a>
         </Link>
       )}
+
+      <ModalProduct product={product} isOpen={isOpen} onClose={onClose} />
     </>
   )
 }

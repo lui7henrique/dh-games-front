@@ -23,7 +23,7 @@ import {
   Tooltip
 } from '@chakra-ui/react'
 
-import { Product } from '../../types/game'
+import { Product } from '../../types/product'
 
 import { MdRemoveShoppingCart } from 'react-icons/md'
 import { useCart } from '../../context/CartContext'
@@ -216,13 +216,7 @@ export const CartList = (props: CartListProps) => {
   return (
     <>
       {products.length ? (
-        <VStack
-          spacing={6}
-          width={{
-            base: '100vw',
-            md: '100%'
-          }}
-        >
+        <VStack spacing={6} width="100%" overflow="hidden">
           <TableContainer>
             <Table
               variant="simple"
@@ -235,7 +229,6 @@ export const CartList = (props: CartListProps) => {
                   color: 'gray.700'
                 }
               }}
-              overflow="hidden"
             >
               <Thead>
                 {tableHeaders.map((header) => {

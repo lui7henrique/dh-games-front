@@ -3,7 +3,7 @@ import SwiperCore, { Autoplay } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
 
 // Components
-import { Product } from '../../types/game'
+import { Product } from '../../types/product'
 import { Limiter } from '../Limiter'
 import { ProductSlide } from '../ProductSlide'
 

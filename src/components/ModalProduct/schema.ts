@@ -12,7 +12,7 @@ export const schema = () => {
         (value) => {
           const number = +value!
 
-          return number > 0 && number < 10000
+          return number >= 0 && number < 10000
         }
       ),
 
