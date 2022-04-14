@@ -1,4 +1,4 @@
-import { Grid } from '@chakra-ui/react'
+import { Box, Grid } from '@chakra-ui/react'
 import { CartList } from '../../components/CartList'
 import { Limiter } from '../../components/Limiter'
 import { useCart } from '../../context/CartContext'
@@ -22,7 +22,9 @@ export const CartTemplate = () => {
           gap="4"
         >
           <CartList products={cart} />
-          <CartPayment />
+          <Box>
+            <CartPayment />
+          </Box>
         </Grid>
       </Limiter>
     </>

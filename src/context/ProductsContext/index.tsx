@@ -9,7 +9,7 @@ import {
   useState
 } from 'react'
 import { api } from '../../services/api'
-import { Product } from '../../types/game'
+import { Product } from '../../types/product'
 import { ProductsContextType, Record } from './types'
 
 export const ProductsContext = createContext({} as ProductsContextType)

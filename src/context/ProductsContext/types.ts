@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from 'react'
-import { Product } from '../../types/game'
+import { Product } from '../../types/product'
 
 export type Record = {
   all: Product[]

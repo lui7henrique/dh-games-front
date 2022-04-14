@@ -17,7 +17,7 @@ import {
 } from '@chakra-ui/react'
 import { HiPencil } from 'react-icons/hi'
 
-import { Product } from '../../types/game'
+import { Product } from '../../types/product'
 import { useCallback } from 'react'
 import { ModalProduct } from '../ModalProduct'
 import { useProducts } from '../../context/ProductsContext'

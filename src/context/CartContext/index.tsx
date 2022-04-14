@@ -4,10 +4,11 @@ import {
   ReactNode,
   useCallback,
   useContext,
+  useEffect,
   useState
 } from 'react'
 import { api } from '../../services/api'
-import { Product } from '../../types/game'
+import { Product } from '../../types/product'
 import { Cart, CartContextType } from './types'
 
 export const CartContext = createContext({} as CartContextType)
@@ -20,6 +21,12 @@ export const CartContextProvider = (props: CartContextProviderProps) => {
   const [cart, setCart] = useState<Cart>([] as Cart)
   const [loading, setLoading] = useState(false)
   const toast = useToast()
+  const key = '@dh-games-cart'
+
+  const saveCartOnLocalStorage = useCallback((newCart: Cart) => {
+    const serializedCart = JSON.stringify(newCart)
+    localStorage.setItem(key, serializedCart)
+  }, [])
 
   const handleAddProductToCart = useCallback(
     async (id: string) => {
@@ -28,7 +35,10 @@ export const CartContextProvider = (props: CartContextProviderProps) => {
       try {
         const { data } = await api.get<Product>(`/products/${id}`)
         setCart((prevCart) => {
-          return [...prevCart, data]
+          const newCart = [...prevCart, data]
+          saveCartOnLocalStorage(newCart)
+
+          return newCart
         })
 
         toast({
@@ -43,13 +53,17 @@ export const CartContextProvider = (props: CartContextProviderProps) => {
         setLoading(false)
       }
     },
-    [toast]
+    [saveCartOnLocalStorage, toast]
   )
 
   const handleRemoveProductFromCart = useCallback(
     (id: string) => {
       setCart((prevCart) => {
-        return prevCart.filter((product) => product.id !== id)
+        const newCart = prevCart.filter((product) => product.id !== id)
+
+        saveCartOnLocalStorage(newCart)
+
+        return newCart
       })
 
       toast({
@@ -59,7 +73,7 @@ export const CartContextProvider = (props: CartContextProviderProps) => {
         isClosable: true
       })
     },
-    [toast]
+    [saveCartOnLocalStorage, toast]
   )
 
   const hasProductOnCart = useCallback(
@@ -69,6 +83,19 @@ export const CartContextProvider = (props: CartContextProviderProps) => {
     [cart]
   )
 
+  const handleClearCart = useCallback(() => {
+    setCart([])
+    saveCartOnLocalStorage([])
+  }, [saveCartOnLocalStorage])
+
+  useEffect(() => {
+    const storedCart = localStorage.getItem(key)
+
+    if (storedCart) {
+      setCart(JSON.parse(storedCart))
+    }
+  }, [])
+
   return (
     <CartContext.Provider
       value={{
@@ -76,6 +103,7 @@ export const CartContextProvider = (props: CartContextProviderProps) => {
         loading,
         handleAddProductToCart,
         handleRemoveProductFromCart,
+        handleClearCart,
         hasProductOnCart
       }}
     >

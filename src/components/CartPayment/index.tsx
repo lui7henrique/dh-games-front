@@ -4,6 +4,7 @@
 import { InfoIcon } from '@chakra-ui/icons'
 import { Box, Heading, HStack, Text, Tooltip, VStack } from '@chakra-ui/react'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { useRouter } from 'next/router'
 import { useCallback } from 'react'
 import { useForm } from 'react-hook-form'
 import { sleep } from '../../utils/sleep'
@@ -40,6 +41,8 @@ export const CartPayment = (props: CartPaymentProps) => {
     resolver: yupResolver(schema())
   })
 
+  const { push } = useRouter()
+
   /*
   |-----------------------------------------------------------------------------
   | States
@@ -55,9 +58,14 @@ export const CartPayment = (props: CartPaymentProps) => {
   |
   |
   */
-  const onSubmit = useCallback(async (values: CartPaymentForm) => {
-    await sleep(1000)
-  }, [])
+  const onSubmit = useCallback(
+    async (values: CartPaymentForm) => {
+      await sleep(1500)
+
+      push('/cart/success')
+    },
+    [push]
+  )
 
   /*
   |-----------------------------------------------------------------------------
@@ -83,7 +91,15 @@ export const CartPayment = (props: CartPaymentProps) => {
   |
   */
   return (
-    <Box w="100%" bgColor="#171717" p={4} borderRadius="sm">
+    <Box
+      w="100%"
+      as="aside"
+      position="sticky"
+      top={4}
+      bgColor="#171717"
+      p={4}
+      borderRadius="sm"
+    >
       <VStack
         spacing={4}
         alignItems="flex-start"

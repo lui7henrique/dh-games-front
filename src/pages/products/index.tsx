@@ -1,4 +1,4 @@
-import { Product } from '../../types/game'
+import { Product } from '../../types/product'
 import { ProductsTemplate } from '../../templates/ProductsTemplate'
 
 type ProductsProps = {

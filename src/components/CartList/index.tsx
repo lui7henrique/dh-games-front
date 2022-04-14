@@ -23,7 +23,7 @@ import {
   Tooltip
 } from '@chakra-ui/react'
 
-import { Product } from '../../types/game'
+import { Product } from '../../types/product'
 
 import { MdRemoveShoppingCart } from 'react-icons/md'
 import { useCart } from '../../context/CartContext'

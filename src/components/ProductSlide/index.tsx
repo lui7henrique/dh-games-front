@@ -13,7 +13,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useCart } from '../../context/CartContext'
-import { Product } from '../../types/game'
+import { Product } from '../../types/product'
 import { Button } from '../Button'
 
 // Types

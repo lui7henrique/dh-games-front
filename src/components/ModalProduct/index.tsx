@@ -29,7 +29,7 @@ import {
   Text
 } from '@chakra-ui/react'
 import { api } from '../../services/api'
-import { Product } from '../../types/game'
+import { Product } from '../../types/product'
 import { Button } from '../Button'
 import { FieldSelect } from '../FieldSelect'
 import { FieldText } from '../FieldText'
