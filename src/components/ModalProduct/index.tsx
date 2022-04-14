@@ -106,7 +106,7 @@ export const ModalProduct = (props: ModalEditProductProps) => {
     isLoading
   } = useUpload()
 
-  const { setRecord, setEditProduct, handleDeleteProduct } = useProducts()
+  const { setRecord, handleDeleteProduct } = useProducts()
   const toast = useToast()
 
   /*
@@ -133,8 +133,6 @@ export const ModalProduct = (props: ModalEditProductProps) => {
             id: product.id,
             images: [values.image]
           })
-
-          setEditProduct(data)
 
           setRecord((prevRecord) => {
             const record = prevRecord.all.map((item) =>
@@ -188,15 +186,7 @@ export const ModalProduct = (props: ModalEditProductProps) => {
         console.log(err)
       }
     },
-    [
-      modalProps,
-      product,
-      reset,
-      setEditProduct,
-      setRecord,
-      setUploadedImage,
-      toast
-    ]
+    [modalProps, product, reset, setRecord, setUploadedImage, toast]
   )
 
   const UploadInput = useCallback(

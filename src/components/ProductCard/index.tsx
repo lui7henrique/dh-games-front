@@ -53,7 +53,6 @@ export const ProductCard = (props: ProductCardProps) => {
 
   const { title, category, images, price, id } = product
   const { isOpen, onClose, onOpen } = useDisclosure()
-  const { editProduct, setEditProduct } = useProducts()
 
   /*
   |-----------------------------------------------------------------------------
@@ -170,14 +169,8 @@ export const ProductCard = (props: ProductCardProps) => {
         <>
           <Content
             onClick={() => {
-              setEditProduct(product)
               onOpen()
             }}
-          />
-          <ModalProduct
-            product={editProduct}
-            isOpen={isOpen}
-            onClose={onClose}
           />
         </>
       ) : (
@@ -187,6 +180,8 @@ export const ProductCard = (props: ProductCardProps) => {
           </a>
         </Link>
       )}
+
+      <ModalProduct product={product} isOpen={isOpen} onClose={onClose} />
     </>
   )
 }

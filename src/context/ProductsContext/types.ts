@@ -13,6 +13,4 @@ export type ProductsContextType = {
   handleFilterProductsByCategory: (category: string) => void
   handleFilterProductsByQuery: (query: string) => void
   handleDeleteProduct: (id: string) => Promise<void>
-  editProduct: Product
-  setEditProduct: Dispatch<SetStateAction<Product>>
 }
