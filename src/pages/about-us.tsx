@@ -1,9 +1,10 @@
 import type { NextPage } from 'next'
+import { AboutUsTemplate } from '../templates/AboutUsTemplate'
 
 const AboutUs: NextPage = () => {
   return (
     <>
-      <h1>AboutUs</h1>
+      <AboutUsTemplate />
     </>
   )
 }
