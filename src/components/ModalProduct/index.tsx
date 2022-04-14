@@ -43,6 +43,7 @@ import { systems } from '../../utils/systems'
 import { MdFileUpload } from 'react-icons/md'
 import { FaTrashAlt } from 'react-icons/fa'
 import { ImageType } from '../../context/UploadContext/types'
+import { get } from 'lodash'
 
 // Types
 export type ModalEditProductProps = {
@@ -83,6 +84,7 @@ export const ModalProduct = (props: ModalEditProductProps) => {
   |
   */
   const { product, ...modalProps } = props
+  const image = get(product, 'images[0]', '')
 
   const {
     handleSubmit,
@@ -281,12 +283,12 @@ export const ModalProduct = (props: ModalEditProductProps) => {
 
       setValue('operationSystem', product.operationSystem as any)
 
-      clearErrors('image')
+      setValue('image', image)
     }
-  }, [clearErrors, product, setValue])
+  }, [clearErrors, image, product, setValue])
 
   useEffect(() => {
-    if (uploadedImage) {
+    if (Object.keys(uploadedImage).length) {
       setValue('image', uploadedImage.url)
       clearErrors('image')
     }
@@ -358,7 +360,6 @@ export const ModalProduct = (props: ModalEditProductProps) => {
                     label={'Thumbnail (URL)'}
                     isDisabled
                     error={errors.image}
-                    defaultValue={product.images![0]}
                   />
                 </Stack>
 
