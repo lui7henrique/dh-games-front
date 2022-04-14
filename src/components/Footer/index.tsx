@@ -45,18 +45,19 @@ export const Footer = () => {
   }, [colors])
 
   return (
-    <Box bgColor={'#FAFAFA'} h={'389px'} mt="100px">
+    <Box bgColor={'#FAFAFA'} h="auto" mt="100px" py="8">
       <Limiter>
         <Flex
           flexDir="column"
           justify="center"
           align={'space-arround'}
-          h={'calc(389px - 35px)'}
+          h="auto"
         >
           <Flex w={'100%'} justifyContent="flex-start">
             {Logo()}
           </Flex>
           <Flex
+            direction={{ base: 'column', md: 'row' }}
             fontSize={'14px'}
             lineHeight={'21px'}
             color={'#666666'}
@@ -83,6 +84,7 @@ export const Footer = () => {
           height={'18px'}
           textAlign="center"
           marginBottom={'18px'}
+          mt="8"
         >
           Copyright (Digital Games 2022 © Todos os Direitos Reservados)
         </Text>

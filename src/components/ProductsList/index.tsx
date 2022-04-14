@@ -1,15 +1,7 @@
 // Vendors
 
 // Components
-import {
-  Circle,
-  Flex,
-  Grid,
-  GridProps,
-  Heading,
-  Text,
-  useTheme
-} from '@chakra-ui/react'
+import { Flex, Grid, GridProps, Heading, Text } from '@chakra-ui/react'
 import { useCallback } from 'react'
 import { FaSadCry } from 'react-icons/fa'
 import { Product } from '../../types/game'

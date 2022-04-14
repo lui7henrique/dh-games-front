@@ -1,5 +1,5 @@
 // Vendors
-import { useCallback, useEffect, useRef } from 'react'
+import { useCallback, useEffect } from 'react'
 import { FieldError, useForm } from 'react-hook-form'
 import { v4 } from 'uuid'
 import Image from 'next/image'

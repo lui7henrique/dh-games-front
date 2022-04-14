@@ -1,5 +1,4 @@
 import { Box, Text, Badge, Flex, VStack } from '@chakra-ui/react'
-import { FaShoppingCart } from 'react-icons/fa'
 import { MdRemoveShoppingCart, MdShoppingCart } from 'react-icons/md'
 import { useCart } from '../../context/CartContext'
 import { Button } from '../Button/index'

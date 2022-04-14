@@ -9,13 +9,13 @@
     "make:component": "yarn plop --plopfile .generators/component.plopfile.js"
   },
   "dependencies": {
+    "@chakra-ui/icons": "^1.1.7",
     "@chakra-ui/react": "^1.6.10",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
     "@faker-js/faker": "^6.1.2",
     "@hookform/resolvers": "^2.8.8",
     "axios": "^0.26.1",
-    "faunadb": "^4.5.4",
     "framer-motion": "^4",
     "lodash": "^4.17.21",
     "miragejs": "^0.1.43",
@@ -24,6 +24,7 @@
     "react-dom": "17.0.2",
     "react-hook-form": "^7.29.0",
     "react-icons": "^4.3.1",
+    "react-input-mask": "^2.0.4",
     "swiper": "^8.0.7",
     "uuid": "^8.3.2",
     "yup": "^0.32.11"

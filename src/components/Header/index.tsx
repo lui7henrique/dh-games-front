@@ -11,9 +11,9 @@ import { Logo } from '../Logo'
 import { HeaderActiveLink } from '../HeaderActiveLink'
 
 import { IoMdMenu } from 'react-icons/io'
-import { FaLock, FaShoppingCart } from 'react-icons/fa'
+import { FaLock } from 'react-icons/fa'
 import { CgLogOut } from 'react-icons/cg'
-import { MdRemoveShoppingCart, MdShoppingCart } from 'react-icons/md'
+import { MdShoppingCart } from 'react-icons/md'
 
 import { Button } from '../Button'
 

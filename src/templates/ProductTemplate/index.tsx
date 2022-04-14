@@ -16,7 +16,7 @@ export const ProductTemplate = (props: ProductTemplateProps) => {
     <>
       <ProductBanner image={images[0]} />
 
-      <Limiter h="100vh">
+      <Limiter h="100vh" mt="60vh">
         {product && (
           <CardProduct
             id={id}
