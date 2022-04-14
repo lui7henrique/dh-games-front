@@ -19,7 +19,7 @@ export const ProductTemplate = (props: ProductTemplateProps) => {
     <>
       <ProductBanner image={images[0]} />
 
-      <Limiter h="100vh" mt="60vh">
+      <Limiter minH="100vh" mt="60vh">
         <VStack spacing={8} w="100%" alignItems="flex-start">
           {product && (
             <CardProduct

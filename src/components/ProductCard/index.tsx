@@ -107,7 +107,7 @@ export const ProductCard = (props: ProductCardProps) => {
           )}
 
           <AspectRatio W="100%" ratio={16 / 9} position="relative">
-            <Box w="100%">
+            <Box w="100%" overflow="hidden" borderRadius="sm">
               <Skeleton
                 w="100%"
                 h="100%"
@@ -140,7 +140,7 @@ export const ProductCard = (props: ProductCardProps) => {
         </Box>
       )
     },
-    [boxProps, category, images, isEditMode, price, title]
+    [boxProps, category, images, isEditMode, onOpen, price, title]
   )
 
   /*

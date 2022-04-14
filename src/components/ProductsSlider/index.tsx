@@ -95,7 +95,7 @@ export const ProductsSlider = (props: ProductsSliderProps) => {
   |
   */
   return (
-    <Limiter position="relative">
+    <Limiter position="relative" px={{ base: 0, lg: 4 }}>
       <Flex direction={{ base: 'column', md: 'row' }} align="center">
         <ChakraSwiper
           spaceBetween={50}
@@ -125,6 +125,7 @@ export const ProductsSlider = (props: ProductsSliderProps) => {
             )
           })}
         </ChakraSwiper>
+
         <Stack
           direction={{
             base: 'row',
