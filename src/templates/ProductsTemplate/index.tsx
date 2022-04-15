@@ -1,5 +1,5 @@
 import { ChangeEvent, useCallback, useEffect, useState } from 'react'
-import { debounce } from 'lodash'
+import { debounce, get } from 'lodash'
 
 import { Divider, Grid, InputGroup, Stack, VStack } from '@chakra-ui/react'
 import {} from '../../components/Button'
@@ -16,10 +16,11 @@ export const ProductsTemplate = () => {
   const {
     record,
     handleFilterProductsByCategory,
-    handleFilterProductsByQuery
+    handleFilterProductsByQuery,
+    getProducts,
+    isLoading,
+    setIsLoading
   } = useProducts()
-
-  const [isLoading, setIsLoading] = useState(true)
 
   const debounceSearchByQuery = useCallback(
     debounce((e: ChangeEvent<HTMLInputElement>) => {
@@ -42,10 +43,10 @@ export const ProductsTemplate = () => {
   )
 
   useEffect(() => {
-    if (record && record.all) {
-      !!record.all.length && setIsLoading(false)
+    if (!get(record, 'all.length')) {
+      getProducts()
     }
-  }, [record])
+  }, [getProducts])
 
   return (
     <Limiter minH="100vh">

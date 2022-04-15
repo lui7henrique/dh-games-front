@@ -85,7 +85,7 @@ export const ProductBanner = (props: ProductBannerProps) => {
           h="100%"
           objectFit="cover"
           objectPosition="60% center"
-          filter="brightness(0.5)"
+          filter="brightness(0.8) contrast(1.2) saturate(1.2)"
         />
       </Box>
     </Box>

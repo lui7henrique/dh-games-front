@@ -10,6 +10,7 @@ import {
 } from 'react'
 import { api } from '../../services/api'
 import { Product } from '../../types/product'
+import { sleep } from '../../utils/sleep'
 import { ProductsContextType, Record } from './types'
 
 export const ProductsContext = createContext({} as ProductsContextType)
@@ -23,6 +24,8 @@ export const ProductsContextProvider = (
 ) => {
   const [record, setRecord] = useState<Record>({} as Record)
 
+  const [isLoading, setIsLoading] = useState(true)
+
   const [activeQuery, setActiveQuery] = useState('')
   const [activeCategory, setActiveCategory] = useState('')
 
@@ -30,12 +33,25 @@ export const ProductsContextProvider = (
   const { asPath } = useRouter()
 
   const getProducts = useCallback(async () => {
-    const { data } = await api.get<Product[]>('/products')
+    try {
+      const { data } = await api.get<Product[]>('/products')
 
-    setRecord({
-      all: data,
-      current: data
-    })
+      setRecord({
+        all: data,
+        current: data
+      })
+    } catch {
+      toast({
+        title: 'Erro ao carregar os produtos',
+        description: 'Tente novamente mais tarde',
+        status: 'error',
+        duration: 9000,
+        isClosable: true
+      })
+    } finally {
+      await sleep(1200)
+      setIsLoading(false)
+    }
   }, [])
 
   const handleFilterProductsByCategory = useCallback((category: string) => {
@@ -135,10 +151,6 @@ export const ProductsContextProvider = (
   }, [activeQuery, activeCategory])
 
   useEffect(() => {
-    getProducts()
-  }, [getProducts])
-
-  useEffect(() => {
     resetRecord()
   }, [asPath, resetRecord])
 
@@ -148,6 +160,9 @@ export const ProductsContextProvider = (
         record,
         setRecord,
         resetRecord,
+        getProducts,
+        isLoading,
+        setIsLoading,
         handleFilterProductsByCategory,
         handleFilterProductsByQuery,
         handleDeleteProduct

@@ -12,7 +12,6 @@ import {
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useCart } from '../../context/CartContext'
 import { Product } from '../../types/product'
 import { Button } from '../Button'
 
@@ -85,7 +84,7 @@ export const ProductSlide = (props: GameSlideProps) => {
     <Link href={`/products/${id}`} passHref>
       <AspectRatio
         w="100%"
-        ratio={{ base: 9 / 16, lg: 16 / 9 }}
+        ratio={{ base: 9 / 16, md: 16 / 9 }}
         cursor="pointer"
       >
         <Box w="100%" h="100%" position="relative">
@@ -124,7 +123,7 @@ export const ProductSlide = (props: GameSlideProps) => {
             <Text fontSize={{ base: 14, lg: 20 }}>{description}</Text>
 
             <Button
-              label="Compre agora"
+              label="Saiba mais"
               onClick={() => push(`/products/${id}`)}
             />
           </VStack>

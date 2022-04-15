@@ -1,3 +1,4 @@
+import { toast, useToast } from '@chakra-ui/react'
 import {
   ChangeEvent,
   createContext,
@@ -46,8 +47,9 @@ export const UploadContextProvider = (props: UploadContextProviderProps) => {
   */
   const [uploadedImage, setUploadedImage] = useState<ImageType>({} as ImageType)
   const [isLoading, setIsLoading] = useState(false)
-
   const [isDragOver, setIsDragOver] = useState(false)
+
+  const toast = useToast()
 
   /*
   |-----------------------------------------------------------------------------
@@ -68,7 +70,21 @@ export const UploadContextProvider = (props: UploadContextProviderProps) => {
       const imageResponse = data.data
 
       setUploadedImage(imageResponse)
+
+      toast({
+        title: 'Imagem enviada com sucesso!',
+        status: 'success',
+        duration: 2000,
+        isClosable: true
+      })
     } catch (err: unknown) {
+      toast({
+        title: 'Não foi possível enviar a imagem',
+        description: 'Tente novamente mais tarde',
+        status: 'error',
+        duration: 5000,
+        isClosable: true
+      })
     } finally {
       setIsLoading(false)
     }

@@ -44,8 +44,8 @@ const Success: NextPage = () => {
           </Flex>
 
           <VStack spacing={2}>
-            <Heading>Pedido realizado com sucesso!</Heading>
-            <Text>
+            <Heading textAlign="center">Pedido realizado com sucesso!</Heading>
+            <Text textAlign="center">
               Seu pedido foi realizado com sucesso, e em breve chegará no seu
               e-mail.
             </Text>

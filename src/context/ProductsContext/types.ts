@@ -9,6 +9,9 @@ export type Record = {
 export type ProductsContextType = {
   record: Record
   setRecord: Dispatch<SetStateAction<Record>>
+  getProducts: () => void
+  isLoading: boolean
+  setIsLoading: Dispatch<SetStateAction<boolean>>
   resetRecord: () => void
   handleFilterProductsByCategory: (category: string) => void
   handleFilterProductsByQuery: (query: string) => void
