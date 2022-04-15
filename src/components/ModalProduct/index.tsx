@@ -26,7 +26,8 @@ import {
   BoxProps,
   Progress,
   VStack,
-  Text
+  Text,
+  Spinner
 } from '@chakra-ui/react'
 import { api } from '../../services/api'
 import { Product } from '../../types/product'
@@ -194,7 +195,7 @@ export const ModalProduct = (props: ModalEditProductProps) => {
       return (
         <Box {...props}>
           {isLoading ? (
-            <Progress size="xs" isIndeterminate />
+            <Spinner size="md" color="primary.500" />
           ) : (
             <>
               <IconButton
@@ -383,7 +384,11 @@ export const ModalProduct = (props: ModalEditProductProps) => {
                         onDrop={onDrop}
                         onDragOver={onDragOver}
                       >
-                        <UploadInput />
+                        {isLoading ? (
+                          <Spinner size="md" color="primary.500" />
+                        ) : (
+                          <UploadInput />
+                        )}
                       </Flex>
                     )}
                   </AspectRatio>
