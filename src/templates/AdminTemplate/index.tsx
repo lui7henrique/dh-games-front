@@ -1,5 +1,5 @@
 import { ChangeEvent, useCallback, useEffect, useState } from 'react'
-import { debounce } from 'lodash'
+import { debounce, get } from 'lodash'
 
 import {
   Divider,
@@ -28,7 +28,7 @@ export const AdminTemplate = () => {
   } = useProducts()
 
   const { isOpen, onClose, onOpen } = useDisclosure()
-  const [isLoading, setIsLoading] = useState(true)
+  const { getProducts, isLoading, setIsLoading } = useProducts()
 
   const debounceSearchByQuery = useCallback(
     debounce((e: ChangeEvent<HTMLInputElement>) => {
@@ -51,10 +51,10 @@ export const AdminTemplate = () => {
   )
 
   useEffect(() => {
-    if (record && record.all) {
-      !!record.all.length && setIsLoading(false)
+    if (!get(record, 'all.length')) {
+      getProducts()
     }
-  }, [record])
+  }, [getProducts])
 
   return (
     <>
