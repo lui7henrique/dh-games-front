@@ -28,9 +28,7 @@ export const schema = () => {
           const currentYear = String(new Date().getFullYear()).split('')
           const minimalYear = +(currentYear[2] + currentYear[3])
 
-          console.log(minimalYear)
-
-          return minimalYear < +year && +month < 12 && +month > 0
+          return minimalYear < +year && +month <= 12 && +month > 0
         }
       ),
 

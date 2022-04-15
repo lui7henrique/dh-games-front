@@ -29,7 +29,7 @@ import {
   Text
 } from '@chakra-ui/react'
 import { api } from '../../services/api'
-import { Product } from '../../types/game'
+import { Product } from '../../types/product'
 import { Button } from '../Button'
 import { FieldSelect } from '../FieldSelect'
 import { FieldText } from '../FieldText'
@@ -43,6 +43,7 @@ import { systems } from '../../utils/systems'
 import { MdFileUpload } from 'react-icons/md'
 import { FaTrashAlt } from 'react-icons/fa'
 import { ImageType } from '../../context/UploadContext/types'
+import { get } from 'lodash'
 
 // Types
 export type ModalEditProductProps = {
@@ -83,6 +84,7 @@ export const ModalProduct = (props: ModalEditProductProps) => {
   |
   */
   const { product, ...modalProps } = props
+  const image = get(product, 'images[0]', '')
 
   const {
     handleSubmit,
@@ -104,7 +106,7 @@ export const ModalProduct = (props: ModalEditProductProps) => {
     isLoading
   } = useUpload()
 
-  const { setRecord, setEditProduct, handleDeleteProduct } = useProducts()
+  const { setRecord, handleDeleteProduct } = useProducts()
   const toast = useToast()
 
   /*
@@ -131,8 +133,6 @@ export const ModalProduct = (props: ModalEditProductProps) => {
             id: product.id,
             images: [values.image]
           })
-
-          setEditProduct(data)
 
           setRecord((prevRecord) => {
             const record = prevRecord.all.map((item) =>
@@ -186,15 +186,7 @@ export const ModalProduct = (props: ModalEditProductProps) => {
         console.log(err)
       }
     },
-    [
-      modalProps,
-      product,
-      reset,
-      setEditProduct,
-      setRecord,
-      setUploadedImage,
-      toast
-    ]
+    [modalProps, product, reset, setRecord, setUploadedImage, toast]
   )
 
   const UploadInput = useCallback(
@@ -281,12 +273,12 @@ export const ModalProduct = (props: ModalEditProductProps) => {
 
       setValue('operationSystem', product.operationSystem as any)
 
-      clearErrors('image')
+      setValue('image', image)
     }
-  }, [clearErrors, product, setValue])
+  }, [clearErrors, image, product, setValue])
 
   useEffect(() => {
-    if (uploadedImage) {
+    if (Object.keys(uploadedImage).length) {
       setValue('image', uploadedImage.url)
       clearErrors('image')
     }
@@ -358,7 +350,6 @@ export const ModalProduct = (props: ModalEditProductProps) => {
                     label={'Thumbnail (URL)'}
                     isDisabled
                     error={errors.image}
-                    defaultValue={product.images![0]}
                   />
                 </Stack>
 

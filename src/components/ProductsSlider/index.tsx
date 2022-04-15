@@ -3,7 +3,7 @@ import SwiperCore, { Autoplay } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
 
 // Components
-import { Product } from '../../types/game'
+import { Product } from '../../types/product'
 import { Limiter } from '../Limiter'
 import { ProductSlide } from '../ProductSlide'
 
@@ -95,13 +95,7 @@ export const ProductsSlider = (props: ProductsSliderProps) => {
   |
   */
   return (
-    <Limiter
-      position="relative"
-      px={{
-        base: '0',
-        md: '4'
-      }}
-    >
+    <Limiter position="relative" px={{ base: 0, lg: 4 }}>
       <Flex direction={{ base: 'column', md: 'row' }} align="center">
         <ChakraSwiper
           spaceBetween={50}
@@ -131,6 +125,7 @@ export const ProductsSlider = (props: ProductsSliderProps) => {
             )
           })}
         </ChakraSwiper>
+
         <Stack
           direction={{
             base: 'row',

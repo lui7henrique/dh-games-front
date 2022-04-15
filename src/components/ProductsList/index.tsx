@@ -1,18 +1,28 @@
 // Vendors
 
 // Components
-import { Flex, Grid, GridProps, Heading, Text } from '@chakra-ui/react'
+import {
+  Box,
+  Flex,
+  Grid,
+  GridProps,
+  Heading,
+  HStack,
+  Text
+} from '@chakra-ui/react'
 import { useCallback } from 'react'
 import { FaSadCry } from 'react-icons/fa'
-import { Product } from '../../types/game'
+import { Product } from '../../types/product'
 import { ProductCard } from '../ProductCard'
 import { ProductCardSkeleton } from '../ProductCardSkeleton'
 
 // Types
 export type ProductsListProps = {
+  title?: string
   products: Product[]
   isEditMode?: boolean
   isLoading?: boolean
+  listProps?: GridProps
 } & GridProps
 
 type ListProps = {} & GridProps
@@ -33,7 +43,14 @@ export const ProductsList = (props: ProductsListProps) => {
   |
   |
   */
-  const { products, isEditMode = false, isLoading, ...rest } = props
+  const {
+    title,
+    products,
+    isEditMode = false,
+    isLoading,
+    listProps,
+    ...rest
+  } = props
 
   /*
   |-----------------------------------------------------------------------------
@@ -122,8 +139,15 @@ export const ProductsList = (props: ProductsListProps) => {
   */
   return (
     <>
+      {title && (
+        <HStack mb={4}>
+          <Box h="32px" w="8px" bgColor="primary.500" />
+          <Heading fontSize={{ base: 20, lg: 24 }}>{title}</Heading>
+        </HStack>
+      )}
+
       {isLoading && (
-        <List>
+        <List {...listProps}>
           {Array.from({
             length: 9
           }).map(() => {

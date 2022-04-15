@@ -9,7 +9,7 @@ import {
   useState
 } from 'react'
 import { api } from '../../services/api'
-import { Product } from '../../types/game'
+import { Product } from '../../types/product'
 import { sleep } from '../../utils/sleep'
 import { ProductsContextType, Record } from './types'
 
@@ -23,7 +23,7 @@ export const ProductsContextProvider = (
   props: ProductsContextProviderProps
 ) => {
   const [record, setRecord] = useState<Record>({} as Record)
-  const [editProduct, setEditProduct] = useState<Product>({} as Product)
+
   const [isLoading, setIsLoading] = useState(true)
 
   const [activeQuery, setActiveQuery] = useState('')
@@ -165,9 +165,7 @@ export const ProductsContextProvider = (
         setIsLoading,
         handleFilterProductsByCategory,
         handleFilterProductsByQuery,
-        handleDeleteProduct,
-        editProduct,
-        setEditProduct
+        handleDeleteProduct
       }}
     >
       {props.children}

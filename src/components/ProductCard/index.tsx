@@ -17,7 +17,7 @@ import {
 } from '@chakra-ui/react'
 import { HiPencil } from 'react-icons/hi'
 
-import { Product } from '../../types/game'
+import { Product } from '../../types/product'
 import { useCallback } from 'react'
 import { ModalProduct } from '../ModalProduct'
 import { useProducts } from '../../context/ProductsContext'
@@ -53,7 +53,6 @@ export const ProductCard = (props: ProductCardProps) => {
 
   const { title, category, images, price, id } = product
   const { isOpen, onClose, onOpen } = useDisclosure()
-  const { editProduct, setEditProduct } = useProducts()
 
   /*
   |-----------------------------------------------------------------------------
@@ -101,11 +100,14 @@ export const ProductCard = (props: ProductCardProps) => {
               zIndex={999}
               className="edit-button"
               opacity={0}
+              onClick={() => {
+                onOpen()
+              }}
             />
           )}
 
           <AspectRatio W="100%" ratio={16 / 9} position="relative">
-            <Box w="100%">
+            <Box w="100%" overflow="hidden" borderRadius="sm">
               <Skeleton
                 w="100%"
                 h="100%"
@@ -138,7 +140,7 @@ export const ProductCard = (props: ProductCardProps) => {
         </Box>
       )
     },
-    [boxProps, category, images, isEditMode, price, title]
+    [boxProps, category, images, isEditMode, onOpen, price, title]
   )
 
   /*
@@ -168,17 +170,7 @@ export const ProductCard = (props: ProductCardProps) => {
     <>
       {isEditMode ? (
         <>
-          <Content
-            onClick={() => {
-              setEditProduct(product)
-              onOpen()
-            }}
-          />
-          <ModalProduct
-            product={editProduct}
-            isOpen={isOpen}
-            onClose={onClose}
-          />
+          <Content />
         </>
       ) : (
         <Link href={`/products/${id}`} passHref>
@@ -187,6 +179,8 @@ export const ProductCard = (props: ProductCardProps) => {
           </a>
         </Link>
       )}
+
+      <ModalProduct product={product} isOpen={isOpen} onClose={onClose} />
     </>
   )
 }

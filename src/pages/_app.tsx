@@ -1,4 +1,5 @@
 import * as React from 'react'
+import NextProgress from 'next-progress'
 
 import { ChakraProvider, CSSReset } from '@chakra-ui/react'
 import type { AppProps } from 'next/app'
@@ -20,6 +21,11 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
           <UploadContextProvider>
             <CartContextProvider>
               <CSSReset />
+              <NextProgress
+                delay={300}
+                options={{ showSpinner: true }}
+                color="#04BF8A"
+              />
               <Header />
               <Component {...pageProps} />
               <Footer />
