@@ -15,6 +15,7 @@
     "@emotion/styled": "^11",
     "@faker-js/faker": "^6.1.2",
     "@hookform/resolvers": "^2.8.8",
+    "aos": "^2.3.4",
     "axios": "^0.26.1",
     "framer-motion": "^4",
     "lodash": "^4.17.21",
@@ -31,6 +32,7 @@
     "yup": "^0.32.11"
   },
   "devDependencies": {
+    "@types/aos": "^3.0.4",
     "@types/node": "16.11.6",
     "@types/react": "^17.0.43",
     "@types/uuid": "^8.3.4",

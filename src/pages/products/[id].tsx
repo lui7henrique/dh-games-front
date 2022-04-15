@@ -37,7 +37,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   const { data: moreData } = await api.get<ProductType[]>('products')
   const moreProducts = moreData
     .filter((product) => +product.id !== Number(id))
-    .slice(0, 3)
+    .slice(0, 6)
 
   return {
     props: {

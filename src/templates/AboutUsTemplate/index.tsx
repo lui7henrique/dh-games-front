@@ -93,9 +93,15 @@ export const AboutUsTemplate = () => {
         spacing={8}
         py={8}
       >
-        <VStack position="sticky" alignItems="flex-start" top={8}>
-          <Heading>Feito para gamers, por gamers.</Heading>
-          <Text>
+        <VStack
+          position={{ base: 'initial', lg: 'sticky' }}
+          alignItems="flex-start"
+          top={{ base: 0, lg: 8 }}
+        >
+          <Heading mb={4} data-aos="fade-right" data-aos-delay={100}>
+            Feito para gamers, por gamers.
+          </Heading>
+          <Text data-aos="fade-right" data-aos-delay={200}>
             Uma empresa{' '}
             <Text as="span" textDecoration="line-through">
               (fictícia)
@@ -105,7 +111,7 @@ export const AboutUsTemplate = () => {
         </VStack>
 
         <VStack w="100%" alignItems="flex-start">
-          <HStack mb={4}>
+          <HStack mb={4} data-aos="fade-right" data-aos-delay={300}>
             <Box h="32px" w="8px" bgColor="primary.500" />
             <Heading fontSize={{ base: 20, lg: 24 }}>Integrantes</Heading>
           </HStack>
@@ -119,8 +125,12 @@ export const AboutUsTemplate = () => {
             w="100%"
             gap={8}
           >
-            {participants.map((participant) => (
-              <Participant key={JSON.stringify(participant)} {...participant} />
+            {participants.map((participant, index) => (
+              <Participant
+                index={index}
+                key={JSON.stringify(participant)}
+                {...participant}
+              />
             ))}
           </Grid>
         </VStack>

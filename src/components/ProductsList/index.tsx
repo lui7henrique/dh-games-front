@@ -86,7 +86,7 @@ export const ProductsList = (props: ProductsListProps) => {
         >
           <FaSadCry size={40} color="white" />
         </Flex>
-        <Heading as="h2" size="md">
+        <Heading as="h2" size="md" textAlign="center">
           Nenhum produto foi encontrado.
         </Heading>
         <Text textAlign="center">

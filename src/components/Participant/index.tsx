@@ -28,6 +28,7 @@ type ParticipantProps = {
   linkedin: string
   twitter?: string
   instagram?: string
+  index: number
 }
 
 /*
@@ -52,8 +53,16 @@ export const Participant = (props: ParticipantProps) => {
   |
   |
   */
-  const { image, name, description, github, linkedin, twitter, instagram } =
-    props
+  const {
+    image,
+    name,
+    description,
+    github,
+    linkedin,
+    twitter,
+    instagram,
+    index
+  } = props
 
   /*
   |-----------------------------------------------------------------------------
@@ -125,10 +134,8 @@ export const Participant = (props: ParticipantProps) => {
       h="100%"
       justifyContent="space-between"
       bgColor="gray.800"
-      transition="all 0.2s"
-      _hover={{
-        bgColor: '#1f1f1f'
-      }}
+      data-aos="fade-up"
+      data-aos-delay={index * 100}
     >
       <Box>
         <AspectRatio ratio={1 / 1} w="100%">
