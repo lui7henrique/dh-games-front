@@ -69,7 +69,7 @@ export const DrawerMenu = (props: DrawerMenuProps) => {
   const ActiveLink = useCallback((props: ActiveLinkProps) => {
     const { href, label } = props
 
-    const isActive = href === window.location.pathname
+    const isActive = href === '/' ? asPath === href : asPath.startsWith(href)
 
     return (
       <Link href={href}>

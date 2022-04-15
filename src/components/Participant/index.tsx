@@ -136,6 +136,7 @@ export const Participant = (props: ParticipantProps) => {
       bgColor="gray.800"
       data-aos="fade-up"
       data-aos-delay={index * 100}
+      borderRadius="sm"
     >
       <Box>
         <AspectRatio ratio={1 / 1} w="100%">
@@ -157,13 +158,7 @@ export const Participant = (props: ParticipantProps) => {
           </Box>
         </AspectRatio>
 
-        <VStack
-          align="flex-start"
-          w="100%"
-          spacing={2}
-          p={4}
-          borderBottomRadius="sm"
-        >
+        <VStack align="flex-start" w="100%" spacing={2} p={4}>
           <Heading as="h3" fontSize="lg">
             {name}
           </Heading>
