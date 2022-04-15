@@ -34,13 +34,14 @@ export const AboutUsTemplate = () => {
         linkedin: 'https://www.linkedin.com/in/guilherme-chehade-a18644a3/'
       },
       {
-        name: 'Luiz Henrique',
-        description: 'Desenvolvedor front-end (ReactJS, NextJS & TypeScript)',
-        image: '/luizhenrique.jpeg',
-        github: 'https://github.com/lui7henrique',
-        linkedin: 'https://www.linkedin.com/in/luiz-henrique7/',
-        twitter: 'https://twitter.com/lui7henrique',
-        instagram: 'https://www.instagram.com/lui7henrique/'
+        name: 'Mario Braga',
+        description:
+          'Aspirante a Desenvolvedor Full-Stack | JavaScript | React.js | Java | Spring Boot',
+        image: '/mariobraga.jpg',
+        github: 'https://github.com/mariomarthins',
+        linkedin: 'https://www.linkedin.com/in/mario-martins-8842b41b1/',
+        twitter: 'https://twitter.com/bragammartins',
+        instagram: 'https://www.instagram.com/mariobragamartins/'
       },
       {
         name: 'Luiz Henrique',
