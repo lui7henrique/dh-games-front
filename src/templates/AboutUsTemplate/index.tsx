@@ -44,13 +44,13 @@ export const AboutUsTemplate = () => {
         instagram: 'https://www.instagram.com/mariobragamartins/'
       },
       {
-        name: 'Luiz Henrique',
-        description: 'Desenvolvedor front-end (ReactJS, NextJS & TypeScript)',
-        image: '/luizhenrique.jpeg',
-        github: 'https://github.com/lui7henrique',
-        linkedin: 'https://www.linkedin.com/in/luiz-henrique7/',
-        twitter: 'https://twitter.com/lui7henrique',
-        instagram: 'https://www.instagram.com/lui7henrique/'
+        name: 'Wirley Almeida',
+        description: 'Desenvolvedor Full-Stack | React + Spring',
+        image: '/wirleyalmeida.jpg',
+        github: 'https://github.com/WirleySAlmeida',
+        linkedin: 'https://www.linkedin.com/in/wirley-almeida-91343154/',
+        twitter: '',
+        instagram: ''
       },
       {
         name: 'Luiz Henrique',
