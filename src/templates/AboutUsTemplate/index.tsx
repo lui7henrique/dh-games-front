@@ -51,6 +51,15 @@ export const AboutUsTemplate = () => {
         instagram: 'https://www.instagram.com/thiago_mmd/'
       },
       {
+        name: 'Wirley Almeida',
+        description: 'Desenvolvedor Full-Stack | React + Spring',
+        image: '/wirleyalmeida.jpg',
+        github: 'https://github.com/WirleySAlmeida',
+        linkedin: 'https://www.linkedin.com/in/wirley-almeida-91343154/',
+        twitter: '',
+        instagram: ''
+      },
+      {
         name: 'Luiz Henrique',
         description: 'Desenvolvedor front-end (ReactJS, NextJS & TypeScript)',
         image: '/luizhenrique.jpeg',
