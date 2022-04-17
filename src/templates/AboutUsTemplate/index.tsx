@@ -1,4 +1,3 @@
-import { useMemo } from 'react'
 import {
   Box,
   Grid,
@@ -8,7 +7,7 @@ import {
   Text,
   VStack
 } from '@chakra-ui/react'
-
+import { useMemo } from 'react'
 import { Limiter } from '../../components/Limiter'
 import { Participant } from '../../components/Participant'
 
@@ -35,8 +34,7 @@ export const AboutUsTemplate = () => {
       },
       {
         name: 'Mario Braga',
-        description:
-          'Aspirante a Desenvolvedor Full-Stack | JavaScript | React.js | Java | Spring Boot',
+        description: 'Desenvolvedor Front-End(Typescript, Next.js, React.js)',
         image: '/mariobraga.jpg',
         github: 'https://github.com/mariomarthins',
         linkedin: 'https://www.linkedin.com/in/mario-martins-8842b41b1/',
@@ -44,13 +42,13 @@ export const AboutUsTemplate = () => {
         instagram: 'https://www.instagram.com/mariobragamartins/'
       },
       {
-        name: 'Luiz Henrique',
+        name: 'Thiago Maurat',
         description: 'Desenvolvedor front-end (ReactJS, NextJS & TypeScript)',
-        image: '/luizhenrique.jpeg',
-        github: 'https://github.com/lui7henrique',
-        linkedin: 'https://www.linkedin.com/in/luiz-henrique7/',
-        twitter: 'https://twitter.com/lui7henrique',
-        instagram: 'https://www.instagram.com/lui7henrique/'
+        image: '/ThiagoMaurat.jpg',
+        github: 'https://github.com/ThiagoMaurat',
+        linkedin: 'https://www.linkedin.com/in/thiago-maurat-477a041b9/',
+        twitter: 'https://twitter.com/Thiago_Maurat',
+        instagram: 'https://www.instagram.com/thiago_mmd/'
       },
       {
         name: 'Luiz Henrique',
