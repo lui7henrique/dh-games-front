@@ -72,19 +72,10 @@ export const AboutUsTemplate = () => {
         name: 'Gustavo Souza',
         description: 'Desenvolvedor Front End (JavaScript, ReactJs)',
         image: '/gustavosouza.jpg',
-        github: '',
-        linkedin: '',
-        twitter: '',
-        instagram: ''
-      },
-      {
-        name: 'testevdfvsdvdsvs',
-        description: 'Desenvolvedor Front End (JavaScript, ReactJs)',
-        image: '/vercel.svg',
-        github: '',
-        linkedin: '',
-        twitter: '',
-        instagram: ''
+        github: 'https://github.com/gustavomes',
+        linkedin: 'https://www.linkedin.com/in/gustavo-medeiros-385931213',
+        twitter: 'https://twitter.com/gustavomes',
+        instagram: 'https://www.instagram.com/gustavomedeirosfoto/'
       }
     ],
     []
