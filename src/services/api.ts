@@ -1,5 +1,5 @@
 import axios from 'axios'
 
 export const api = axios.create({
-  baseURL: 'https://enigmatic-island-70262.herokuapp.com'
+  baseURL: 'http://3.17.138.107:8080/'
 })
