@@ -60,31 +60,31 @@ export const AboutUsTemplate = () => {
         instagram: ''
       },
       {
-        name: 'Luiz Henrique',
-        description: 'Desenvolvedor front-end (ReactJS, NextJS & TypeScript)',
-        image: '/luizhenrique.jpeg',
-        github: 'https://github.com/lui7henrique',
-        linkedin: 'https://www.linkedin.com/in/luiz-henrique7/',
-        twitter: 'https://twitter.com/lui7henrique',
-        instagram: 'https://www.instagram.com/lui7henrique/'
+        name: 'João Rocha',
+        description: 'Desenvolvedor Front End (JavaScript, ReactJs)',
+        image: '/joaorocha.jpeg',
+        github: 'https://github.com/joaolrocha',
+        linkedin: 'https://www.linkedin.com/in/jo%C3%A3o-rocha-2aaa99225/',
+        twitter: '',
+        instagram: 'https://www.instagram.com/joaolrocha/'
       },
       {
-        name: 'Luiz Henrique',
-        description: 'Desenvolvedor front-end (ReactJS, NextJS & TypeScript)',
-        image: '/luizhenrique.jpeg',
-        github: 'https://github.com/lui7henrique',
-        linkedin: 'https://www.linkedin.com/in/luiz-henrique7/',
-        twitter: 'https://twitter.com/lui7henrique',
-        instagram: 'https://www.instagram.com/lui7henrique/'
+        name: 'Gustavo Souza',
+        description: 'Desenvolvedor Front End (JavaScript, ReactJs)',
+        image: '/gustavosouza.jpg',
+        github: '',
+        linkedin: '',
+        twitter: '',
+        instagram: ''
       },
       {
-        name: 'Luiz Henrique',
-        description: 'Desenvolvedor front-end (ReactJS, NextJS & TypeScript)',
-        image: '/luizhenrique.jpeg',
-        github: 'https://github.com/lui7henrique',
-        linkedin: 'https://www.linkedin.com/in/luiz-henrique7/',
-        twitter: 'https://twitter.com/lui7henrique',
-        instagram: 'https://www.instagram.com/lui7henrique/'
+        name: 'testevdfvsdvdsvs',
+        description: 'Desenvolvedor Front End (JavaScript, ReactJs)',
+        image: '/vercel.svg',
+        github: '',
+        linkedin: '',
+        twitter: '',
+        instagram: ''
       }
     ],
     []
