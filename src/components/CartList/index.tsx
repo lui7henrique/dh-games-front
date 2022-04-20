@@ -1,7 +1,6 @@
 // Vendors
 import Image from 'next/image'
 import { useCallback, useMemo } from 'react'
-import Link from 'next/link'
 
 // Components
 import {

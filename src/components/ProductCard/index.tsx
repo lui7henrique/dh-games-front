@@ -20,7 +20,6 @@ import { HiPencil } from 'react-icons/hi'
 import { Product } from '../../types/product'
 import { useCallback } from 'react'
 import { ModalProduct } from '../ModalProduct'
-import { useProducts } from '../../context/ProductsContext'
 import { getCategoryLabelByName } from '../../utils/categories'
 
 // Types
