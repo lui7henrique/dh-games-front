@@ -27,7 +27,7 @@ export const schema = () => {
       .string()
       .required('Por favor, informe a categoria do produto.'),
 
-    operatingSystem: yup
+    operationSystem: yup
       .string()
       .required('Por favor, informe o sistema operacional.')
   })

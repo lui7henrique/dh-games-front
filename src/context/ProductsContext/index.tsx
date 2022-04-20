@@ -11,7 +11,7 @@ import {
 import { api } from '../../services/api'
 import { Product } from '../../types/product'
 import { sleep } from '../../utils/sleep'
-import { Category, ProductsContextType, Record } from './types'
+import { ProductsContextType, Record } from './types'
 
 export const ProductsContext = createContext({} as ProductsContextType)
 
@@ -23,7 +23,6 @@ export const ProductsContextProvider = (
   props: ProductsContextProviderProps
 ) => {
   const [record, setRecord] = useState<Record>({} as Record)
-  const [categories, setCategories] = useState([] as Category[])
 
   const [isLoading, setIsLoading] = useState(true)
 
@@ -36,16 +35,11 @@ export const ProductsContextProvider = (
   const getProducts = useCallback(async () => {
     try {
       const { data } = await api.get<Product[]>('/products')
-      const { data: categories } = await api.get<Category[]>('/categories')
 
       setRecord({
         all: data,
         current: data
       })
-
-      console.log(categories)
-
-      setCategories(categories)
     } catch {
       toast({
         title: 'Erro ao carregar os produtos',
@@ -103,8 +97,6 @@ export const ProductsContextProvider = (
     const hasQuery = activeQuery !== ''
     const hasCategory = activeCategory !== ''
 
-    console.log(typeof activeCategory, record.all)
-
     if (!hasQuery && !hasCategory) {
       resetRecord()
     }
@@ -132,7 +124,7 @@ export const ProductsContextProvider = (
             item.description
               .toLowerCase()
               .includes(activeQuery.toLowerCase())) &&
-          item.category.id === +activeCategory
+          item.category === activeCategory
         )
       })
 
@@ -146,7 +138,7 @@ export const ProductsContextProvider = (
 
     if (!hasQuery && hasCategory) {
       const newProducts = record.all.filter(
-        (item) => item.category.id === +activeCategory
+        (item) => item.category === activeCategory
       )
 
       setRecord((prevRecord) => {
@@ -167,7 +159,6 @@ export const ProductsContextProvider = (
       value={{
         record,
         setRecord,
-        categories,
         resetRecord,
         getProducts,
         isLoading,

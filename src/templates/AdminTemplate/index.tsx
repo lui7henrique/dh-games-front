@@ -18,11 +18,11 @@ import { FieldText } from '../../components/FieldText'
 import { FieldSelect } from '../../components/FieldSelect'
 import { ProductsList } from '../../components/ProductsList'
 import { ModalProduct } from '../../components/ModalProduct'
+import { categories } from '../../utils/categories'
 
 export const AdminTemplate = () => {
   const {
     record,
-    categories,
     handleFilterProductsByCategory,
     handleFilterProductsByQuery
   } = useProducts()
@@ -91,12 +91,7 @@ export const AdminTemplate = () => {
                     label: 'Tudo',
                     value: ''
                   },
-                  ...categories.map((category) => {
-                    return {
-                      label: category.name,
-                      value: category.id
-                    }
-                  })
+                  ...categories
                 ]}
                 defaultValue={'Tudo'}
                 name="category"

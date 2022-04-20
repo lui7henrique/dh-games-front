@@ -10,11 +10,11 @@ import { FiSearch } from 'react-icons/fi'
 import { FieldText } from '../../components/FieldText'
 import { FieldSelect } from '../../components/FieldSelect'
 import { ProductsList } from '../../components/ProductsList'
+import { categories } from '../../utils/categories'
 
 export const ProductsTemplate = () => {
   const {
     record,
-    categories,
     handleFilterProductsByCategory,
     handleFilterProductsByQuery,
     getProducts,
@@ -77,12 +77,7 @@ export const ProductsTemplate = () => {
                   label: 'Tudo',
                   value: ''
                 },
-                ...categories.map((category) => {
-                  return {
-                    label: category.name,
-                    value: category.id
-                  }
-                })
+                ...categories
               ]}
               defaultValue={'Tudo'}
               name="category"

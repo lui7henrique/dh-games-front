@@ -6,7 +6,7 @@ export type ProductForm = {
   price: number
   description: string
   images: string[]
-  category: any
+  category: string
   operationSystem: string
 }
 
