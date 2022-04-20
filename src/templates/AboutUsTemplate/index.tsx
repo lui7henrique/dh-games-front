@@ -17,7 +17,7 @@ export const AboutUsTemplate = () => {
       {
         name: 'Luiz Henrique',
         description:
-          'Desenvolvedor front-end (ReactJS, NextJS, TypeScript & GraphQL )',
+          'Desenvolvedor front-end (ReactJS, NextJS, TypeScript & GraphQL)',
         image: '/luizhenrique.jpeg',
         github: 'https://github.com/lui7henrique',
         linkedin: 'https://www.linkedin.com/in/luiz-henrique7/',
@@ -60,31 +60,22 @@ export const AboutUsTemplate = () => {
         instagram: ''
       },
       {
-        name: 'Luiz Henrique',
-        description: 'Desenvolvedor front-end (ReactJS, NextJS & TypeScript)',
-        image: '/luizhenrique.jpeg',
-        github: 'https://github.com/lui7henrique',
-        linkedin: 'https://www.linkedin.com/in/luiz-henrique7/',
-        twitter: 'https://twitter.com/lui7henrique',
-        instagram: 'https://www.instagram.com/lui7henrique/'
+        name: 'João Rocha',
+        description: 'Desenvolvedor Front End (JavaScript, ReactJs)',
+        image: '/joaorocha.jpeg',
+        github: 'https://github.com/joaolrocha',
+        linkedin: 'https://www.linkedin.com/in/jo%C3%A3o-rocha-2aaa99225/',
+        twitter: '',
+        instagram: 'https://www.instagram.com/joaolrocha/'
       },
       {
-        name: 'Luiz Henrique',
-        description: 'Desenvolvedor front-end (ReactJS, NextJS & TypeScript)',
-        image: '/luizhenrique.jpeg',
-        github: 'https://github.com/lui7henrique',
-        linkedin: 'https://www.linkedin.com/in/luiz-henrique7/',
-        twitter: 'https://twitter.com/lui7henrique',
-        instagram: 'https://www.instagram.com/lui7henrique/'
-      },
-      {
-        name: 'Luiz Henrique',
-        description: 'Desenvolvedor front-end (ReactJS, NextJS & TypeScript)',
-        image: '/luizhenrique.jpeg',
-        github: 'https://github.com/lui7henrique',
-        linkedin: 'https://www.linkedin.com/in/luiz-henrique7/',
-        twitter: 'https://twitter.com/lui7henrique',
-        instagram: 'https://www.instagram.com/lui7henrique/'
+        name: 'Gustavo Souza',
+        description: 'Desenvolvedor Front End (JavaScript, ReactJs)',
+        image: '/gustavosouza.jpg',
+        github: 'https://github.com/gustavomes',
+        linkedin: 'https://www.linkedin.com/in/gustavo-medeiros-385931213',
+        twitter: 'https://twitter.com/gustavomes',
+        instagram: 'https://www.instagram.com/gustavomedeirosfoto/'
       }
     ],
     []
