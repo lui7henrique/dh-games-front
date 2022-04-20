@@ -43,6 +43,8 @@ export const ProductsContextProvider = (
         current: data
       })
 
+      console.log(categories)
+
       setCategories(categories)
     } catch {
       toast({

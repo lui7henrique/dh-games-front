@@ -8,5 +8,5 @@ export type Product = {
     id: number
     name: string
   }
-  operationSystem: string
+  operatingSystem: string
 }
