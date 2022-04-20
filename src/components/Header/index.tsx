@@ -1,5 +1,5 @@
 /* eslint-disable indent */
-import { useEffect, useMemo } from 'react'
+import { useMemo } from 'react'
 import { useRouter } from 'next/router'
 import { useAuth } from '../../context/AuthContext'
 import { useCart } from '../../context/CartContext'

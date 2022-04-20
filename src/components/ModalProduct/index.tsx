@@ -24,7 +24,6 @@ import {
   chakra,
   Box,
   BoxProps,
-  Progress,
   VStack,
   Text,
   Spinner
@@ -38,7 +37,6 @@ import { useProducts } from '../../context/ProductsContext'
 
 import { schema } from './schema'
 import { useUpload } from '../../context/UploadContext'
-import { categories } from '../../utils/categories'
 import { systems } from '../../utils/systems'
 
 import { MdFileUpload } from 'react-icons/md'
@@ -63,7 +61,7 @@ type ProductForm = {
   description: string
   image: string
   category: Option
-  operationSystem: Option
+  operatingSystem: Option
 }
 
 const ChakraNextImage = chakra(Image)
@@ -107,7 +105,7 @@ export const ModalProduct = (props: ModalEditProductProps) => {
     isLoading
   } = useUpload()
 
-  const { setRecord, handleDeleteProduct } = useProducts()
+  const { setRecord, handleDeleteProduct, categories } = useProducts()
   const toast = useToast()
 
   /*
@@ -129,10 +127,13 @@ export const ModalProduct = (props: ModalEditProductProps) => {
     async (values: ProductForm) => {
       try {
         if (product) {
+          const category = categories.find((c) => c.id === +values.category)
+
           const { data } = await api.put<Product>(`/products/${product.id}`, {
             ...values,
             id: product.id,
-            images: [values.image]
+            images: [values.image],
+            category
           })
 
           setRecord((prevRecord) => {
@@ -270,9 +271,9 @@ export const ModalProduct = (props: ModalEditProductProps) => {
 
       setValue('description', product.description)
 
-      setValue('category', product.category as any)
+      setValue('category', product.category.id as any)
 
-      setValue('operationSystem', product.operationSystem as any)
+      setValue('operatingSystem', product.operatingSystem as any)
 
       setValue('image', image)
     }
@@ -411,17 +412,22 @@ export const ModalProduct = (props: ModalEditProductProps) => {
             <FieldSelect
               label="Categoria"
               {...register('category')}
-              options={categories}
+              options={categories.map((category) => {
+                return {
+                  label: category.name,
+                  value: String(category.id)
+                }
+              })}
               placeholder="Selecione uma categoria"
-              defaultValue={product?.category}
+              defaultValue={product?.category.id}
               error={errors.category as FieldError}
             />
             <FieldSelect
               label="Sistema"
-              {...register('operationSystem')}
+              {...register('operatingSystem')}
               options={systems}
               placeholder="Selecione o sistema"
-              error={errors.operationSystem as FieldError}
+              error={errors.operatingSystem as FieldError}
             />
           </Stack>
         </ModalBody>

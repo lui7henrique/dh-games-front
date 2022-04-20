@@ -1,12 +1,4 @@
-import {
-  Box,
-  Flex,
-  Heading,
-  Popover,
-  Text,
-  Tooltip,
-  VStack
-} from '@chakra-ui/react'
+import { Box, Flex, Heading, Text, Tooltip, VStack } from '@chakra-ui/react'
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
