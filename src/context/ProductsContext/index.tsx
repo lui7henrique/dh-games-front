@@ -101,6 +101,8 @@ export const ProductsContextProvider = (
     const hasQuery = activeQuery !== ''
     const hasCategory = activeCategory !== ''
 
+    console.log(typeof activeCategory, record.all)
+
     if (!hasQuery && !hasCategory) {
       resetRecord()
     }
@@ -128,7 +130,7 @@ export const ProductsContextProvider = (
             item.description
               .toLowerCase()
               .includes(activeQuery.toLowerCase())) &&
-          item.category === activeCategory
+          item.category.id === +activeCategory
         )
       })
 
@@ -142,7 +144,7 @@ export const ProductsContextProvider = (
 
     if (!hasQuery && hasCategory) {
       const newProducts = record.all.filter(
-        (item) => item.category === activeCategory
+        (item) => item.category.id === +activeCategory
       )
 
       setRecord((prevRecord) => {

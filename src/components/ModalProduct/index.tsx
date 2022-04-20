@@ -125,6 +125,8 @@ export const ModalProduct = (props: ModalEditProductProps) => {
   */
   const onSubmit = useCallback(
     async (values: ProductForm) => {
+      console.log(values)
+
       try {
         if (product) {
           const { data } = await api.put<Product>(`/products/${product.id}`, {
@@ -412,11 +414,11 @@ export const ModalProduct = (props: ModalEditProductProps) => {
               options={categories.map((category) => {
                 return {
                   label: category.name,
-                  value: category.id
+                  value: String(category.id)
                 }
               })}
               placeholder="Selecione uma categoria"
-              defaultValue={product?.category}
+              defaultValue={product?.category.id}
               error={errors.category as FieldError}
             />
             <FieldSelect
