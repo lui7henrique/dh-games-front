@@ -80,7 +80,7 @@ export const ProductsTemplate = () => {
                 ...categories.map((category) => {
                   return {
                     label: category.name,
-                    value: category.id
+                    value: String(category.id)
                   }
                 })
               ]}
