@@ -17,7 +17,7 @@ export const AboutUsTemplate = () => {
       {
         name: 'Luiz Henrique',
         description:
-          'Desenvolvedor front-end (ReactJS, NextJS, TypeScript & GraphQL )',
+          'Desenvolvedor front-end (ReactJS, NextJS, TypeScript & GraphQL)',
         image: '/luizhenrique.jpeg',
         github: 'https://github.com/lui7henrique',
         linkedin: 'https://www.linkedin.com/in/luiz-henrique7/',
