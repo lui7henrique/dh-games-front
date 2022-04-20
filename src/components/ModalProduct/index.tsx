@@ -24,7 +24,6 @@ import {
   chakra,
   Box,
   BoxProps,
-  Progress,
   VStack,
   Text,
   Spinner
@@ -38,7 +37,6 @@ import { useProducts } from '../../context/ProductsContext'
 
 import { schema } from './schema'
 import { useUpload } from '../../context/UploadContext'
-import { categories } from '../../utils/categories'
 import { systems } from '../../utils/systems'
 
 import { MdFileUpload } from 'react-icons/md'
@@ -107,7 +105,7 @@ export const ModalProduct = (props: ModalEditProductProps) => {
     isLoading
   } = useUpload()
 
-  const { setRecord, handleDeleteProduct } = useProducts()
+  const { setRecord, handleDeleteProduct, categories } = useProducts()
   const toast = useToast()
 
   /*
@@ -411,7 +409,12 @@ export const ModalProduct = (props: ModalEditProductProps) => {
             <FieldSelect
               label="Categoria"
               {...register('category')}
-              options={categories}
+              options={categories.map((category) => {
+                return {
+                  label: category.name,
+                  value: category.id
+                }
+              })}
               placeholder="Selecione uma categoria"
               defaultValue={product?.category}
               error={errors.category as FieldError}

@@ -11,7 +11,7 @@ import {
 import { api } from '../../services/api'
 import { Product } from '../../types/product'
 import { sleep } from '../../utils/sleep'
-import { ProductsContextType, Record } from './types'
+import { Category, ProductsContextType, Record } from './types'
 
 export const ProductsContext = createContext({} as ProductsContextType)
 
@@ -23,6 +23,7 @@ export const ProductsContextProvider = (
   props: ProductsContextProviderProps
 ) => {
   const [record, setRecord] = useState<Record>({} as Record)
+  const [categories, setCategories] = useState([] as Category[])
 
   const [isLoading, setIsLoading] = useState(true)
 
@@ -35,11 +36,14 @@ export const ProductsContextProvider = (
   const getProducts = useCallback(async () => {
     try {
       const { data } = await api.get<Product[]>('/products')
+      const { data: categories } = await api.get<Category[]>('/categories')
 
       setRecord({
         all: data,
         current: data
       })
+
+      setCategories(categories)
     } catch {
       toast({
         title: 'Erro ao carregar os produtos',
@@ -159,6 +163,7 @@ export const ProductsContextProvider = (
       value={{
         record,
         setRecord,
+        categories,
         resetRecord,
         getProducts,
         isLoading,
